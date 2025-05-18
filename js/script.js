@@ -57,3 +57,23 @@ navLinks.forEach(link => {
         }
     });
 });
+
+//------------------------------------------
+
+document.addEventListener("DOMContentLoaded", () => {
+    const callLink = document.querySelector('.call-link');
+
+    if (callLink) {
+        const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+
+        if (!isMobile) {
+            callLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector('#contact-info');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+    }
+});
