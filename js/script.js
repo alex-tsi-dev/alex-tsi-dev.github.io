@@ -82,3 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
+
+//------------------------------------------
+
+document.querySelector('.contact-button').addEventListener('click', function() {
+    document.getElementById('contact-info').scrollIntoView({ behavior: 'smooth' });
+});
