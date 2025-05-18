@@ -88,3 +88,42 @@ document.addEventListener("DOMContentLoaded", () => {
 document.querySelector('.contact-button').addEventListener('click', function() {
     document.getElementById('contact-info').scrollIntoView({ behavior: 'smooth' });
 });
+
+
+//------------------------------------------
+
+document.querySelector('#main-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const form = this;
+    const webhookUrl = 'https://hook.eu2.make.com/t7djoabppt6eo7yp6jgkp9rqcutdp02k';
+
+    const name = form.querySelector('[name="main-form-name"]').value.trim();
+    const email = form.querySelector('[name="main-form-email"]').value.trim();
+    const message = form.querySelector('[name="main-form-message"]').value.trim();
+
+    const data = {
+        name: name,
+        email: email,
+        message: message
+    };
+
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+        .then(res => {
+            if (res.ok) {
+                alert('Wiadomość została wysłana!');
+                form.reset();
+            } else {
+                alert('Błąd podczas wysyłania wiadomości.');
+            }
+        })
+        .catch(err => {
+            console.error('Fetch error:', err);
+            alert('Wystąpił problem z połączeniem.');
+        });
+});
+
