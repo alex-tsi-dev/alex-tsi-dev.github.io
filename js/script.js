@@ -33,6 +33,11 @@ const navLinks = document.querySelectorAll('.main-nav__item a');
 
 navLinks.forEach(link => {
     link.addEventListener('click', function(event) {
+        const href = this.getAttribute('href');
+        if (href.startsWith('tel:') || href.startsWith('mailto:')) {
+            return;
+        }
+
         event.preventDefault();
 
         const targetId = this.getAttribute('href');
