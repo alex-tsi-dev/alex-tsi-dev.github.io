@@ -66,20 +66,25 @@ navLinks.forEach(link => {
 //------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
-    const callLink = document.querySelector('.call-link');
+    const callLinks = document.querySelectorAll('.call-link');
 
-    if (callLink) {
+    if (callLinks.length > 0) {
         const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
 
-        if (!isMobile) {
-            callLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = document.querySelector('#contact-info');
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        }
+        callLinks.forEach(callLink => {
+            if (!isMobile) {
+                callLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    const target = document.querySelector('#contact-info');
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        console.warn('Целевой элемент #contact-info для прокрутки не найден.');
+                    }
+                });
+            }
+        });
     }
 });
 
