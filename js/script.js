@@ -85,8 +85,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //------------------------------------------
 
-document.querySelector('.contact-button').addEventListener('click', function() {
-    document.getElementById('contact-info').scrollIntoView({ behavior: 'smooth' });
+document.addEventListener('DOMContentLoaded', function() {
+    const contactButtons = document.querySelectorAll('.contact-button');
+
+    if (contactButtons.length > 0) {
+        contactButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const targetElement = document.getElementById('contact-info');
+
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    console.warn('There is no element with ID "contact-info"');
+                }
+            });
+        });
+    } else {
+        console.warn('There is no button with ".contact-button" class');
+    }
 });
 
 
