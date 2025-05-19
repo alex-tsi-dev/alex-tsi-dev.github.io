@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (target) {
                         target.scrollIntoView({ behavior: 'smooth' });
                     } else {
-                        console.warn('Целевой элемент #contact-info для прокрутки не найден.');
+                        console.warn('There is no #contact-info');
                     }
                 });
             }
