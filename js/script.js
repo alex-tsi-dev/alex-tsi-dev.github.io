@@ -1,12 +1,24 @@
-
 const mainNav = document.querySelector('.main-nav');
-
+const pageLanguage = document.documentElement.lang.toLowerCase();
+const isRussianPage = pageLanguage.startsWith('ru');
+const formMessages = isRussianPage
+    ? {
+        success: 'Сообщение отправлено!',
+        error: 'Ошибка при отправке сообщения.',
+        network: 'Возникла проблема с соединением.'
+    }
+    : {
+        success: 'Wiadomość została wysłana!',
+        error: 'Błąd podczas wysyłania wiadomości.',
+        network: 'Wystąpił problem z połączeniem.'
+    };
 
 if (mainNav) {
     const stickyThreshold = mainNav.offsetTop;
 
     function handleScroll() {
         const currentScrollPos = window.scrollY;
+
         if (currentScrollPos > stickyThreshold) {
             if (!mainNav.classList.contains('sticky-nav')) {
                 mainNav.classList.add('sticky-nav');
@@ -20,43 +32,41 @@ if (mainNav) {
 
     window.addEventListener('scroll', handleScroll);
     handleScroll();
-
 } else {
-    console.error("No .main-nav on the page");
+    console.error('No .main-nav on the page');
 }
-
 
 //------------------------------------------
 
-
 const navLinks = document.querySelectorAll('.main-nav__item a');
 
-navLinks.forEach(link => {
+navLinks.forEach((link) => {
     link.addEventListener('click', function(event) {
         const href = this.getAttribute('href');
-        if (href.startsWith('tel:') || href.startsWith('mailto:')) {
+
+        if (!href || !href.startsWith('#')) {
             return;
         }
 
         event.preventDefault();
 
-        const targetId = this.getAttribute('href');
-
-        if (targetId !== '#' && targetId.startsWith('#')) {
-            const targetElement = document.querySelector(targetId);
-
-            if (targetElement) {
-                const mainNavHeight = mainNav ? mainNav.offsetHeight : 0;
-
-                const scrollToPosition = targetElement.offsetTop - mainNavHeight;
-                window.scrollTo({
-                    top: scrollToPosition,
-                    behavior: 'smooth'
-                });
-            }
-        } else if (targetId === '#') {
+        if (href === '#') {
             window.scrollTo({
                 top: 0,
+                behavior: 'smooth'
+            });
+
+            return;
+        }
+
+        const targetElement = document.querySelector(href);
+
+        if (targetElement) {
+            const mainNavHeight = mainNav ? mainNav.offsetHeight : 0;
+            const scrollToPosition = targetElement.offsetTop - mainNavHeight;
+
+            window.scrollTo({
+                top: scrollToPosition,
                 behavior: 'smooth'
             });
         }
@@ -65,18 +75,19 @@ navLinks.forEach(link => {
 
 //------------------------------------------
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', function() {
     const callLinks = document.querySelectorAll('.call-link');
 
     if (callLinks.length > 0) {
         const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
 
-        callLinks.forEach(callLink => {
+        callLinks.forEach((callLink) => {
             if (!isMobile) {
-                callLink.addEventListener('click', (e) => {
+                callLink.addEventListener('click', function(e) {
                     e.preventDefault();
 
                     const target = document.querySelector('#contact-info');
+
                     if (target) {
                         target.scrollIntoView({ behavior: 'smooth' });
                     } else {
@@ -110,41 +121,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
 //------------------------------------------
 
-document.querySelector('#main-form').addEventListener('submit', function (e) {
-    e.preventDefault();
+const mainForm = document.querySelector('#main-form');
 
-    const form = this;
-    const webhookUrl = 'https://hook.eu2.make.com/t7djoabppt6eo7yp6jgkp9rqcutdp02k';
+if (mainForm) {
+    mainForm.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-    const name = form.querySelector('[name="main-form-name"]').value.trim();
-    const email = form.querySelector('[name="main-form-email"]').value.trim();
-    const message = form.querySelector('[name="main-form-message"]').value.trim();
+        const form = this;
+        const webhookUrl = 'https://hook.eu2.make.com/t7djoabppt6eo7yp6jgkp9rqcutdp02k';
+        const name = form.querySelector('[name="main-form-name"]').value.trim();
+        const email = form.querySelector('[name="main-form-email"]').value.trim();
+        const message = form.querySelector('[name="main-form-message"]').value.trim();
+        const data = {
+            name: name,
+            email: email,
+            message: message
+        };
 
-    const data = {
-        name: name,
-        email: email,
-        message: message
-    };
-
-    fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    })
-        .then(res => {
-            if (res.ok) {
-                alert('Wiadomość została wysłana!');
-                form.reset();
-            } else {
-                alert('Błąd podczas wysyłania wiadomości.');
-            }
+        fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         })
-        .catch(err => {
-            console.error('Fetch error:', err);
-            alert('Wystąpił problem z połączeniem.');
-        });
-});
+            .then((res) => {
+                if (res.ok) {
+                    alert(formMessages.success);
+                    form.reset();
+                } else {
+                    alert(formMessages.error);
+                }
+            })
+            .catch((err) => {
+                console.error('Fetch error:', err);
+                alert(formMessages.network);
+            });
+    });
+} else {
+    console.warn('There is no form with "#main-form" id');
+}
 
