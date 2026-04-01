@@ -3,9 +3,9 @@ const pageLanguage = document.documentElement.lang.toLowerCase();
 const isRussianPage = pageLanguage.startsWith('ru');
 const formMessages = isRussianPage
     ? {
-        success: 'Сообщение отправлено!',
-        error: 'Ошибка при отправке сообщения.',
-        network: 'Возникла проблема с соединением.'
+        success: 'Заявка отправлена!',
+        error: 'Не удалось отправить заявку.',
+        network: 'Проверьте соединение и попробуйте снова.'
     }
     : {
         success: 'Wiadomość została wysłana!',
