@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet" href="../css/style.bca0aca8e0.css" />
+    <link rel="shortcut icon" type="image/png" href="../img/favicon.png" />
+
+    <title>Cookies | Alex TSI</title>
+    <style>
+      .legal-page {
+        min-height: calc(100vh - 10rem);
+        padding: 8rem 0 5rem;
+        background:
+          radial-gradient(circle at top left, rgba(250, 91, 15, 0.14), transparent 32%),
+          linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+      }
+
+      .legal-page__container {
+        width: min(100%, 110rem);
+        margin: 0 auto;
+        padding: 0 2.4rem;
+      }
+
+      .legal-page__back {
+        margin-bottom: 2.4rem;
+      }
+
+      .legal-page__back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: #fa5b0f;
+        font-size: 1.6rem;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .legal-page__card {
+        padding: 3.6rem;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        border-radius: 2.4rem;
+        background: #ffffff;
+        box-shadow: 0 2rem 4.5rem rgba(15, 23, 42, 0.08);
+      }
+
+      .legal-page__eyebrow {
+        margin-bottom: 1rem;
+        color: #fa5b0f;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .legal-page__title {
+        margin: 0;
+        color: #0f172a;
+        font-family: 'Josefin Sans', sans-serif;
+        font-size: clamp(3.4rem, 5vw, 5.2rem);
+        line-height: 1.1;
+      }
+
+      .legal-page__intro,
+      .legal-page__meta,
+      .legal-page__section p,
+      .legal-page__list li {
+        color: #334155;
+        font-size: 1.7rem;
+        line-height: 1.8;
+      }
+
+      .legal-page__intro {
+        margin: 2rem 0 1.6rem;
+      }
+
+      .legal-page__meta {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+
+      .legal-page__section {
+        margin-top: 3.2rem;
+        padding-top: 3.2rem;
+        border-top: 1px solid rgba(148, 163, 184, 0.22);
+      }
+
+      .legal-page__section h2 {
+        margin: 0 0 1.6rem;
+        color: #0f172a;
+        font-family: 'Josefin Sans', sans-serif;
+        font-size: 2.8rem;
+        line-height: 1.2;
+      }
+
+      .legal-page__section p {
+        margin: 0;
+      }
+
+      .legal-page__section p + p {
+        margin-top: 1.4rem;
+      }
+
+      .legal-page__list {
+        margin: 1.6rem 0 0;
+        padding-left: 2rem;
+      }
+
+      .legal-page__list li + li {
+        margin-top: 0.8rem;
+      }
+
+      .legal-page__notice {
+        margin-top: 1.6rem;
+        padding: 1.8rem 2rem;
+        border: 1px solid rgba(250, 91, 15, 0.2);
+        border-radius: 1.6rem;
+        background: rgba(250, 91, 15, 0.08);
+      }
+
+      .legal-page__notice p {
+        margin: 0;
+      }
+
+      .legal-page a:not(.legal-page__back-link) {
+        color: #fa5b0f;
+        text-decoration: none;
+      }
+
+      @media (max-width: 767px) {
+        .legal-page {
+          padding: 6rem 0 4rem;
+        }
+
+        .legal-page__card {
+          padding: 2.4rem;
+          border-radius: 2rem;
+        }
+
+        .legal-page__section h2 {
+          font-size: 2.3rem;
+        }
+
+        .legal-page__intro,
+        .legal-page__meta,
+        .legal-page__section p,
+        .legal-page__list li {
+          font-size: 1.6rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <section class="legal-page">
+        <div class="legal-page__container">
+          <div class="legal-page__back">
+            <a href="../index.html" class="legal-page__back-link">
+              <span>&larr;</span> Back to Main Site
+            </a>
+          </div>
+
+          <div class="legal-page__card">
+            <span class="legal-page__eyebrow">Legal</span>
+            <h1 class="legal-page__title">Cookie Notice</h1>
+            <p class="legal-page__intro">
+              This Cookie Notice explains how cookies and similar technologies
+              may be used on the Alex TSI website.
+            </p>
+            <p class="legal-page__meta">
+              <strong>Last updated:</strong> April 8, 2026
+            </p>
+
+            <section class="legal-page__section">
+              <h2>1. What this notice covers</h2>
+              <p>
+                This notice applies to cookies, pixels, local storage entries,
+                browser identifiers, and similar technologies used in connection
+                with this website, including analytics and performance
+                monitoring tools.
+              </p>
+            </section>
+
+            <section class="legal-page__section">
+              <h2>2. What cookies and similar technologies are</h2>
+              <p>
+                Cookies are small text files placed on your device when you
+                visit a website. Similar technologies may also store or read
+                information from your browser or device, or may rely on unique
+                identifiers generated through browser interactions.
+              </p>
+            </section>
+
+            <section class="legal-page__section">
+              <h2>3. Categories of technologies used on this website</h2>
+              <p>
+                The website may use the following categories of technologies:
+              </p>
+              <ul class="legal-page__list">
+                <li><strong>Strictly necessary technologies:</strong> used for core website operation, security, traffic management, consent storage, and reliable delivery of website functions.</li>
+                <li><strong>Analytics technologies:</strong> used to understand how visitors use the website, which pages are viewed, how users navigate, and how content performs. For this website, that includes Google Analytics 4.</li>
+                <li><strong>Performance and diagnostics technologies:</strong> used to measure availability, investigate technical errors, analyze browser-side performance, and maintain service reliability. For this website, that includes New Relic browser monitoring. Server-side APM may also process request and performance data without storing cookies on your device.</li>
+              </ul>
+            </section>
+
+            <section class="legal-page__section">
+              <h2>4. Consent model</h2>
+              <p>
+                This website is intended to use a consent-first model for
+                non-essential technologies. Analytics and browser monitoring
+                technologies should not be activated until the relevant consent
+                choice has been made through the website's consent mechanism.
+              </p>
+              <p>
+                Strictly necessary technologies may still be used without prior
+                consent where permitted by applicable law because they support
+                core website operation, security, or storage of your consent
+                choice.
+              </p>
+            </section>
+
+            <section class="legal-page__section">
+              <h2>5. How these technologies may be used</h2>
+              <p>
+                The website may use cookies and similar technologies to:
+              </p>
+              <ul class="legal-page__list">
+                <li>remember your consent choices;</li>
+                <li>maintain secure and stable website operation;</li>
+                <li>measure website traffic and engagement trends;</li>
+                <li>identify broken pages, performance issues, and browser errors;</li>
+                <li>improve content, navigation, and technical reliability.</li>
+              </ul>
+            </section>
+
+            <section class="legal-page__section">
+              <h2>6. Managing your preferences</h2>
+              <p>
+                You can manage your preferences through the website's consent
+                banner or equivalent consent control made available on the
+                website. You may also restrict or delete cookies through your
+                browser settings, although doing so may affect certain website
+                functions.
+              </p>
+              <p>
+                If you withdraw consent, non-essential analytics and browser
+                monitoring should stop loading for future interactions once your
+                updated choice has been applied.
+              </p>
+            </section>
+
+            <section class="legal-page__section">
+              <h2>7. Third-party processing and international access</h2>
+              <p>
+                Analytics and monitoring technologies may involve third-party
+                service providers that process device, usage, diagnostics, or
+                performance information. Some of these providers or their
+                sub-processors may operate outside the European Economic Area.
+                Where required, appropriate safeguards are intended to be used
+                under applicable law.
+              </p>
+            </section>
+
+            <section class="legal-page__section">
+              <h2>8. Technical details</h2>
+              <p>
+                The exact technical names, storage periods, and implementation
+                details of cookies or similar identifiers may change over time
+                as the website, analytics setup, consent settings, and
+                monitoring tools are updated.
+              </p>
+              <div class="legal-page__notice">
+                <p>
+                  This notice describes the categories and purposes of
+                  technologies used on the website. It does not promise that a
+                  specific cookie name, lifespan, or provider configuration will
+                  remain unchanged.
+                </p>
+              </div>
+            </section>
+
+            <section class="legal-page__section">
+              <h2>9. More information</h2>
+              <p>
+                For more information about how personal data is processed, see
+                the <a href="../privacy/">Privacy Policy</a>. Questions about
+                this notice may be sent to
+                <a href="mailto:alex.tsi.dev@gmail.com">alex.tsi.dev@gmail.com</a>.
+              </p>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__container">
+        <div class="footer__inner">
+          <div class="footer__top">
+            <div class="footer__logo">
+              <img src="../img/logo/logo-light.svg" alt="Alex TSI" />
+            </div>
+            <div class="footer__social">
+              <span class="footer__social-label">Connect</span>
+              <ul class="footer__social-list">
+                <li class="footer__social-item">
+                  <a href="#" class="footer__social-link">
+                    <i class="fa-brands fa-github"></i>
+                  </a>
+                </li>
+                <li class="footer__social-item">
+                  <a href="#" class="footer__social-link">
+                    <i class="fa-brands fa-linkedin"></i>
+                  </a>
+                </li>
+                <li class="footer__social-item">
+                  <a href="#" class="footer__social-link">
+                    <i class="fa-brands fa-youtube"></i>
+                  </a>
+                </li>
+                <li class="footer__social-item">
+                  <a href="#" class="footer__social-link">
+                    <i class="fa-brands fa-telegram"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer__bottom">
+            <div class="footer__links">
+              <ul class="footer__links-list">
+                <li><a class="line-anim" href="../terms/">Terms of Use</a></li>
+                <li><a class="line-anim" href="../privacy/">Privacy Policy</a></li>
+                <li><a class="line-anim" href="../cookies/">Cookies</a></li>
+                <li><a class="line-anim" href="../support/">Support</a></li>
+              </ul>
+            </div>
+            <span class="footer__border moving_effect" data-direction="y" data-reverse="yes"></span>
+          </div>
+          <div class="footer__divider"></div>
+          <div class="footer__copyright">
+            <p>&copy; 2015-2026 Alex TSI. All rights reserved</p>
+          </div>
+          <span class="footer__totop moving_effect" data-direction="x">
+            <a class="footer__totop-link" href="#">
+              <i class="fa-solid fa-chevron-up"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+  </body>
+</html>
