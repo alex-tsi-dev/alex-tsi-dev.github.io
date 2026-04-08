@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../css/style.bca0aca8e0.css" />
+    <link rel="shortcut icon" type="image/png" href="../../img/favicon.png" />
+
+    <title>ConfigureAwait(false) in .NET: Does It Really Boost Performance? | Alex TSI Blog</title>
+    <style>
+      .cursor-spotlight {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        transition: background 0.1s ease-out;
+      }
+
+      @media (max-width: 1024px) {
+        .cursor-spotlight {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="portfolio-page-body">
+    <div id="cursor-spotlight" class="cursor-spotlight"></div>
+    <main>
+      <div class="portfolio-page">
+        <div class="portfolio-page__wrapper">
+          <div class="portfolio-page__back">
+            <a href="../../blog/" class="portfolio-page__back-link">
+              <span>&larr;</span> Back to All Articles
+            </a>
+          </div>
+          <div class="portfolio-page__wrapper-inner">
+            <aside class="portfolio-page__sidebar">
+              <div class="portfolio-page__sidebar-content">
+                <h1 class="portfolio-page__name-title">
+                  <a href="../../blog/">Blog</a>
+                </h1>
+                <h2 class="portfolio-page__name-subtitle">
+                  ConfigureAwait(false) in .NET
+                </h2>
+
+                <div class="toc">
+                  <div class="toc__title">Table of Contents</div>
+                  <ul class="toc__list">
+                    <li class="toc__item">
+                      <a href="#introduction" class="toc__link">Introduction</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#what-is-configureawait" class="toc__link">What is ConfigureAwait(false)?</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#simple-scenario" class="toc__link">Simple Scenario</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#complex-scenario" class="toc__link">Complex Scenario</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#performance-measurement" class="toc__link">Performance Measurement</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#key-findings" class="toc__link">Key Findings</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#conclusion" class="toc__link">Conclusion</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <ul class="portfolio-page__socials" aria-label="Social media">
+                <li class="portfolio-page__socials-item">
+                  <a
+                    href="https://www.linkedin.com/in/alex-tsi/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="LinkedIn (opens in a new tab)"
+                    title="LinkedIn"
+                    class="portfolio-page__socials-link"
+                  >
+                    <svg
+                      class="portfolio-page__socials-icon"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                      />
+                    </svg>
+                  </a>
+                </li>
+                <li class="portfolio-page__socials-item">
+                  <a
+                    href="https://github.com/devalex-tsi"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="GitHub (opens in a new tab)"
+                    title="GitHub"
+                    class="portfolio-page__socials-link"
+                  >
+                    <svg
+                      class="portfolio-page__socials-icon"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                      />
+                    </svg>
+                  </a>
+                </li>
+                <li class="portfolio-page__socials-item">
+                  <a
+                    href="https://www.youtube.com/@DevStoriesAndTutorials"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="YouTube (opens in a new tab)"
+                    title="YouTube"
+                    class="portfolio-page__socials-link"
+                  >
+                    <svg
+                      class="portfolio-page__socials-icon"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+                      />
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </aside>
+
+            <div id="content" class="portfolio-page__main">
+              <article class="article">
+                <header class="article__header">
+                  <h1 class="article__title">ConfigureAwait(false) in .NET: Does It Really Boost Performance?</h1>
+
+                  <div class="article__meta">
+                    <span class="article__meta-item">Oct 21, 2024</span>
+                    <span class="article__meta-item">&bull;</span>
+                    <span class="article__meta-item">10 min read</span>
+                    <span class="article__meta-item">&bull;</span>
+                    <div class="article__tags">
+                      <span class="article__tag">C#</span>
+                      <span class="article__tag">.NET</span>
+                      <span class="article__tag">Async</span>
+                    </div>
+                  </div>
+
+                  <div class="article__featured-image">
+                    <img src="configure-await.png" alt="ConfigureAwait(false) in .NET async performance comparison" />
+                  </div>
+                </header>
+
+                <div class="article__content">
+                  <h2 id="introduction">Introduction</h2>
+
+                  <p>
+                    If you've been working with async/await in .NET, you've probably come across the recommendation to use <code>ConfigureAwait(false)</code> in library code and non-UI applications. But does it actually make a measurable difference? I decided to put it to the test with a hands-on experiment.
+                  </p>
+
+                  <p>
+                    The full source code for this experiment is available in my GitHub repository:
+                    <a href="https://github.com/devalex-tsi/ConfigureAwait" target="_blank" rel="noreferrer noopener">devalex-tsi/ConfigureAwait</a>. Feel free to clone it, run the benchmarks yourself, and see the results on your own machine.
+                  </p>
+
+                  <p>
+                    This article walks through what <code>ConfigureAwait(false)</code> does under the hood, how I structured the experiment, and what surprising results came out of it.
+                  </p>
+
+                  <h2 id="what-is-configureawait">What is ConfigureAwait(false)?</h2>
+
+                  <p>
+                    When you <code>await</code> a task in C#, the runtime captures the current <strong>SynchronizationContext</strong> (or <strong>TaskScheduler</strong>) and uses it to resume execution after the awaited operation completes. In UI applications (WPF, WinForms), this means the continuation runs on the UI thread. In ASP.NET (classic), it resumes on the original request context.
+                  </p>
+
+                  <p>
+                    By calling <code>ConfigureAwait(false)</code>, you tell the runtime: "I don't need to come back to the original context." This allows the continuation to run on any available thread pool thread, which can theoretically reduce overhead and improve throughput.
+                  </p>
+
+                  <blockquote>
+                    <p>
+                      In console applications and ASP.NET Core there is no SynchronizationContext by default. So the question becomes: does ConfigureAwait(false) still make any difference when there's no context to capture?
+                    </p>
+                  </blockquote>
+
+                  <p>
+                    For a deeper dive into the mechanics, I recommend reading the official
+                    <a href="https://devblogs.microsoft.com/dotnet/configureawait-faq/" target="_blank" rel="noreferrer noopener">ConfigureAwait FAQ</a> by Stephen Toub from the .NET team.
+                  </p>
+
+                  <h2 id="simple-scenario">Simple Scenario</h2>
+
+                  <p>
+                    The first test compares a basic HTTP GET request with and without <code>ConfigureAwait(false)</code>. This is the simplest possible async operation — a single network call.
+                  </p>
+
+                  <p>
+                    Without <code>ConfigureAwait(false)</code>:
+                  </p>
+
+<pre><code>static async Task DownloadWithoutConfigureAwait()
+{
+    var content = await httpClient.GetStringAsync("https://example.com");
+}</code></pre>
+
+                  <p>
+                    With <code>ConfigureAwait(false)</code>:
+                  </p>
+
+<pre><code>static async Task DownloadWithConfigureAwait()
+{
+    var content = await httpClient.GetStringAsync("https://example.com")
+        .ConfigureAwait(false);
+}</code></pre>
+
+                  <p>
+                    Both methods do exactly the same thing — download a page from example.com. The only difference is the <code>.ConfigureAwait(false)</code> call. You can find both methods in
+                    <a href="https://github.com/devalex-tsi/ConfigureAwait/blob/master/ConfigureAwait/Program.cs" target="_blank" rel="noreferrer noopener">Program.cs</a> on GitHub.
+                  </p>
+
+                  <h2 id="complex-scenario">Complex Scenario</h2>
+
+                  <p>
+                    The second test adds more work: downloading HTML from multiple URLs and parsing it using the <strong>HtmlAgilityPack</strong> library. This simulates a real-world scenario where your async code does more than just I/O.
+                  </p>
+
+                  <p>
+                    Without <code>ConfigureAwait(false)</code>:
+                  </p>
+
+<pre><code>static async Task DownloadAndParseWithoutConfigureAwait(string[] urls)
+{
+    foreach (var url in urls)
+    {
+        var content = await httpClient.GetStringAsync(url);
+        var document = new HtmlDocument();
+        document.LoadHtml(content);
+
+        var titleNode = document.DocumentNode
+            .SelectSingleNode("//title");
+        var title = titleNode?.InnerText;
+        await Task.Delay(10);
+    }
+}</code></pre>
+
+                  <p>
+                    With <code>ConfigureAwait(false)</code>:
+                  </p>
+
+<pre><code>static async Task DownloadAndParseWithConfigureAwait(string[] urls)
+{
+    foreach (var url in urls)
+    {
+        var content = await httpClient.GetStringAsync(url)
+            .ConfigureAwait(false);
+        var document = new HtmlDocument();
+        document.LoadHtml(content);
+
+        var titleNode = document.DocumentNode
+            .SelectSingleNode("//title");
+        var title = titleNode?.InnerText;
+        await Task.Delay(10).ConfigureAwait(false);
+    }
+}</code></pre>
+
+                  <p>
+                    The URLs used in this experiment were <code>https://www.wikipedia.org</code> and <code>https://www.github.com</code> — real-world pages with substantial HTML content.
+                  </p>
+
+                  <h2 id="performance-measurement">Performance Measurement</h2>
+
+                  <p>
+                    To get reliable numbers, each method was executed <strong>1,000 iterations</strong> across <strong>10 parallel tasks</strong>. The measurement logic uses <code>Stopwatch</code> for precise timing:
+                  </p>
+
+<pre><code>static async Task&lt;long&gt; MeasurePerformance(
+    Func&lt;Task&gt; asyncMethod, int iterations, int parallelTasks)
+{
+    var stopwatch = new Stopwatch();
+    stopwatch.Start();
+
+    for (int i = 0; i &lt; iterations / parallelTasks; i++)
+    {
+        var tasks = new Task[parallelTasks];
+        for (int j = 0; j &lt; parallelTasks; j++)
+        {
+            tasks[j] = asyncMethod();
+        }
+        await Task.WhenAll(tasks);
+    }
+
+    stopwatch.Stop();
+    return stopwatch.ElapsedMilliseconds;
+}</code></pre>
+
+                  <p>
+                    This approach ensures we measure not just individual call performance but also how methods behave under concurrent load. The full benchmark harness is in the
+                    <a href="https://github.com/devalex-tsi/ConfigureAwait" target="_blank" rel="noreferrer noopener">GitHub repository</a>.
+                  </p>
+
+                  <h2 id="key-findings">Key Findings</h2>
+
+                  <p>
+                    The results were quite surprising:
+                  </p>
+
+                  <blockquote>
+                    <p>
+                      In simple HTTP request scenarios, ConfigureAwait(false) showed no significant performance improvement. In some runs, it was actually slightly slower.
+                    </p>
+                  </blockquote>
+
+                  <ul>
+                    <li>
+                      <strong>Simple methods:</strong> Using <code>ConfigureAwait(false)</code> with basic HTTP requests actually showed a slight performance drop in some runs. In a console application with no <code>SynchronizationContext</code>, the overhead of forcing continuation to a different thread pool thread can outweigh any benefits.
+                    </li>
+                    <li>
+                      <strong>Complex methods with parallelism:</strong> The performance difference was noticeable but still relatively small. Network I/O and HTML parsing dominated execution time, making context-switching overhead negligible.
+                    </li>
+                    <li>
+                      <strong>Multithreaded environments:</strong> <code>ConfigureAwait(false)</code> shines most in server-side applications with a real <code>SynchronizationContext</code>, where returning to the original context after every <code>await</code> creates a bottleneck.
+                    </li>
+                  </ul>
+
+                  <p>
+                    The key takeaway is that <code>ConfigureAwait(false)</code> is not a magic performance switch. Its impact depends heavily on the execution context and the nature of the workload:
+                  </p>
+
+                  <ul>
+                    <li>
+                      In <strong>console apps</strong> and <strong>ASP.NET Core</strong> (no <code>SynchronizationContext</code>), the benefit is minimal.
+                    </li>
+                    <li>
+                      In <strong>classic ASP.NET</strong> or <strong>UI applications</strong> with a <code>SynchronizationContext</code>, it can prevent thread starvation and improve throughput.
+                    </li>
+                    <li>
+                      In <strong>library code</strong>, it remains a best practice to use <code>ConfigureAwait(false)</code> because you don't know the caller's context.
+                    </li>
+                  </ul>
+
+                  <h2 id="conclusion">Conclusion</h2>
+
+                  <p>
+                    This experiment demonstrates that while <code>ConfigureAwait(false)</code> is generally recommended for non-UI code, you won't always see a dramatic performance improvement. The real benefit comes in environments where capturing and restoring the synchronization context is expensive.
+                  </p>
+
+                  <p>
+                    My recommendation: use <code>ConfigureAwait(false)</code> in library code and shared utilities — it's a good habit. But don't expect it to be a silver bullet for performance optimization. Profile your application, measure actual throughput, and focus on the real bottlenecks.
+                  </p>
+
+                  <p>
+                    Want to run the benchmarks yourself? Clone the repository and try it out:
+                    <a href="https://github.com/devalex-tsi/ConfigureAwait" target="_blank" rel="noreferrer noopener">github.com/devalex-tsi/ConfigureAwait</a>
+                  </p>
+                </div>
+
+                <div class="article__navigation">
+                  <a href="../programmers-lifehacks/programmers-lifehacks.html" class="article__nav-link" style="text-align: right; align-items: flex-end; margin-left: auto;">
+                    <span class="article__nav-label">Next Article</span>
+                    <span class="article__nav-title">Programmer's Lifehacks</span>
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../../js/main.js"></script>
+    <script>
+      const spotlight = document.getElementById('cursor-spotlight');
+      if (spotlight) {
+        window.addEventListener('mousemove', (e) => {
+          if (window.innerWidth < 1024) return;
+          const x = e.clientX;
+          const y = e.clientY;
+          spotlight.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(250, 91, 15, 0.06), transparent 80%)`;
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,332 +1,826 @@
-<!DOCTYPE html>
-<html lang="pl-PL">
+<!doctype html>
+<html lang="en">
+
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BZZVT87NX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        gtag('config', 'G-6BZZVT87NX');
-    </script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/vendor/animate.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.bca0aca8e0.css" />
+  <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ghost Garage — wymiana i naprawa szyb samochodowych, polerowanie szyb, detailing, tapicerstwo. Płońsk i Warszawa. Szybko i niedrogo.">
-    <meta name="robots" content="index,follow">
-    <meta name="theme-color" content="#f90000">
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://www.szybyserwis.pl/">
-    <link rel="alternate" hreflang="pl-PL" href="https://www.szybyserwis.pl/">
-    <link rel="alternate" hreflang="ru-RU" href="https://www.szybyserwis.pl/ru/">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-    <link rel="preload" as="image" href="/img/background-hero.jfif" imagesrcset="">
-
-    <!-- Open Graph -->
-    <meta property="og:locale" content="pl_PL">
-    <meta property="og:site_name" content="Ghost Garage">
-    <meta property="og:title" content="Wymiana i naprawa szyb samochodowych — Ghost Garage">
-    <meta property="og:description" content="Wymiana i naprawa szyb, polerowanie, detailing i tapicerstwo. Płońsk i Warszawa.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.szybyserwis.pl/">
-    <meta property="og:image" content="https://www.szybyserwis.pl/img/background-hero.jfif">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Wymiana i naprawa szyb samochodowych — Ghost Garage">
-    <meta name="twitter:description" content="Wymiana i naprawa szyb, polerowanie, detailing i tapicerstwo. Płońsk i Warszawa.">
-    <meta name="twitter:image" content="https://www.szybyserwis.pl/img/background-hero.jfif">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "AutoRepair",
-      "name": "Ghost Garage",
-      "url": "https://www.szybyserwis.pl/",
-      "inLanguage": "pl-PL",
-      "telephone": "+48 691 206 324",
-      "email": "007g.garage@gmail.com",
-      "address": [
-        {
-          "@type": "PostalAddress",
-          "streetAddress": "ul. Skladowa 16",
-          "postalCode": "09-100",
-          "addressLocality": "Płońsk",
-          "addressCountry": "PL"
-        },
-        {
-          "@type": "PostalAddress",
-          "streetAddress": "ul. Lidzka 5",
-          "postalCode": "03-523",
-          "addressLocality": "Warszawa",
-          "addressCountry": "PL"
-        }
-      ],
-      "areaServed": ["Płońsk", "Warszawa"],
-      "sameAs": [
-        "https://www.instagram.com/ghost._garage/profilecard/?igsh=MWlyNnpkODA5bHNycA==",
-        "https://t.me/Ellias_Han",
-        "https://www.facebook.com/share/15rpvCH85b/",
-        "https://www.youtube.com/@frodobegins",
-        "https://www.tiktok.com/@ghostgarage.pl?_t=ZN-8wT8ceUJM86&_r=1"
-      ],
-      "image": "https://www.szybyserwis.pl/img/background-hero.jfif",
-      "priceRange": "PLN"
-    }
-    </script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-          rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-          integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" href="/css/icons/styles.css">
-    <link rel="stylesheet" href="/css/style.290843486e.css">
-    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
-
-    <title>Wymiana i naprawa szyb samochodowych | Szybko i niedrogo</title>
+  <title>Alex TSI | Creative Developer &amp; DevOps</title>
 </head>
+
 <body>
-<section class="background-section">
-    <div class="background-section__image"></div>
-</section>
-
-<nav class="main-nav">
-    <div class="container">
-        <div class="main-nav__layout">
-            <div class="main-nav__left-items">
-                <div class="main-nav__item"><a href="#">STRONA GŁÓWNA</a></div>
-                <div class="main-nav__item"><a href="#services">USŁUGI</a></div>
-            </div>
-
-            <div class="main-nav__item main-nav__logo">
-                <a href="#">Ghost Garage</a>
-            </div>
-
-            <div class="main-nav__right-items">
-                <div class="main-nav__item"><a href="tel:+48691206324" class="call-link">ZADZWOŃ</a></div>
-                <div class="main-nav__item"><a href="#offer">O NAS</a></div>
-                <div class="main-nav__item main-nav__item--languages">
-                    <a href="/" class="is-active" lang="pl">PL</a>
-                    <span>/</span>
-                    <a href="/ru/" lang="ru">RU</a>
-                </div>
-            </div>
-        </div>
+  <header class="header" id="header">
+    <div class="header__container">
+      <div class="header__logo">
+        <a href="#home">
+          <img src="img/logo/logo-light.svg" alt="Alex TSI" class="header__logo-light" />
+          <img src="img/logo/logo-dark.svg" alt="Alex TSI" class="header__logo-dark" />
+        </a>
+      </div>
+      <nav class="header__nav">
+        <ul class="header__menu">
+          <li class="header__menu-item">
+            <a href="#home" class="header__menu-link header__menu-link--active">Home</a>
+          </li>
+          <li class="header__menu-item">
+            <a href="#about" class="header__menu-link">About</a>
+          </li>
+          <li class="header__menu-item">
+            <a href="#skills" class="header__menu-link">My Skills</a>
+          </li>
+          <li class="header__menu-item">
+            <a href="#portfolio" class="header__menu-link">Portfolio</a>
+          </li>
+          <li class="header__menu-item">
+            <a href="#background" class="header__menu-link">Background</a>
+          </li>
+          <li class="header__menu-item">
+            <a href="#blog" class="header__menu-link">Blog</a>
+          </li>
+          <li class="header__menu-item">
+            <a href="#contact" class="header__menu-link">Contact</a>
+          </li>
+        </ul>
+      </nav>
     </div>
-</nav>
+  </header>
 
-<header class="site-header">
-    <div class="site-header__content">
-        <h2>TEST TOKEN</h2>
-        <h1>Ghost Garage</h1>
-        <div class="services-list">
-            <p>WYMIANA AUTOSZYB</p>
-            <p>POLEROWANIE SZYB SAMOCHODOWYCH POLEROWANIE SZKLA</p>
-            <p>(zegarki, szkło przemysłowe, akwaria, płyty grzewcze)</p>
-            <p>NAPRAWA ODPRYSKÓW</p>
-            <p>ZABEZPIECZENIE SZYBY FOLIĄ PPF</p>
-            <a href="tel:+48691206324" class="button header-call-button call-link">ZADZWOŃ</a>
+  <main>
+    <section id="home" class="hero">
+      <div class="hero__container">
+        <div class="hero__inner">
+          <div class="hero__content">
+            <span class="hero__hello">Hello, I'm</span>
+            <h1 class="hero__name">Alex</h1>
+            <div class="hero__job">
+              <span class="hero__job-text hero__job-animated hero__job-animated--rotate">
+                <span class="hero__job-static">Creative</span>
+                <span class="hero__job-words">
+                  <b class="is-visible">Developer</b>
+                  <b>DevOps</b>
+                  <b>Engineer</b>
+                </span>
+              </span>
+            </div>
+            <div class="hero__buttons">
+              <a href="#contact" class="hero__button hero__button--primary">Say Hello</a>
+              <a href="#about" class="hero__button hero__button--secondary">About Me</a>
+            </div>
+          </div>
+          <div class="hero__avatar parallax" data-relative-input="true">
+            <div class="hero__avatar-main layer" data-depth="0.05">
+              <img src="img/hero/alex-left.png" alt="Alex TSI" class="hero__avatar-image" />
+            </div>
+            <!-- Technology Icons with Parallax -->
+            <span class="hero__icon hero__icon--csharp layer" data-depth="0.21">
+              <span class="hero__icon-inner">
+                <img src="img/icons/csharp.svg" alt="C#" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--dotnet layer" data-depth="0.25">
+              <span class="hero__icon-inner">
+                <img src="img/icons/dotnet.svg" alt=".NET" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--kubernetes layer" data-depth="0.20">
+              <span class="hero__icon-inner">
+                <img src="img/icons/kubernetes.svg" alt="Kubernetes" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--docker layer" data-depth="0.17">
+              <span class="hero__icon-inner">
+                <img src="img/icons/docker.svg" alt="Docker" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--azure layer" data-depth="0.19">
+              <span class="hero__icon-inner">
+                <img src="img/icons/azure.svg" alt="Azure" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--aws layer" data-depth="0.16">
+              <span class="hero__icon-inner">
+                <img src="img/icons/aws.svg" alt="AWS" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--redis layer" data-depth="0.19">
+              <span class="hero__icon-inner">
+                <img src="img/icons/redis.svg" alt="Redis" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--kafka layer" data-depth="0.12">
+              <span class="hero__icon-inner">
+                <img src="img/icons/kafka.svg" alt="Kafka" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--sql layer" data-depth="0.13">
+              <span class="hero__icon-inner">
+                <img src="img/icons/sql.svg" alt="SQL" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--rabbitmq layer" data-depth="0.12">
+              <span class="hero__icon-inner">
+                <img src="img/icons/rabbitmq.svg" alt="RabbitMQ" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--react layer" data-depth="0.17">
+              <span class="hero__icon-inner">
+                <img src="img/icons/react.svg" alt="React" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--javascript layer" data-depth="0.10">
+              <span class="hero__icon-inner">
+                <img src="img/icons/javascript.svg" alt="JavaScript" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--azuredevops layer" data-depth="0.23">
+              <span class="hero__icon-inner">
+                <img src="img/icons/azuredevops.svg" alt="Azure DevOps" class="hero__icon-svg" />
+              </span>
+            </span>
+            <span class="hero__icon hero__icon--devops layer" data-depth="0.2">
+              <span class="hero__icon-inner">
+                <img src="img/icons/Devops.svg" alt="DevOps" class="hero__icon-svg" />
+              </span>
+            </span>
+            <h3 class="hero__stroke-text">
+              <span>TSI</span>
+            </h3>
+          </div>
+          <div class="hero__socials">
+            <ul class="hero__socials-list">
+              <li class="hero__socials-item">
+                <a href="https://www.linkedin.com/in/alex-tsi/" target="_blank" rel="noopener noreferrer"
+                  aria-label="LinkedIn (opens in a new tab)" title="LinkedIn" class="hero__socials-link">
+                  <svg class="hero__socials-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <path fill="currentColor"
+                      d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                  </svg>
+                </a>
+              </li>
+              <li class="hero__socials-item">
+                <a href="https://github.com/devalex-tsi" target="_blank" rel="noopener noreferrer"
+                  aria-label="GitHub (opens in a new tab)" title="GitHub" class="hero__socials-link">
+                  <svg class="hero__socials-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <path fill="currentColor"
+                      d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                  </svg>
+                </a>
+              </li>
+              <li class="hero__socials-item">
+                <a href="https://www.youtube.com/@DevStoriesAndTutorials" target="_blank" rel="noopener noreferrer"
+                  aria-label="YouTube (opens in a new tab)" title="YouTube" class="hero__socials-link">
+                  <svg class="hero__socials-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <path fill="currentColor"
+                      d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="hero__mail">
+            <a href="#contact" class="hero__mail-link line-anim">alex.tsi.dev@gmail.com</a>
+          </div>
         </div>
-    </div>
-</header>
-
-<main>
-    <div class="main-container">
-        <section class="services" id="services">
-            <div class="services__content">
-                <h2>Usługi które świadczymy</h2>
-                <p>Witamy w naszym studio samochodowym. </p>
-                <p>Motoryzacja jest naszą pasją i jesteśmy gotowy podjąć każde wyzwanie
-                    w naprawie lub tuningu samochodów.</p>
-            </div>
-        </section>
-
-        <section class="content-block">
-            <div class="content-block__media">
-                <div class="content-block__photo content-block__photo--auto-glass"></div>
-            </div>
-            <div class="content-block__content">
-                <h3>AUTOSZYBY</h3>
-                <div class="content-block__items">
-                    <p>WYMIANA SZYB SAMOCHODOWYCH (przednie / boczne / tylne)</p>
-                    <p>Wymiana szyb w pojazdach ciężarowych i maszynach rolniczych</p>
-                    <p>Wymiana z dojazdem do klienta</p>
-                    <p>Naprawa odprysków</p>
-                </div>
-                <button class="contact-button">Kontakt</button>
-            </div>
-        </section>
-
-        <section class="content-block content-block--reversed">
-            <div class="content-block__media">
-                <div class="content-block__photo content-block__photo--upholstery"></div>
-            </div>
-            <div class="content-block__content">
-                <h3>TAPICERSTWO</h3>
-                <div class="content-block__items">
-                    <p>-zmiana tkaniny sufitu</p>
-                    <p>-naprawa po strzału airbagu</p>
-                    <p>-obszycie kierownicy</p>
-                    <p>-gwiazdkowe niebo</p>
-                </div>
-                <button class="contact-button">Kontakt</button>
-            </div>
-        </section>
-
-        <section class="content-block">
-            <div class="content-block__media">
-                <div class="content-block__photo content-block__photo--detailing"></div>
-            </div>
-            <div class="content-block__content">
-                <h3>DETAILING</h3>
-                <div class="content-block__items">
-                    <p>-czyszczenie tapicerki</p>
-                    <p>-mycie nadwozia i silnika</p>
-                    <p>-polerowanie/korektę lakieru</p>
-                    <p>-polerowanie szyb</p>
-                    <p>-powłoki ceramiczny</p>
-                    <p>-polerowanie lamp</p>
-                    <p>-oklejanie samochodów</p>
-                    <p>-oklejanie foliami ppf</p>
-                    <p>-zmiana koloru</p>
-                    <p>-przyciemniane szyb</p>
-                </div>
-                <button class="contact-button">Kontakt</button>
-            </div>
-        </section>
-    </div>
-
-    <section class="offer" id="offer">
-        <div class="container">
-            <h2 class="offer__heading">CO OFERUJEMY</h2>
-            <p class="offer__subtitle">Gwarantujemy wysoką jakość i szybką realizację świadczonych usług.</p>
-
-            <div class="offer__items">
-                <div class="offer__item">
-                    <i class="offer__item-icon icon-basic-clock"></i>
-                    <div class="offer__item-content">
-                        <h4 class="offer__item-title">SZYBKA REALIZACJA</h4>
-                        <p class="offer__item-description">Podaj model auta lub vin samochodu, a my natychmiast
-                            policzymy koszt wymiany lub naprawy szyby i umówimy dogodny termin realizacji.</p>
-                    </div>
-                </div>
-
-                <div class="offer__item">
-                    <i class="offer__item-icon icon-basic-geolocalize-05"></i>
-                    <div class="offer__item-content">
-                        <h4 class="offer__item-title">WYMIANA Z DOJAZDEM</h4>
-                        <p class="offer__item-description">Nie musisz tracić czasu na wizytę w
-                            warsztacie,wyjeżdżamy
-                            pod dowolny adres lub miejsce pracy. Ekspresowa wymiana,niektóre modele wymieniamy w pół
-                            godziny.</p>
-                    </div>
-                </div>
-
-                <div class="offer__item">
-                    <i class="offer__item-icon icon-basic-settings"></i>
-                    <div class="offer__item-content">
-                        <h4 class="offer__item-title">USŁUGI NA NAJWYŻSZYM POZIOMIE</h4>
-                        <p class="offer__item-description">Doświadczenie we współpracy z głównymi dostawcami
-                            szyb i
-                            materiałów samochodowych gwarantuje wysoką jakość usług. Nasze pracowniki mają wieloletnie
-                            doświadczenie w montażu, naprawie i polerowaniu szyb samochodowych.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="offer__video">
-                <div class="offer__video-wrapper">
-                    <video autoplay muted loop playsinline>
-                        <source src="/img/ghost-garage.mp4" type="video/mp4">
-                        Twoja przeglądarka nie obsługuje elementu video.
-                    </video>
-                    <div class="offer__video-overlay"></div>
-                </div>
-            </div>
-        </div>
+      </div>
     </section>
-
-    <section class="contact-form" id="contact-form">
-        <div class="container">
-            <h2 class="contact-form__heading">Skonsultuj się z naszymi specjalistami</h2>
-            <p class="contact-form__subtitle">
-                Nie wiesz czy twoja szybka nadaje się do naprawy lub wymiany?
-            </p>
-            <p class="contact-form__subtitle contact-form__subtitle--last">
-                Skontaktuj się z nami, aby uzyskać bezpłatną konsultację i indywidualną ofertę.
-                Odpowiemy na pytania i udzielimy fachowej porady.
-            </p>
-
-            <form class="contact-form__form" id="main-form">
-                <div class="contact-form__row">
-                    <input type="text" name="main-form-name" placeholder="Jak masz na imię?" required>
-                    <input type="email" name="main-form-email" placeholder="Twój email" required>
+    <section id="about" class="about">
+      <div class="about__container">
+        <div class="about__inner">
+          <div class="about__left">
+            <div class="about__image">
+              <div class="about__image-main"></div>
+              <span class="about__square about__square--left moving_effect" data-direction="y"
+                data-reverse="yes"></span>
+              <span class="about__border about__border--left">
+                <span class="about__border-inner moving_effect" data-direction="x" data-reverse="yes"></span>
+              </span>
+            </div>
+          </div>
+          <div class="about__center">
+            <div class="about__title">
+              <span class="about__small">About Me</span>
+              <h3 class="about__heading">
+                I'm <span class="about__heading-accent">Alex</span>
+              </h3>
+              <h3 class="about__heading">
+                Creative
+                <span class="about__heading-accent">Software Engineer</span>
+              </h3>
+              <span class="about__subtitle">Based in Poland</span>
+            </div>
+            <div class="about__text">
+              <p>
+                Hi, I am Alex. I work on end to end software development:
+                backend logic, frontend user experiences, integrations, and
+                cloud infrastructure.
+              </p>
+              <p>
+                My goal is to deliver solutions that are stable, scalable, and
+                easy to evolve.
+              </p>
+            </div>
+            <div class="about__button">
+              <a href="#skills" class="about__button-link">
+                <i></i>
+                <span>Explore My Skills</span>
+              </a>
+            </div>
+          </div>
+          <div class="about__right">
+            <div class="about__image">
+              <div class="about__image-main about__image-main--right"></div>
+              <div class="about__square about__square--right moving_effect" data-direction="x" data-reverse="no"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="skills" class="skills">
+      <div class="skills__container">
+        <div class="skills__inner">
+          <div class="skills__top">
+            <div class="skills__left">
+              <div class="skills__title">
+                <span class="skills__small">My Skills</span>
+                <h3 class="skills__heading">
+                  You Can Imagine<br />
+                  I Can Do
+                </h3>
+                <p class="skills__text">
+                  I work across the full stack, delivering backend systems,
+                  frontend applications, integrations, and cloud based
+                  solutions.
+                </p>
+                <p class="skills__text">
+                  My focus is on building stable, scalable, and maintainable
+                  products.
+                </p>
+              </div>
+            </div>
+            <div class="skills__right">
+              <!-- Backend Group -->
+              <div class="skills__group">
+                <h4 class="skills__group-title">Backend</h4>
+                <div class="skills__progress">
+                  <div class="skills__progress-item" data-value="100">
+                    <span class="skills__progress-label">
+                      <span class="skills__progress-name">.NET and ASP.NET Core</span>
+                      <span class="skills__progress-number">100%</span>
+                    </span>
+                    <div class="skills__progress-background">
+                      <div class="skills__progress-bar">
+                        <div class="skills__progress-bar-inner"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="skills__progress-item" data-value="100">
+                    <span class="skills__progress-label">
+                      <span class="skills__progress-name">MS SQL , PostgreSQL, Elasticsearch</span>
+                      <span class="skills__progress-number">100%</span>
+                    </span>
+                    <div class="skills__progress-background">
+                      <div class="skills__progress-bar">
+                        <div class="skills__progress-bar-inner"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="skills__progress-item" data-value="96">
+                    <span class="skills__progress-label">
+                      <span class="skills__progress-name">Kafka, RabbitMQ, AWS SQS</span>
+                      <span class="skills__progress-number">96%</span>
+                    </span>
+                    <div class="skills__progress-background">
+                      <div class="skills__progress-bar">
+                        <div class="skills__progress-bar-inner"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="skills__progress-item" data-value="96">
+                    <span class="skills__progress-label">
+                      <span class="skills__progress-name">Grafana, Kibana, NewRelic</span>
+                      <span class="skills__progress-number">96%</span>
+                    </span>
+                    <div class="skills__progress-background">
+                      <div class="skills__progress-bar">
+                        <div class="skills__progress-bar-inner"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <textarea name="main-form-message" placeholder="Co chcesz nam powiedzieć?" rows="4" required></textarea>
-                <button type="submit" class="contact-form__button">Skontaktować się</button>
+              </div>
+            </div>
+          </div>
+          <div class="skills__bottom">
+            <!-- DevOps Group -->
+            <div class="skills__group">
+              <h4 class="skills__group-title">DevOps</h4>
+              <div class="skills__progress">
+                <div class="skills__progress-item" data-value="100">
+                  <span class="skills__progress-label">
+                    <span class="skills__progress-name">AWS & Azure Cloud</span>
+                    <span class="skills__progress-number">100%</span>
+                  </span>
+                  <div class="skills__progress-background">
+                    <div class="skills__progress-bar">
+                      <div class="skills__progress-bar-inner"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="skills__progress-item" data-value="100">
+                  <span class="skills__progress-label">
+                    <span class="skills__progress-name">Azure DevOps Pipelines</span>
+                    <span class="skills__progress-number">100%</span>
+                  </span>
+                  <div class="skills__progress-background">
+                    <div class="skills__progress-bar">
+                      <div class="skills__progress-bar-inner"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="skills__progress-item" data-value="95">
+                  <span class="skills__progress-label">
+                    <span class="skills__progress-name">Kubernetes</span>
+                    <span class="skills__progress-number">95%</span>
+                  </span>
+                  <div class="skills__progress-background">
+                    <div class="skills__progress-bar">
+                      <div class="skills__progress-bar-inner"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="skills__progress-item" data-value="84">
+                  <span class="skills__progress-label">
+                    <span class="skills__progress-name">Terraform</span>
+                    <span class="skills__progress-number">84%</span>
+                  </span>
+                  <div class="skills__progress-background">
+                    <div class="skills__progress-bar">
+                      <div class="skills__progress-bar-inner"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Frontend Group -->
+            <div class="skills__group">
+              <h4 class="skills__group-title">Frontend</h4>
+              <div class="skills__progress">
+                <div class="skills__progress-item" data-value="85">
+                  <span class="skills__progress-label">
+                    <span class="skills__progress-name">JavaScript</span>
+                    <span class="skills__progress-number">85%</span>
+                  </span>
+                  <div class="skills__progress-background">
+                    <div class="skills__progress-bar">
+                      <div class="skills__progress-bar-inner"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="skills__progress-item" data-value="76">
+                  <span class="skills__progress-label">
+                    <span class="skills__progress-name">TypeScript</span>
+                    <span class="skills__progress-number">76%</span>
+                  </span>
+                  <div class="skills__progress-background">
+                    <div class="skills__progress-bar">
+                      <div class="skills__progress-bar-inner"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="skills__progress-item" data-value="74">
+                  <span class="skills__progress-label">
+                    <span class="skills__progress-name">React</span>
+                    <span class="skills__progress-number">74%</span>
+                  </span>
+                  <div class="skills__progress-background">
+                    <div class="skills__progress-bar">
+                      <div class="skills__progress-bar-inner"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="skills__progress-item" data-value="86">
+                  <span class="skills__progress-label">
+                    <span class="skills__progress-name">SCSS, SASS</span>
+                    <span class="skills__progress-number">86%</span>
+                  </span>
+                  <div class="skills__progress-background">
+                    <div class="skills__progress-bar">
+                      <div class="skills__progress-bar-inner"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="skills__border moving_effect" data-direction="x" data-reverse="yes"></span>
+      </div>
+    </section>
+    <section id="portfolio" class="portfolio">
+      <div class="portfolio__container">
+        <div class="portfolio__square portfolio__square--right moving_effect" data-direction="x" data-reverse="no">
+        </div>
+        <div class="portfolio__title">
+          <span class="portfolio__small">Success Stories</span>
+          <h3 class="portfolio__heading">Check my portfolio</h3>
+        </div>
+        <div class="portfolio__list">
+          <div class="portfolio__item">
+            <div class="portfolio__card portfolio__card--keep-calm"></div>
+            <div class="portfolio__content">
+              <div class="portfolio__name">Keep Calm and Learn English</div>
+              <span class="portfolio__tech">React.js / .NET Core</span>
+              <a href="portfolio/keep-calm.html" class="portfolio__button">
+                <i></i>
+                <span>Details</span>
+              </a>
+            </div>
+          </div>
+          <div class="portfolio__item">
+            <div class="portfolio__card portfolio__card--engineering"></div>
+            <div class="portfolio__content">
+              <div class="portfolio__name">Engineering Knowledge Hub</div>
+              <span class="portfolio__tech">.NET Core / Microservices</span>
+              <a href="portfolio/engineering.html" class="portfolio__button">
+                <i></i>
+                <span>Details</span>
+              </a>
+            </div>
+          </div>
+          <div class="portfolio__item">
+            <div class="portfolio__card portfolio__card--meta"></div>
+            <div class="portfolio__content">
+              <div class="portfolio__name">Meta Health Care</div>
+              <span class="portfolio__tech">.NET Core / SQL</span>
+              <a href="portfolio/meta.html" class="portfolio__button">
+                <i></i>
+                <span>Details</span>
+              </a>
+            </div>
+          </div>
+          <div class="portfolio__item">
+            <div class="portfolio__card portfolio__card--exigo"></div>
+            <div class="portfolio__content">
+              <div class="portfolio__name">Exigo</div>
+              <span class="portfolio__tech">.NET Core / JavaScript</span>
+              <a href="portfolio/exigo.html" class="portfolio__button">
+                <i></i>
+                <span>Details</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="portfolio__footer">
+          <a href="portfolio/" class="portfolio__view-all">
+            <i></i>
+            <span>View Portfolio</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <section id="background" class="background">
+      <div class="background__container">
+        <!-- Decorative elements -->
+        <span class="background__square background__square--left moving_effect" data-direction="y"
+          data-reverse="yes"></span>
+        <span class="background__square background__square--right moving_effect" data-direction="y"
+          data-reverse="yes"></span>
+
+        <!-- Card grid -->
+        <div class="background__list">
+          <!-- 1. Header block -->
+          <div class="background__item background__item--header wow animate__fadeInLeft" data-wow-duration="0.9s">
+            <div class="background__card background__card--plain">
+              <div class="background__header-title">
+                <span class="background__small">What I Have Done</span>
+                <h3>My Experience</h3>
+                <p>
+                  I have contributed to software development across engineering,
+                  interviewing, and team mentorship, combining hands-on expertise
+                  with strategic thinking.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Senior Software Engineer -->
+          <div class="background__item wow animate__fadeInUp" data-wow-duration="0.95s" data-wow-delay="0.05s">
+            <div class="background__card background__card--accent tilt-effect">
+              <span class="background__icon">
+                <img src="img/svg/service.png" alt="" class="background__icon-bg" />
+                <img src="img/svg/engineering.svg" alt="Senior Software Engineer" />
+              </span>
+              <div class="background__title">
+                <h3>Senior Software Engineer</h3>
+              </div>
+              <div class="background__text">
+                <p>I design and build scalable backend systems using .NET, with a strong focus on architecture, code quality, and long-term system stability over time.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. DevOps -->
+          <div class="background__item wow animate__fadeInUp" data-wow-duration="0.95s" data-wow-delay="0.10s">
+            <div class="background__card background__card--accent tilt-effect">
+              <span class="background__icon">
+                <img src="img/svg/service.png" alt="" class="background__icon-bg" />
+                <img src="img/svg/devops.png" alt="DevOps" />
+              </span>
+              <div class="background__title">
+                <h3>DevOps</h3>
+              </div>
+              <div class="background__text">
+                <p>
+                  I design and maintain CI/CD pipelines, manage cloud infrastructure, and bridge development and operations to ensure reliable, repeatable deployments across environments.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Technical Interviewer -->
+          <div class="background__item wow animate__fadeInUp" data-wow-duration="0.95s" data-wow-delay="0.15s">
+            <div class="background__card background__card--accent tilt-effect">
+              <span class="background__icon">
+                <img src="img/svg/service.png" alt="" class="background__icon-bg" />
+                <img src="img/svg/interview.svg" alt="Technical Interviewer" />
+              </span>
+              <div class="background__title">
+                <h3>Technical Interviewer</h3>
+              </div>
+              <div class="background__text">
+                <p>
+                  I assess technical skills, evaluate problem-solving approaches,
+                  and provide clear, constructive feedback while maintaining a
+                  positive candidate experience.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Creator of YouTube courses -->
+          <div class="background__item wow animate__fadeInUp" data-wow-duration="0.95s" data-wow-delay="0.20s">
+            <div class="background__card background__card--accent tilt-effect">
+              <span class="background__icon">
+                <img src="img/svg/service.png" alt="" class="background__icon-bg" />
+                <img src="img/svg/presenter.png" alt="Creator of YouTube courses" />
+              </span>
+              <div class="background__title">
+                <h3>YouTube Creator</h3>
+              </div>
+              <div class="background__text">
+                <p>
+                  I regularly share insights, focusing on emerging tech trends. Passionate about knowledge-sharing, I foster collaborative discussions and connections within the community.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. CTA block -->
+          <div class="background__item background__item--cta wow animate__fadeInRight" data-wow-duration="0.9s">
+            <div class="background__card background__card--plain">
+              <div class="background__cta-wrapper">
+                <div class="background__cta-inner">
+                  <h3>Want to Know More?</h3>
+                </div>
+                <a href="background/" class="background__cta-button">
+                  <i></i>
+                  <span>More About Me</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="blog" class="blog">
+      <div class="blog__container">
+        <div class="blog__header">
+          <span class="portfolio__small">Latest Articles</span>
+          <h3 class="portfolio__heading">My Blog</h3>
+        </div>
+
+        <div class="blog__list">
+          <article class="blog__item wow animate__fadeInUp" data-wow-duration="1s">
+            <a href="blog/configure-await/2024-configure-await.html" class="blog__card-link">
+              <div class="blog__card">
+                <div class="blog__image-box">
+                  <img src="blog/configure-await/configure-await.png" alt="ConfigureAwait(false) in .NET async performance" class="blog__img">
+                  <span class="blog__tag">C# .NET</span>
+                </div>
+                <div class="blog__content">
+                  <div class="blog__meta">
+                    <span class="blog__date">Oct 21, 2024</span>
+                    <span class="blog__read-time">10 min read</span>
+                  </div>
+                  <h4 class="blog__title">ConfigureAwait(false) in .NET: Does It Really Boost Performance?</h4>
+                  <p class="blog__excerpt">
+                    A hands-on experiment comparing async performance with and without ConfigureAwait(false) in simple
+                    and complex scenarios.
+                  </p>
+                  <span class="blog__link-more">Read Article</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="blog__item wow animate__fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
+            <a href="blog/rabbit-mq/rabbit-mq.html" class="blog__card-link">
+              <div class="blog__card">
+                <div class="blog__image-box">
+                  <img src="blog/rabbit-mq/rabbit-mq.jpg" alt="RabbitMQ Fundamentals" class="blog__img">
+                  <span class="blog__tag">RabbitMQ</span>
+                </div>
+                <div class="blog__content">
+                  <div class="blog__meta">
+                    <span class="blog__date">May 2021</span>
+                    <span class="blog__read-time">12 min read</span>
+                  </div>
+                  <h4 class="blog__title">RabbitMQ Fundamentals: A Complete Guide to Exchange Types</h4>
+                  <p class="blog__excerpt">
+                    A companion article to the YouTube course covering all five RabbitMQ exchange types with practical
+                    C# examples.
+                  </p>
+                  <span class="blog__link-more">Read Article</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="blog__item wow animate__fadeInUp" data-wow-duration="1s" data-wow-delay="0.4s">
+            <a href="blog/programmers-lifehacks/programmers-lifehacks.html" class="blog__card-link">
+              <div class="blog__card">
+                <div class="blog__image-box">
+                  <img src="blog/programmers-lifehacks/programmers-lifehacks.png" alt="Programmer's Lifehacks" class="blog__img">
+                  <span class="blog__tag">DevOps</span>
+                </div>
+                <div class="blog__content">
+                  <div class="blog__meta">
+                    <span class="blog__date">Sep 2023</span>
+                    <span class="blog__read-time">10 min read</span>
+                  </div>
+                  <h4 class="blog__title">Programmer's Lifehacks: A Curated Cheat Sheet for Developers</h4>
+                  <p class="blog__excerpt">
+                    A curated collection of handy commands, tools, and configurations for Docker, Kubernetes, Helm,
+                    Kafka, PostgreSQL, Git, and more.
+                  </p>
+                  <span class="blog__link-more">Read Article</span>
+                </div>
+              </div>
+            </a>
+          </article>
+        </div>
+
+        <div class="portfolio__footer">
+          <a href="blog/" class="blog__view-all">
+            <i></i>
+            <span>Explore All Articles</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <section id="contact" class="contact">
+      <div class="contact__container">
+        <div class="contact__title">
+          <span class="contact__small">Get in Touch</span>
+          <h3 class="contact__heading">Connect with Me with Confidence</h3>
+        </div>
+        <div class="contact__inner">
+          <div class="contact__left wow animate__fadeInLeft" data-wow-duration="1s">
+            <div class="contact__text">
+              <p>Feel free to reach out if you have a project in mind, want to collaborate, or just want to say hello. I'm always open to new opportunities and interesting conversations.</p>
+            </div>
+            <ul class="contact__info">
+              <li class="contact__info-item">
+                <div class="contact__info-inner">
+                  <svg class="contact__info-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                  </svg>
+                  <span class="contact__info-label">Email</span>
+                  <span class="contact__info-value">
+                    <a href="mailto:alex.tsi.dev@gmail.com">alex.tsi.dev@gmail.com</a>
+                  </span>
+                </div>
+              </li>
+              <li class="contact__info-item">
+                <div class="contact__info-inner">
+                  <svg class="contact__info-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                  </svg>
+                  <span class="contact__info-label">LinkedIn</span>
+                  <span class="contact__info-value">
+                    <a href="https://www.linkedin.com/in/alex-tsi/" target="_blank" rel="noopener noreferrer">linkedin.com/in/alex-tsi</a>
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="contact__right wow animate__fadeInRight" data-wow-duration="1s">
+            <form class="contact__form" id="contact-form" autocomplete="off">
+              <div class="contact__status-message contact__status-message--error" id="contact-error"></div>
+              <div class="contact__status-message contact__status-message--success" id="contact-success"></div>
+              <ul class="contact__fields">
+                <li class="contact__field-item">
+                  <input id="contact-name" type="text" class="contact__input" placeholder="Your Name" required />
+                </li>
+                <li class="contact__field-item">
+                  <input id="contact-email" type="email" class="contact__input" placeholder="Your Email" required />
+                </li>
+              </ul>
+              <div class="contact__message-area">
+                <textarea id="contact-message" class="contact__textarea" placeholder="Your message here" required></textarea>
+              </div>
+              <a href="#" class="contact__submit" id="contact-submit">
+                <i></i>
+                <span>Submit Message</span>
+              </a>
             </form>
+          </div>
         </div>
+        <span class="contact__square moving_effect" data-direction="y" data-reverse="yes"></span>
+      </div>
     </section>
+  </main>
 
-    <section class="contact-info" id="contact-info">
-        <div class="container contact-info__container">
-            <div class="contact-info__details">
-                <h2 class="contact-info__title">Kontakt</h2>
-                <ul class="contact-info__list">
-                    <li>+48 530 135 421</li>
-                    <li>+48 691 206 324</li>
-                    <li>E-mail: <a href="mailto:007g.garage@gmail.com">007g.garage@gmail.com</a></li>
-                    <li>09-100 Płońsk, ul. Skladowa 16</li>
-                    <li>03-523 Warszawa, ul. Lidzka 5</li>
-                </ul>
-                <div class="contact-info__socials">
-                    <a href="https://www.instagram.com/ghost._garage/profilecard/?igsh=MWlyNnpkODA5bHNycA==" class="social-icon" target="_blank"
-                       rel="noopener noreferrer"><i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://t.me/Ellias_Han" class="social-icon" target="_blank"
-                       rel="noopener noreferrer">
-                        <i class="fab fa-telegram"></i>
-                    </a>
-                    <a href="https://www.facebook.com/share/15rpvCH85b/" class="social-icon" target="_blank"
-                       rel="noopener noreferrer">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="https://www.youtube.com/@frodobegins" class="social-icon" target="_blank"
-                       rel="noopener noreferrer">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                    <a href="https://www.tiktok.com/@ghostgarage.pl?_t=ZN-8wT8ceUJM86&_r=1" class="social-icon" target="_blank"
-                       rel="noopener noreferrer">
-                        <i class="fab fa-tiktok"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="contact-info__map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d506718.93224242725!2d19.820880174207186!3d52.60837619965706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471c19aa37cc7877%3A0xb7827c8729c56c09!2zU2vFgmFkb3dhIDE2LCAwOS0xMDAgUMWCb8WEc2s!5e0!3m2!1sen!2spl!4v1746715531409!5m2!1sen!2spl"
-                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </div>
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__inner">
+        <div class="footer__top">
+          <div class="footer__logo">
+            <img src="img/logo/logo-light.svg" alt="Alex TSI" />
+          </div>
+          <div class="footer__social">
+            <span class="footer__social-label">Connect</span>
+            <ul class="footer__social-list">
+              <li class="footer__social-item">
+                <a href="#" class="footer__social-link">
+                  <i class="fa-brands fa-github"></i>
+                </a>
+              </li>
+              <li class="footer__social-item">
+                <a href="#" class="footer__social-link">
+                  <i class="fa-brands fa-linkedin"></i>
+                </a>
+              </li>
+              <li class="footer__social-item">
+                <a href="#" class="footer__social-link">
+                  <i class="fa-brands fa-youtube"></i>
+                </a>
+              </li>
+              <li class="footer__social-item">
+                <a href="#" class="footer__social-link">
+                  <i class="fa-brands fa-telegram"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-    </section>
+        <div class="footer__bottom">
+          <div class="footer__links">
+            <ul class="footer__links-list">
+              <li><a class="line-anim" href="#">Terms &amp; Condition</a></li>
+              <li><a class="line-anim" href="#">Privacy Policy</a></li>
+              <li><a class="line-anim" href="#">Support</a></li>
+            </ul>
+          </div>
+          <span class="footer__border moving_effect" data-direction="y" data-reverse="yes"></span>
+        </div>
+        <div class="footer__divider"></div>
+        <div class="footer__copyright">
+          <p>&copy; 2015-2026 Alex TSI. All rights reserved</p>
+        </div>
+        <span class="footer__totop moving_effect" data-direction="x">
+          <a class="footer__totop-link" href="#">
+            <i class="fa-solid fa-chevron-up"></i>
+          </a>
+        </span>
+      </div>
+    </div>
+  </footer>
 
-    <footer class="site-footer">
-        <hr class="site-footer__divider">
-        <p class="site-footer__copyright">
-            © 2025-2026 Ghost Garage. Wszelkie prawa zastrzeżone.
-        </p>
-        <p class="site-footer__credit">
-            Realizacja: ALEX TSI
-        </p>
-    </footer>
-</main>
-<script src="/js/script.js"></script>
+  <script src="js/vendor/jquery.min.js"></script>
+  <script src="js/vendor/tilt.jquery.min.js"></script>
+  <script src="js/vendor/wow.min.js"></script>
+  <script src="js/vendor/parallax.min.js"></script>
+  <script src="js/main.js"></script>
 </body>
+
 </html>

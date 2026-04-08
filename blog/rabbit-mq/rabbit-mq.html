@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../css/style.bca0aca8e0.css" />
+    <link rel="shortcut icon" type="image/png" href="../../img/favicon.png" />
+
+    <title>RabbitMQ Fundamentals: A Complete Guide to Exchange Types | Alex TSI Blog</title>
+    <style>
+      .cursor-spotlight {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        transition: background 0.1s ease-out;
+      }
+
+      @media (max-width: 1024px) {
+        .cursor-spotlight {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="portfolio-page-body">
+    <div id="cursor-spotlight" class="cursor-spotlight"></div>
+    <main>
+      <div class="portfolio-page">
+        <div class="portfolio-page__wrapper">
+          <div class="portfolio-page__back">
+            <a href="../../blog/" class="portfolio-page__back-link">
+              <span>&larr;</span> Back to All Articles
+            </a>
+          </div>
+          <div class="portfolio-page__wrapper-inner">
+            <aside class="portfolio-page__sidebar">
+              <div class="portfolio-page__sidebar-content">
+                <h1 class="portfolio-page__name-title">
+                  <a href="../../blog/">Blog</a>
+                </h1>
+                <h2 class="portfolio-page__name-subtitle">
+                  RabbitMQ Tutorial
+                </h2>
+
+                <div class="toc">
+                  <div class="toc__title">Table of Contents</div>
+                  <ul class="toc__list">
+                    <li class="toc__item">
+                      <a href="#introduction" class="toc__link">Introduction</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#what-is-rabbitmq" class="toc__link">What is RabbitMQ?</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#default-exchange" class="toc__link">Default Exchange</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#direct-exchange" class="toc__link">Direct Exchange</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#fanout-exchange" class="toc__link">Fanout Exchange</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#topic-exchange" class="toc__link">Topic Exchange</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#headers-exchange" class="toc__link">Headers Exchange</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#conclusion" class="toc__link">Conclusion</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <ul class="portfolio-page__socials" aria-label="Social media">
+                <li class="portfolio-page__socials-item">
+                  <a
+                    href="https://www.linkedin.com/in/alex-tsi/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="LinkedIn (opens in a new tab)"
+                    title="LinkedIn"
+                    class="portfolio-page__socials-link"
+                  >
+                    <svg
+                      class="portfolio-page__socials-icon"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                      />
+                    </svg>
+                  </a>
+                </li>
+                <li class="portfolio-page__socials-item">
+                  <a
+                    href="https://github.com/devalex-tsi"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="GitHub (opens in a new tab)"
+                    title="GitHub"
+                    class="portfolio-page__socials-link"
+                  >
+                    <svg
+                      class="portfolio-page__socials-icon"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                      />
+                    </svg>
+                  </a>
+                </li>
+                <li class="portfolio-page__socials-item">
+                  <a
+                    href="https://www.youtube.com/@DevStoriesAndTutorials"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="YouTube (opens in a new tab)"
+                    title="YouTube"
+                    class="portfolio-page__socials-link"
+                  >
+                    <svg
+                      class="portfolio-page__socials-icon"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+                      />
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </aside>
+
+            <div id="content" class="portfolio-page__main">
+              <article class="article">
+                <header class="article__header">
+                  <h1 class="article__title">RabbitMQ Fundamentals: A Complete Guide to Exchange Types</h1>
+
+                  <div class="article__meta">
+                    <span class="article__meta-item">May 2021</span>
+                    <span class="article__meta-item">&bull;</span>
+                    <span class="article__meta-item">12 min read</span>
+                    <span class="article__meta-item">&bull;</span>
+                    <div class="article__tags">
+                      <span class="article__tag">C#</span>
+                      <span class="article__tag">RabbitMQ</span>
+                      <span class="article__tag">Messaging</span>
+                    </div>
+                  </div>
+
+                  <div class="article__featured-image">
+                    <img src="rabbit-mq.jpg" alt="RabbitMQ message broker exchange types overview" />
+                  </div>
+                </header>
+
+                <div class="article__content">
+                  <h2 id="introduction">Introduction</h2>
+
+                  <p>
+                    This article is a companion to my YouTube course on RabbitMQ fundamentals. The full video playlist is available here:
+                    <a href="https://youtube.com/playlist?list=PLCpsrvs6hImZShRjUbqewZWgjJgU6SIvU" target="_blank" rel="noreferrer noopener">RabbitMQ Tutorial on YouTube</a>. The course consists of short but complete lessons covering each exchange type with practical C# examples.
+                  </p>
+
+                  <blockquote>
+                    <p>
+                      Please note that the course is currently available in Russian. However, I am already preparing an English version of the material, which will be published soon.
+                    </p>
+                  </blockquote>
+
+                  <p>
+                    All the source code from this tutorial is available in my GitHub repository:
+                    <a href="https://github.com/devalex-tsi/RabbitMQ" target="_blank" rel="noreferrer noopener">devalex-tsi/RabbitMQ</a>. Each exchange type has its own solution with separate Producer and Consumer projects, so you can clone the repository and run the examples locally on your machine.
+                  </p>
+
+                  <p>
+                    In this article, I will walk through all five exchange types covered in the course: Default, Direct, Fanout, Topic, and Headers. For each one, we will look at the key concepts, the routing logic, and the actual C# code from the repository.
+                  </p>
+
+                  <h2 id="what-is-rabbitmq">What is RabbitMQ?</h2>
+
+                  <p>
+                    <strong>RabbitMQ</strong> is one of the most widely used open-source message brokers. It implements the <strong>AMQP</strong> (Advanced Message Queuing Protocol) and acts as an intermediary between applications that produce messages and applications that consume them.
+                  </p>
+
+                  <p>
+                    The core concepts in RabbitMQ are:
+                  </p>
+
+                  <ul>
+                    <li>
+                      <strong>Producer</strong> &mdash; an application that sends messages to the broker.
+                    </li>
+                    <li>
+                      <strong>Consumer</strong> &mdash; an application that receives and processes messages from a queue.
+                    </li>
+                    <li>
+                      <strong>Exchange</strong> &mdash; a routing component that receives messages from producers and distributes them to queues based on rules (bindings and routing keys).
+                    </li>
+                    <li>
+                      <strong>Queue</strong> &mdash; a buffer that stores messages until a consumer picks them up.
+                    </li>
+                    <li>
+                      <strong>Binding</strong> &mdash; a link between an exchange and a queue that defines the routing rules.
+                    </li>
+                  </ul>
+
+                  <p>
+                    The exchange type determines <em>how</em> messages are routed to queues. RabbitMQ provides four built-in exchange types: Direct, Fanout, Topic, and Headers. There is also the Default (nameless) exchange, which routes messages directly to a queue by name. Let's explore each one with real code examples from the
+                    <a href="https://github.com/devalex-tsi/RabbitMQ" target="_blank" rel="noreferrer noopener">GitHub repository</a>.
+                  </p>
+
+                  <h2 id="default-exchange">Default Exchange</h2>
+
+                  <p>
+                    The Default Exchange is the simplest way to send and receive messages in RabbitMQ. It is a pre-declared, nameless direct exchange where every queue is automatically bound with a routing key equal to the queue name. You don't need to declare any exchange &mdash; just publish to an empty string exchange with the queue name as the routing key.
+                  </p>
+
+                  <p>
+                    Here is the <strong>Publisher</strong> code from
+                    <a href="https://github.com/devalex-tsi/RabbitMQ/blob/main/RabbitMQ.DefaultExchange/Publisher/Program.cs" target="_blank" rel="noreferrer noopener">RabbitMQ.DefaultExchange/Publisher/Program.cs</a>:
+                  </p>
+
+<pre><code>var factory = new ConnectionFactory() { HostName = "localhost" };
+using (var connection = factory.CreateConnection())
+using (var channel = connection.CreateModel())
+{
+    channel.QueueDeclare(queue: "dev-queue",
+                         durable: false,
+                         exclusive: false,
+                         autoDelete: false,
+                         arguments: null);
+
+    string message = $"Message from publisher N {counter}";
+    var body = Encoding.UTF8.GetBytes(message);
+
+    channel.BasicPublish(exchange: "",
+                        routingKey: "dev-queue",
+                        basicProperties: null,
+                        body: body);
+}</code></pre>
+
+                  <p>
+                    Notice the <code>exchange: ""</code> parameter &mdash; this tells RabbitMQ to use the Default Exchange. The <code>routingKey</code> matches the queue name directly.
+                  </p>
+
+                  <p>
+                    The <strong>Consumer</strong> subscribes to the same queue using <code>EventingBasicConsumer</code> (source:
+                    <a href="https://github.com/devalex-tsi/RabbitMQ/blob/main/RabbitMQ.DefaultExchange/Consumer/Program.cs" target="_blank" rel="noreferrer noopener">Consumer/Program.cs</a>):
+                  </p>
+
+<pre><code>var consumer = new EventingBasicConsumer(channel);
+
+consumer.Received += (sender, e) =>
+{
+    var body = e.Body;
+    var message = Encoding.UTF8.GetString(body.ToArray());
+    Console.WriteLine(" Received message: {0}", message);
+};
+
+channel.BasicConsume(queue: "dev-queue",
+                     autoAck: true,
+                     consumer: consumer);</code></pre>
+
+                  <p>
+                    This is a classic publish-subscribe pattern with a named queue. The Default Exchange is perfect for simple point-to-point messaging where you just need to deliver a message to a specific queue.
+                  </p>
+
+                  <h2 id="direct-exchange">Direct Exchange</h2>
+
+                  <p>
+                    The <strong>Direct Exchange</strong> routes messages to queues based on an exact match between the message's routing key and the queue's binding key. This is useful when you need to selectively deliver messages &mdash; for example, routing log messages by severity level.
+                  </p>
+
+                  <p>
+                    In the
+                    <a href="https://github.com/devalex-tsi/RabbitMQ/tree/main/RabbitMQ.DirectExchange" target="_blank" rel="noreferrer noopener">RabbitMQ.DirectExchange</a> project, the Producer sends messages with three different routing keys: <code>error</code>, <code>info</code>, and <code>warning</code>. There are four consumers: <strong>Consumer.All</strong> (bound to all three keys), <strong>Consumer.Error</strong>, <strong>Consumer.Info</strong>, and <strong>Consumer.Warning</strong>, each listening to their respective severity level.
+                  </p>
+
+                  <p>
+                    The Producer creates three parallel tasks, each publishing to the <code>direct_logs</code> exchange with a different routing key (source:
+                    <a href="https://github.com/devalex-tsi/RabbitMQ/blob/main/RabbitMQ.DirectExchange/Producer/Program.cs" target="_blank" rel="noreferrer noopener">Producer/Program.cs</a>):
+                  </p>
+
+<pre><code>Task.Run(CreateTask(12000, "error"));
+Task.Run(CreateTask(10000, "info"));
+Task.Run(CreateTask(8000, "warning"));</code></pre>
+
+                  <p>
+                    Each task declares the exchange and publishes messages with the assigned routing key:
+                  </p>
+
+<pre><code>channel.ExchangeDeclare(exchange: "direct_logs",
+                        type: ExchangeType.Direct);
+
+string message = $"Message type [{routingKey}] from publisher N {counter}";
+var body = Encoding.UTF8.GetBytes(message);
+
+channel.BasicPublish(exchange: "direct_logs",
+                    routingKey: routingKey,
+                    basicProperties: null,
+                    body: body);</code></pre>
+
+                  <p>
+                    With this setup, <code>Consumer.Error</code> only receives error messages, <code>Consumer.Warning</code> only receives warnings, and <code>Consumer.All</code> receives everything. This is a very common pattern for log aggregation and selective message processing.
+                  </p>
+
+                  <h2 id="fanout-exchange">Fanout Exchange</h2>
+
+                  <p>
+                    The <strong>Fanout Exchange</strong> broadcasts every message to <em>all</em> queues bound to it, regardless of the routing key. This is ideal for scenarios where the same event needs to trigger multiple independent actions.
+                  </p>
+
+                  <p>
+                    In the
+                    <a href="https://github.com/devalex-tsi/RabbitMQ/tree/main/RabbitMQ.FunoutExchange" target="_blank" rel="noreferrer noopener">RabbitMQ.FunoutExchange</a> project, the example simulates a payment notification system. When a payment is received, the <code>notifier</code> exchange broadcasts the event to two consumers: <strong>Consumer.BankCharger</strong> (processes bank charges) and <strong>Consumer.Tax</strong> (handles tax calculations).
+                  </p>
+
+                  <p>
+                    The Producer publishes payment events to the <code>notifier</code> exchange (source:
+                    <a href="https://github.com/devalex-tsi/RabbitMQ/blob/main/RabbitMQ.FunoutExchange/Producer/Program.cs" target="_blank" rel="noreferrer noopener">Producer/Program.cs</a>):
+                  </p>
+
+<pre><code>channel.ExchangeDeclare(exchange: "notifier",
+                        type: ExchangeType.Fanout);
+
+var moneyCount = random.Next(1000, 10_000);
+string message = $"Payment received for the amount of {moneyCount}";
+var body = Encoding.UTF8.GetBytes(message);
+
+channel.BasicPublish(exchange: "notifier",
+                    routingKey: "",
+                    basicProperties: null,
+                    body: body);</code></pre>
+
+                  <p>
+                    Notice that the <code>routingKey</code> is an empty string &mdash; in a Fanout Exchange, routing keys are completely ignored. Every bound consumer gets a copy of every message. This pattern is common in notification systems, event broadcasting, and pub/sub architectures where multiple services need to react to the same event independently.
+                  </p>
+
+                  <h2 id="topic-exchange">Topic Exchange</h2>
+
+                  <p>
+                    The <strong>Topic Exchange</strong> is the most flexible routing mechanism. It routes messages based on pattern matching between the routing key and the binding pattern. Routing keys are dot-separated words (e.g., <code>Tesla.red.fast.ecological</code>), and binding patterns can use wildcards: <code>*</code> (matches exactly one word) and <code>#</code> (matches zero or more words).
+                  </p>
+
+                  <p>
+                    In the
+                    <a href="https://github.com/devalex-tsi/RabbitMQ/tree/main/RabbitMQ.TopicExchange" target="_blank" rel="noreferrer noopener">RabbitMQ.TopicExchange</a> project, the example models a car marketplace. The Producer generates routing keys from car brands and colors, and three consumers filter by different criteria: <strong>Consumer.Tesla</strong> (matches <code>Tesla.#</code>), <strong>Consumer.Red</strong> (matches <code>*.red.#</code>), and <strong>Consumer.Ecological</strong> (matches <code>#.ecological</code>).
+                  </p>
+
+                  <p>
+                    The Producer creates routing keys dynamically (source:
+                    <a href="https://github.com/devalex-tsi/RabbitMQ/blob/main/RabbitMQ.TopicExchange/Producer/Program.cs" target="_blank" rel="noreferrer noopener">Producer/Program.cs</a>):
+                  </p>
+
+<pre><code>private static readonly List&lt;string&gt; cars =
+    new List&lt;string&gt; { "BMW", "Audi", "Tesla", "Mercedes" };
+private static readonly List&lt;string&gt; colors =
+    new List&lt;string&gt; { "red", "white", "black" };
+
+// ...
+
+string routingKey = counter % 4 == 0
+    ? "Tesla.red.fast.ecological"
+    : counter % 5 == 0
+        ? "Mercedes.exclusive.expensive.ecological"
+        : GenerateRoutingKey();
+
+channel.ExchangeDeclare(exchange: "topic_logs",
+                        type: ExchangeType.Topic);
+
+channel.BasicPublish(exchange: "topic_logs",
+                    routingKey: routingKey,
+                    basicProperties: null,
+                    body: body);</code></pre>
+
+                  <p>
+                    For instance, a message with routing key <code>Tesla.red.fast.ecological</code> would be delivered to all three consumers: <strong>Consumer.Tesla</strong> (matches <code>Tesla.#</code>), <strong>Consumer.Red</strong> (matches <code>*.red.#</code>), and <strong>Consumer.Ecological</strong> (matches <code>#.ecological</code>). A message with key <code>BMW.white</code> would not match any of these consumers. Topic Exchange gives you powerful and flexible routing without the rigidity of Direct Exchange.
+                  </p>
+
+                  <h2 id="headers-exchange">Headers Exchange</h2>
+
+                  <p>
+                    The <strong>Headers Exchange</strong> routes messages based on message header attributes instead of routing keys. This is useful when the routing logic is more complex than a single string can express &mdash; for example, matching by multiple criteria like currency type and transfer direction.
+                  </p>
+
+                  <p>
+                    In the
+                    <a href="https://github.com/devalex-tsi/RabbitMQ/tree/main/RabbitMQ.HeadersExchange" target="_blank" rel="noreferrer noopener">RabbitMQ.HeadersExchange</a> project, the example simulates a banking system. The Producer sends three types of transfer messages with different headers: USD abroad transfers, USD internal transfers, and EUR internal transfers. Three consumers handle different combinations: <strong>Consumer.Abroad.Usd</strong>, <strong>Consumer.All.Usd</strong>, and <strong>Consumer.Internal.All</strong>.
+                  </p>
+
+                  <p>
+                    Here is how the Producer sets headers for a USD abroad transfer (source:
+                    <a href="https://github.com/devalex-tsi/RabbitMQ/blob/main/RabbitMQ.HeadersExchange/Producer/Program.cs" target="_blank" rel="noreferrer noopener">Producer/Program.cs</a>):
+                  </p>
+
+<pre><code>channel.ExchangeDeclare(exchange: "headers_ex",
+                        type: ExchangeType.Headers);
+
+Dictionary&lt;string, object&gt; headers = new Dictionary&lt;string, object&gt;();
+headers.Add("currency", "usd");
+headers.Add("transfer", "abroad");
+
+var properties = channel.CreateBasicProperties();
+properties.Headers = headers;
+
+channel.BasicPublish(exchange: "headers_ex",
+                    routingKey: "doesnt metter",
+                    basicProperties: properties,
+                    body: body);</code></pre>
+
+                  <p>
+                    Notice that the <code>routingKey</code> value is irrelevant for Headers Exchange &mdash; all routing decisions are made based on the headers dictionary. Consumers bind with <code>x-match</code> set to either <code>all</code> (all headers must match) or <code>any</code> (at least one header must match), giving you fine-grained control over message delivery.
+                  </p>
+
+                  <p>
+                    The Headers Exchange is less common than the other types but is very powerful when you need multi-dimensional routing that doesn't fit into a single routing key string. You can find the full implementation with all three consumer types in the
+                    <a href="https://github.com/devalex-tsi/RabbitMQ/tree/main/RabbitMQ.HeadersExchange" target="_blank" rel="noreferrer noopener">GitHub repository</a>.
+                  </p>
+
+                  <h2 id="conclusion">Conclusion</h2>
+
+                  <p>
+                    RabbitMQ provides a rich set of exchange types to cover virtually any message routing scenario:
+                  </p>
+
+                  <ul>
+                    <li>
+                      <strong>Default Exchange</strong> &mdash; simple point-to-point delivery by queue name.
+                    </li>
+                    <li>
+                      <strong>Direct Exchange</strong> &mdash; exact routing key matching for selective delivery.
+                    </li>
+                    <li>
+                      <strong>Fanout Exchange</strong> &mdash; broadcasting to all bound queues.
+                    </li>
+                    <li>
+                      <strong>Topic Exchange</strong> &mdash; flexible pattern-based routing with wildcards.
+                    </li>
+                    <li>
+                      <strong>Headers Exchange</strong> &mdash; multi-attribute routing via message headers.
+                    </li>
+                  </ul>
+
+                  <p>
+                    Understanding when to use each exchange type is key to building efficient and maintainable messaging architectures. I encourage you to clone the
+                    <a href="https://github.com/devalex-tsi/RabbitMQ" target="_blank" rel="noreferrer noopener">GitHub repository</a>, run the examples yourself, and experiment with different configurations.
+                  </p>
+
+                  <p>
+                    For a deeper dive with visual explanations and step-by-step walkthroughs, check out the full video course on YouTube:
+                    <a href="https://youtube.com/playlist?list=PLCpsrvs6hImZShRjUbqewZWgjJgU6SIvU" target="_blank" rel="noreferrer noopener">RabbitMQ Tutorial Playlist</a>.
+                  </p>
+                </div>
+
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../../js/main.js"></script>
+    <script>
+      const spotlight = document.getElementById('cursor-spotlight');
+      if (spotlight) {
+        window.addEventListener('mousemove', (e) => {
+          if (window.innerWidth < 1024) return;
+          const x = e.clientX;
+          const y = e.clientY;
+          spotlight.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(250, 91, 15, 0.06), transparent 80%)`;
+        });
+      }
+    </script>
+  </body>
+</html>

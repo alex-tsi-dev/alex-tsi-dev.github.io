@@ -1,4 +1,5 @@
+# Replace with your production domain before deployment.
 User-agent: *
 Allow: /
 
-Sitemap: https://www.szybyserwis.pl/sitemap.xml
+Sitemap: https://replace-with-your-domain.example/sitemap.xml

@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../css/style.bca0aca8e0.css" />
+    <link rel="shortcut icon" type="image/png" href="../../img/favicon.png" />
+
+    <title>Programmer's Lifehacks: A Curated Cheat Sheet for Developers | Alex TSI Blog</title>
+    <style>
+      .cursor-spotlight {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        transition: background 0.1s ease-out;
+      }
+
+      @media (max-width: 1024px) {
+        .cursor-spotlight {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="portfolio-page-body">
+    <div id="cursor-spotlight" class="cursor-spotlight"></div>
+    <main>
+      <div class="portfolio-page">
+        <div class="portfolio-page__wrapper">
+          <div class="portfolio-page__back">
+            <a href="../../blog/" class="portfolio-page__back-link">
+              <span>&larr;</span> Back to All Articles
+            </a>
+          </div>
+          <div class="portfolio-page__wrapper-inner">
+            <aside class="portfolio-page__sidebar">
+              <div class="portfolio-page__sidebar-content">
+                <h1 class="portfolio-page__name-title">
+                  <a href="../../blog/">Blog</a>
+                </h1>
+                <h2 class="portfolio-page__name-subtitle">
+                  Programmer's Lifehacks
+                </h2>
+
+                <div class="toc">
+                  <div class="toc__title">Table of Contents</div>
+                  <ul class="toc__list">
+                    <li class="toc__item">
+                      <a href="#introduction" class="toc__link">Introduction</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#docker" class="toc__link">Docker</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#kubernetes" class="toc__link">Kubernetes</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#helm" class="toc__link">Helm</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#databases-and-kafka" class="toc__link">Databases &amp; Kafka</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#git" class="toc__link">Git</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#networking" class="toc__link">Networking</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#developer-tools" class="toc__link">Developer Tools</a>
+                    </li>
+                    <li class="toc__item">
+                      <a href="#conclusion" class="toc__link">Conclusion</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <ul class="portfolio-page__socials" aria-label="Social media">
+                <li class="portfolio-page__socials-item">
+                  <a
+                    href="https://www.linkedin.com/in/alex-tsi/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="LinkedIn (opens in a new tab)"
+                    title="LinkedIn"
+                    class="portfolio-page__socials-link"
+                  >
+                    <svg
+                      class="portfolio-page__socials-icon"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                      />
+                    </svg>
+                  </a>
+                </li>
+                <li class="portfolio-page__socials-item">
+                  <a
+                    href="https://github.com/devalex-tsi"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="GitHub (opens in a new tab)"
+                    title="GitHub"
+                    class="portfolio-page__socials-link"
+                  >
+                    <svg
+                      class="portfolio-page__socials-icon"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                      />
+                    </svg>
+                  </a>
+                </li>
+                <li class="portfolio-page__socials-item">
+                  <a
+                    href="https://www.youtube.com/@DevStoriesAndTutorials"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="YouTube (opens in a new tab)"
+                    title="YouTube"
+                    class="portfolio-page__socials-link"
+                  >
+                    <svg
+                      class="portfolio-page__socials-icon"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+                      />
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </aside>
+
+            <div id="content" class="portfolio-page__main">
+              <article class="article">
+                <header class="article__header">
+                  <h1 class="article__title">Programmer's Lifehacks: A Curated Cheat Sheet for Developers</h1>
+
+                  <div class="article__meta">
+                    <span class="article__meta-item">Sep 2023</span>
+                    <span class="article__meta-item">&bull;</span>
+                    <span class="article__meta-item">10 min read</span>
+                    <span class="article__meta-item">&bull;</span>
+                    <div class="article__tags">
+                      <span class="article__tag">DevOps</span>
+                      <span class="article__tag">Docker</span>
+                      <span class="article__tag">Kubernetes</span>
+                    </div>
+                  </div>
+
+                  <div class="article__featured-image">
+                    <img src="programmers-lifehacks.png" alt="Programmer's Lifehacks cheat sheet for Docker, Kubernetes, Helm, Git and more" />
+                  </div>
+                </header>
+
+                <div class="article__content">
+                  <h2 id="introduction">Introduction</h2>
+
+                  <p>
+                    Over the years of working as a software engineer, I have accumulated a collection of commands, configurations, and tips that I use on a daily basis. Instead of keeping them scattered across sticky notes and random text files, I decided to organize everything into a single public repository.
+                  </p>
+
+                  <p>
+                    The full collection is available on GitHub:
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks" target="_blank" rel="noreferrer noopener">devalex-tsi/programmers-lifehacks</a>. It covers Docker, Kubernetes, Helm, Kafka, PostgreSQL, Git, networking, Linux, VS Code settings, SEO tools, and even smart AI prompts. No fluff &mdash; just practical stuff you will actually use.
+                  </p>
+
+                  <p>
+                    In this article, I will walk through the key sections of the repository and highlight the most useful commands and tricks from each category.
+                  </p>
+
+                  <h2 id="docker">Docker</h2>
+
+                  <p>
+                    The Docker section covers the entire container lifecycle: running, inspecting, building, and debugging. Here are some of the most frequently used commands from the
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks/blob/master/COMMANDS%20DOCKER.txt" target="_blank" rel="noreferrer noopener">COMMANDS DOCKER.txt</a> file:
+                  </p>
+
+<pre><code># List running containers
+docker ps
+
+# List all containers (including stopped)
+docker ps -a
+
+# Run a PostgreSQL container with custom settings
+docker run --name pg-doc -p 8165:5432 \
+  -e POSTGRES_USER=docker \
+  -e POSTGRES_PASSWORD=*** \
+  -e POSTGRES_DB=pg-doc \
+  --network=bridge -d postgres
+
+# Inspect container network settings
+docker inspect core-doculab-backend \
+  -f "{{json .NetworkSettings.Networks }}"
+
+# List containers with their networks
+docker ps -a --format '{{ .ID }} | {{ .Names }} | {{ json .Networks }}'</code></pre>
+
+                  <p>
+                    The file also includes commands for building and tagging images, executing commands inside running containers, and publishing .NET applications into Docker images:
+                  </p>
+
+<pre><code># Build an image from Dockerfile
+docker build -t counter-image -f Dockerfile .
+
+# Run the image and map ports
+docker run -p 5203:80 counter-image
+
+# Tag an image for a registry
+docker tag date-time-image:latest alex/date-time-image:latest
+
+# Execute a shell inside a running container
+docker exec -it core-doc-backend bash</code></pre>
+
+                  <h2 id="kubernetes">Kubernetes</h2>
+
+                  <p>
+                    The Kubernetes section is the largest in the repository. It covers everything from Minikube setup to real-time log tailing in production clusters. The full reference is in
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks/blob/master/COMMANDS%20KUBER.txt" target="_blank" rel="noreferrer noopener">COMMANDS KUBER.txt</a>.
+                  </p>
+
+                  <p>
+                    <strong>Cluster setup and context switching:</strong>
+                  </p>
+
+<pre><code># Start Minikube with VirtualBox driver
+minikube start --driver='virtualbox'
+
+# Add a worker node
+minikube node add --worker
+
+# Switch between cluster contexts
+kubectl config current-context
+kubectl config use-context corecluster</code></pre>
+
+                  <p>
+                    <strong>Pod management and debugging:</strong>
+                  </p>
+
+<pre><code># Get all pods across namespaces
+kubectl get po -A
+
+# Describe a specific pod
+kubectl describe pods pod-name
+
+# Execute a command inside a pod
+kubectl exec my-pod -- date
+
+# Port-forward to access a pod locally
+kubectl port-forward my-pod 7788:80</code></pre>
+
+                  <p>
+                    <strong>Deployments and scaling:</strong>
+                  </p>
+
+<pre><code># Create a deployment
+kubectl create deploy my-deployment --image alex/date-time-image
+
+# Scale to 3 replicas
+kubectl scale deploy my-deployment --replicas 3
+
+# Set up autoscaling
+kubectl autoscale deploy my-deployment \
+  --min=4 --max=6 --cpu-percent=80
+
+# Check rollout status and history
+kubectl rollout status deploy/my-deployment
+kubectl rollout history deploy/my-deployment</code></pre>
+
+                  <p>
+                    <strong>Log viewing:</strong> One thing I find myself doing constantly is checking pod logs. The repository includes several patterns for this:
+                  </p>
+
+<pre><code># Last 100 lines
+kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt; --tail=100
+
+# Scroll through logs with 'more'
+kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt; | more
+
+# Real-time log streaming
+kubectl logs -f &lt;pod-name&gt; -n &lt;namespace&gt;</code></pre>
+
+                  <h2 id="helm">Helm</h2>
+
+                  <p>
+                    Helm chart management is covered in
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks/blob/master/COMMANDS%20HELM.txt" target="_blank" rel="noreferrer noopener">COMMANDS HELM.txt</a>. It includes the essential commands for listing, installing, and configuring Helm releases:
+                  </p>
+
+<pre><code># List installed releases
+helm list
+
+# Search available charts
+helm search repo
+
+# Install a release with custom values
+helm install core-doc-db bitnami/postgresql \
+  --set primary.persistence.existingClaim=core-doc-db-pvc \
+  --set auth.postgresPassword=*** \
+  --set auth.username=docapp \
+  --set auth.password=*** \
+  --set auth.database=doc</code></pre>
+
+                  <p>
+                    This is particularly useful for quickly spinning up databases and other infrastructure components in Kubernetes with custom persistence and authentication settings.
+                  </p>
+
+                  <h2 id="databases-and-kafka">Databases &amp; Kafka</h2>
+
+                  <p>
+                    The repository includes commands for PostgreSQL connection and user management (
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks/blob/master/COMMANDS%20POSTGRES.txt" target="_blank" rel="noreferrer noopener">COMMANDS POSTGRES.txt</a>), as well as Kafka topic creation via Confluent CLI (
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks/blob/master/COMMANDS%20KAFKA.txt" target="_blank" rel="noreferrer noopener">COMMANDS KAFKA.txt</a>).
+                  </p>
+
+                  <p>
+                    <strong>PostgreSQL basics:</strong>
+                  </p>
+
+<pre><code># Connect to PostgreSQL
+psql -h $(hostname -i) -U docapp
+
+# List users
+\du
+
+# Change a user's password
+ALTER USER yourusername WITH PASSWORD 'yournewpass';</code></pre>
+
+                  <p>
+                    A particularly handy trick is extracting PostgreSQL secrets from Kubernetes:
+                  </p>
+
+<pre><code># Get admin password from Kubernetes secret
+export POSTGRES_ADMIN_PASSWORD=$(kubectl get secret \
+  --namespace annset core-doc-db-postgresql \
+  -o jsonpath="{.data.postgres-password}" | base64 -d)
+
+# Get application password
+export POSTGRES_PASSWORD=$(kubectl get secret \
+  --namespace annset core-doc-db-postgresql \
+  -o jsonpath="{.data.password}" | base64 -d)</code></pre>
+
+                  <p>
+                    <strong>Kafka topic creation</strong> with schema validation via Confluent CLI:
+                  </p>
+
+<pre><code>confluent kafka topic create requirement-hide \
+  --url localhost:8082 \
+  --no-auth \
+  --if-not-exists \
+  --replication-factor 1 \
+  --config confluent.key.schema.validation=true,\
+confluent.value.schema.validation=true</code></pre>
+
+                  <h2 id="git">Git</h2>
+
+                  <p>
+                    The Git section (
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks/blob/master/git.txt" target="_blank" rel="noreferrer noopener">git.txt</a>) contains a useful trick for bulk-changing the author name and email across multiple commits. This is something you might need when you accidentally commit with the wrong identity:
+                  </p>
+
+<pre><code># Change author and email in the last 7 commits:
+# 1. Set user.name and user.email locally
+git config user.name "Your Name"
+git config user.email "your@email.com"
+
+# 2. Rebase and amend each commit
+git rebase --onto HEAD~7 \
+  --exec "git commit --amend --reset-author --no-edit" HEAD~7
+
+# 3. Force push (with safety)
+git push --force-with-lease</code></pre>
+
+                  <blockquote>
+                    <p>
+                      Be careful with force pushing &mdash; always use <code>--force-with-lease</code> instead of <code>--force</code> to avoid overwriting other people's work.
+                    </p>
+                  </blockquote>
+
+                  <h2 id="networking">Networking</h2>
+
+                  <p>
+                    The
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks/tree/master/NETWORK" target="_blank" rel="noreferrer noopener">NETWORK</a> folder in the repository covers DNS diagnostics and SSL/TLS tools. This includes:
+                  </p>
+
+                  <ul>
+                    <li>
+                      <strong>DNS diagnostics</strong> &mdash; <code>nslookup</code> commands for troubleshooting domain resolution issues.
+                    </li>
+                    <li>
+                      <strong>Wireshark</strong> &mdash; packet analysis for debugging network issues at the protocol level.
+                    </li>
+                    <li>
+                      <strong>OpenSSL</strong> &mdash; certificate inspection and SSL/TLS debugging.
+                    </li>
+                    <li>
+                      <strong>SSL Labs</strong> &mdash; deep analysis of server SSL/TLS configuration and security grading.
+                    </li>
+                    <li>
+                      <strong>GeoCerts SSL Tools</strong> &mdash; comprehensive SSL diagnostics for verifying certificate chains.
+                    </li>
+                  </ul>
+
+                  <p>
+                    These tools are essential when debugging connectivity issues in distributed systems or verifying SSL certificates in production environments.
+                  </p>
+
+                  <h2 id="developer-tools">Developer Tools</h2>
+
+                  <p>
+                    The repository also includes sections that go beyond pure DevOps:
+                  </p>
+
+                  <p>
+                    <strong>VS Code Settings</strong> (
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks/blob/master/Settings%20VS%20Code.txt" target="_blank" rel="noreferrer noopener">Settings VS Code.txt</a>): recommended extensions like Image Preview, Live Server, and Auto Rename Tag, plus productivity tips like enabling Auto Save on Focus Change.
+                  </p>
+
+                  <p>
+                    <strong>SEO Toolkit</strong> (
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks/tree/master/SEO" target="_blank" rel="noreferrer noopener">SEO folder</a>): a complete SEO starter kit with tools like Screaming Frog, Sitebulb, Google Search Console, and Lighthouse. It also covers keyword research tools (Google Trends, Answer The Public, Also Asked) and Google search operators (<code>site:</code>, <code>intitle:</code>, <code>inurl:</code>).
+                  </p>
+
+                  <p>
+                    <strong>Smart AI Prompts</strong> (
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks/tree/master/smart-ai-prompts" target="_blank" rel="noreferrer noopener">smart-ai-prompts folder</a>): ready-to-use prompt templates for code review (C#/.NET), Azure DevOps + AWS deployment automation, and translation tasks with tone control. These are practical prompts that you can copy and adapt for your own workflow.
+                  </p>
+
+                  <p>
+                    <strong>Linux / VirtualBox</strong> (
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks/tree/master/linux" target="_blank" rel="noreferrer noopener">linux folder</a>): step-by-step guide for setting up VirtualBox Guest Additions on Ubuntu, enabling bidirectional clipboard and drag-and-drop between Windows host and Ubuntu guest.
+                  </p>
+
+                  <h2 id="conclusion">Conclusion</h2>
+
+                  <p>
+                    This repository is a living document &mdash; I keep adding new commands and tools as I discover them in my daily work. Whether you are a backend developer, a DevOps engineer, or someone who just wants to have a reliable cheat sheet at hand, I hope you find it useful.
+                  </p>
+
+                  <p>
+                    Feel free to explore the full repository, star it for quick access, and contribute your own lifehacks:
+                    <a href="https://github.com/devalex-tsi/programmers-lifehacks" target="_blank" rel="noreferrer noopener">github.com/devalex-tsi/programmers-lifehacks</a>.
+                  </p>
+                </div>
+
+                <div class="article__navigation">
+                  <a href="../rabbit-mq/rabbit-mq.html" class="article__nav-link" style="text-align: right; align-items: flex-end; margin-left: auto;">
+                    <span class="article__nav-label">Next Article</span>
+                    <span class="article__nav-title">RabbitMQ Fundamentals</span>
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../../js/main.js"></script>
+    <script>
+      const spotlight = document.getElementById('cursor-spotlight');
+      if (spotlight) {
+        window.addEventListener('mousemove', (e) => {
+          if (window.innerWidth < 1024) return;
+          const x = e.clientX;
+          const y = e.clientY;
+          spotlight.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(250, 91, 15, 0.06), transparent 80%)`;
+        });
+      }
+    </script>
+  </body>
+</html>

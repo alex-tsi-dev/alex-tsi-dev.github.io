@@ -1,13 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Replace https://replace-with-your-domain.example with your real production domain before deployment. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.szybyserwis.pl/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <loc>https://replace-with-your-domain.example/</loc>
   </url>
   <url>
-    <loc>https://www.szybyserwis.pl/ru/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://replace-with-your-domain.example/background/</loc>
+  </url>
+  <url>
+    <loc>https://replace-with-your-domain.example/blog/</loc>
+  </url>
+  <url>
+    <loc>https://replace-with-your-domain.example/blog/configure-await/2024-configure-await.html</loc>
+  </url>
+  <url>
+    <loc>https://replace-with-your-domain.example/blog/programmers-lifehacks/programmers-lifehacks.html</loc>
+  </url>
+  <url>
+    <loc>https://replace-with-your-domain.example/blog/rabbit-mq/rabbit-mq.html</loc>
+  </url>
+  <url>
+    <loc>https://replace-with-your-domain.example/portfolio/</loc>
+  </url>
+  <url>
+    <loc>https://replace-with-your-domain.example/portfolio/engineering.html</loc>
+  </url>
+  <url>
+    <loc>https://replace-with-your-domain.example/portfolio/exigo.html</loc>
+  </url>
+  <url>
+    <loc>https://replace-with-your-domain.example/portfolio/ghost-garage.html</loc>
+  </url>
+  <url>
+    <loc>https://replace-with-your-domain.example/portfolio/keep-calm.html</loc>
+  </url>
+  <url>
+    <loc>https://replace-with-your-domain.example/portfolio/meta.html</loc>
+  </url>
+  <url>
+    <loc>https://replace-with-your-domain.example/portfolio/toyota.html</loc>
   </url>
 </urlset>
