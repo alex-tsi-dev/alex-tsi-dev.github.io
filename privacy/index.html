@@ -180,9 +180,10 @@
             <span class="legal-page__eyebrow">Legal</span>
             <h1 class="legal-page__title">Privacy Policy</h1>
             <p class="legal-page__intro">
-              This Privacy Policy explains how Alex TSI collects, uses,
-              discloses, and protects personal data in connection with this
-              website.
+              This Privacy Policy explains how personal data is processed in
+              connection with <strong>alex-tsi.dev</strong>, including website
+              browsing, the contact form, consent management, analytics,
+              monitoring, and related support communications.
             </p>
             <p class="legal-page__meta">
               <strong>Last updated:</strong> April 8, 2026
@@ -197,6 +198,11 @@
                 acts as the controller of personal data processed through this
                 website.
               </p>
+              <p>
+                Detailed website operator and trader identification for
+                <strong>alex-tsi.dev</strong> is provided in the
+                <a href="../legal/">Legal Notice</a>.
+              </p>
             </section>
 
             <section class="legal-page__section">
@@ -204,8 +210,9 @@
               <p>
                 This policy applies to personal data processed when you browse
                 the website, interact with its content, use the contact form,
-                communicate by email, or consent to analytics and monitoring
-                technologies used on the website.
+                communicate by email, store or update consent preferences, or
+                allow analytics and monitoring technologies used on the
+                website.
               </p>
             </section>
 
@@ -238,10 +245,25 @@
                 infrastructure.
               </p>
               <p>
-                When you use the contact form, your message is sent to an API
-                environment controlled by Alex TSI. The website also uses Google
-                Analytics 4 and New Relic monitoring technologies in accordance
-                with the consent choices made on the website.
+                When you use the contact form, your message is sent to a
+                first-party API environment controlled by Alex TSI. Contact
+                submissions may include the details you type into the form, plus
+                technical delivery and security metadata such as IP address,
+                browser details, request timing, and server-side processing
+                records needed to operate the contact workflow.
+              </p>
+              <p>
+                The website also stores a first-party consent record so your
+                privacy choices can be remembered. Where enabled for the
+                production deployment, Google Analytics 4 and New Relic browser
+                monitoring load only after the relevant consent choice has been
+                made through the website's consent mechanism.
+              </p>
+              <p>
+                If remote front-end asset delivery remains enabled in
+                production, standard browser requests may also be made to Google
+                font delivery services and Cloudflare's cdnjs service when pages
+                load.
               </p>
             </section>
 
@@ -284,8 +306,16 @@
               <p>
                 For this website, Google Analytics 4 and New Relic browser
                 monitoring are treated as non-essential technologies. They are
-                intended to load only after the relevant consent choice has been
-                made through the website's consent mechanism.
+                configured to load only after the relevant consent choice has
+                been made through the website's consent mechanism.
+              </p>
+              <p>
+                The website also stores a first-party consent preference record
+                using the storage key <code>alexTsiConsent.v1</code> so your
+                selected categories can be remembered across visits. You can
+                reopen and update these settings at any time through the
+                <strong>Cookie Settings</strong> control shown in the website
+                footer.
               </p>
               <p>
                 New Relic APM may also be used on the server side to monitor
@@ -298,32 +328,42 @@
             <section class="legal-page__section">
               <h2>8. Recipients and categories of processors</h2>
               <p>
-                Personal data may be shared, as necessary, with categories of
-                recipients such as:
+                Personal data may be shared, as necessary, with the following
+                categories of recipients and named providers where those
+                services are enabled for the production deployment:
               </p>
               <ul class="legal-page__list">
-                <li>Hosting and infrastructure providers.</li>
-                <li>Website analytics providers.</li>
-                <li>Application performance and monitoring providers.</li>
-                <li>Email and communications service providers.</li>
+                <li>Hosting and infrastructure providers that host <strong>alex-tsi.dev</strong> and the first-party contact API environment.</li>
+                <li>Google services used for Google Analytics 4 and related script delivery where analytics is enabled after consent.</li>
+                <li>New Relic, Inc. where browser monitoring or optional application performance monitoring is enabled after consent.</li>
+                <li>Google font delivery services where remote Google Fonts requests remain enabled.</li>
+                <li>Cloudflare's cdnjs service where remote icon or stylesheet delivery remains enabled.</li>
+                <li>Email and communications service providers used to receive, route, or respond to inquiries.</li>
                 <li>Professional advisers, service providers, and contractors who support website operations or legal compliance.</li>
                 <li>Courts, regulators, authorities, or law enforcement where disclosure is required or reasonably necessary.</li>
               </ul>
               <p>
                 The website does not use a public third-party contact form
-                platform for the form submission itself. However, supporting
-                infrastructure or email services may still process related data.
+                platform for the form submission itself. The contact workflow is
+                routed through a first-party API controlled by Alex TSI, although
+                supporting infrastructure or email services may still process
+                related data.
               </p>
             </section>
 
             <section class="legal-page__section">
               <h2>9. International transfers</h2>
               <p>
-                Some service providers or their sub-processors may process
-                personal data outside the European Economic Area. Where that
-                happens, Alex TSI intends to rely on safeguards recognized by
-                applicable law, such as adequacy decisions or standard
-                contractual clauses, where required.
+                Some of the providers listed above, especially global analytics,
+                monitoring, CDN, font delivery, and infrastructure services, may
+                process personal data outside the European Economic Area.
+              </p>
+              <p>
+                Where that happens, Alex TSI relies on safeguards recognized by
+                applicable law for the relevant provider and transfer context,
+                such as an adequacy decision, the EU-U.S. Data Privacy
+                Framework where applicable, or standard contractual clauses with
+                supplementary measures where required.
               </p>
             </section>
 
@@ -331,12 +371,15 @@
               <h2>10. Retention</h2>
               <p>
                 Personal data is kept only for as long as reasonably necessary
-                for the purposes described above.
+                for the purposes described above and in line with the website's
+                published retention rules.
               </p>
               <ul class="legal-page__list">
-                <li>Contact form submissions and related correspondence may be retained for as long as needed to handle the inquiry, manage follow-up, and protect against legal claims.</li>
-                <li>Routine server, request, and security logs may be retained for limited periods needed for security, diagnostics, and operational stability.</li>
-                <li>Analytics and monitoring data may be retained in line with tool configuration, consent status, and legitimate operational needs.</li>
+                <li>Contact form submissions and related correspondence are intended to be retained for 12 months after the last substantive interaction, unless a longer period is needed to follow up on the request or protect legal claims.</li>
+                <li>Routine server, request, and security logs are intended to be retained for 30 days, unless a longer period is required for incident handling, abuse prevention, or legal obligations.</li>
+                <li>Consent preference records are intended to be retained for 6 months from the last update or until replaced by a newer choice.</li>
+                <li>Google Analytics 4 data is intended to use a 14-month retention setting in the production configuration when analytics is enabled.</li>
+                <li>New Relic browser telemetry is intended to use a 30-day retention window in the production configuration when browser monitoring is enabled.</li>
               </ul>
             </section>
 
@@ -385,6 +428,8 @@
               <p>
                 Privacy questions and data requests may be sent to
                 <a href="mailto:alex.tsi.dev@gmail.com">alex.tsi.dev@gmail.com</a>.
+                General operator details are also listed in the
+                <a href="../legal/">Legal Notice</a>.
               </p>
             </section>
           </div>
@@ -403,23 +448,18 @@
               <span class="footer__social-label">Connect</span>
               <ul class="footer__social-list">
                 <li class="footer__social-item">
-                  <a href="#" class="footer__social-link">
+                  <a href="https://github.com/devalex-tsi" target="_blank" rel="noreferrer noopener" class="footer__social-link">
                     <i class="fa-brands fa-github"></i>
                   </a>
                 </li>
                 <li class="footer__social-item">
-                  <a href="#" class="footer__social-link">
+                  <a href="https://www.linkedin.com/in/alex-tsi/" target="_blank" rel="noreferrer noopener" class="footer__social-link">
                     <i class="fa-brands fa-linkedin"></i>
                   </a>
                 </li>
                 <li class="footer__social-item">
-                  <a href="#" class="footer__social-link">
+                  <a href="https://www.youtube.com/@DevStoriesAndTutorials" target="_blank" rel="noreferrer noopener" class="footer__social-link">
                     <i class="fa-brands fa-youtube"></i>
-                  </a>
-                </li>
-                <li class="footer__social-item">
-                  <a href="#" class="footer__social-link">
-                    <i class="fa-brands fa-telegram"></i>
                   </a>
                 </li>
               </ul>
@@ -432,6 +472,8 @@
                 <li><a class="line-anim" href="../privacy/">Privacy Policy</a></li>
                 <li><a class="line-anim" href="../cookies/">Cookies</a></li>
                 <li><a class="line-anim" href="../support/">Support</a></li>
+                <li><a class="line-anim" href="../legal/">Legal Notice</a></li>
+                <li><button class="footer__settings-button line-anim" type="button" aria-haspopup="dialog">Cookie Settings</button></li>
               </ul>
             </div>
             <span class="footer__border moving_effect" data-direction="y" data-reverse="yes"></span>
