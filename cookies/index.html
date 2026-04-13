@@ -17,10 +17,10 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="../css/style.bca0aca8e0.css" />
+    <link rel="stylesheet" href="../css/style.6db5abee7f.css" />
     <link rel="shortcut icon" type="image/png" href="../img/favicon.png" />
 
-    <title>Cookies | Alex TSI</title>
+    <title>Cookie Policy | Alex TSI</title>
     <style>
       .legal-page {
         min-height: calc(100vh - 10rem);
@@ -125,6 +125,35 @@
         margin-top: 0.8rem;
       }
 
+      .legal-page__table-wrap {
+        margin-top: 1.8rem;
+        overflow-x: auto;
+      }
+
+      .legal-page__table {
+        width: 100%;
+        min-width: 72rem;
+        border-collapse: collapse;
+      }
+
+      .legal-page__table th,
+      .legal-page__table td {
+        padding: 1.4rem;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        color: #334155;
+        font-size: 1.5rem;
+        line-height: 1.7;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .legal-page__table th {
+        background: rgba(15, 23, 42, 0.04);
+        color: #0f172a;
+        font-family: 'Josefin Sans', sans-serif;
+        font-size: 1.7rem;
+      }
+
       .legal-page__notice {
         margin-top: 1.6rem;
         padding: 1.8rem 2rem;
@@ -178,22 +207,23 @@
 
           <div class="legal-page__card">
             <span class="legal-page__eyebrow">Legal</span>
-            <h1 class="legal-page__title">Cookie Notice</h1>
+            <h1 class="legal-page__title">Cookie Policy</h1>
             <p class="legal-page__intro">
-              This Cookie Notice explains how cookies and similar technologies
-              may be used on the Alex TSI website.
+              This Cookie Policy explains how cookie-like technologies,
+              first-party consent storage, analytics, and browser monitoring
+              work on <strong>alex-tsi.dev</strong>.
             </p>
             <p class="legal-page__meta">
-              <strong>Last updated:</strong> April 8, 2026
+              <strong>Last updated:</strong> April 11, 2026
             </p>
 
             <section class="legal-page__section">
-              <h2>1. What this notice covers</h2>
+              <h2>1. What this policy covers</h2>
               <p>
-                This notice applies to cookies, pixels, local storage entries,
+                This policy applies to cookies, pixels, local storage entries,
                 browser identifiers, and similar technologies used in connection
-                with this website, including analytics and performance
-                monitoring tools.
+                with this website, including the first-party consent mechanism,
+                analytics, and performance monitoring tools.
               </p>
             </section>
 
@@ -213,25 +243,33 @@
                 The website may use the following categories of technologies:
               </p>
               <ul class="legal-page__list">
-                <li><strong>Strictly necessary technologies:</strong> used for core website operation, security, traffic management, consent storage, and reliable delivery of website functions.</li>
-                <li><strong>Analytics technologies:</strong> used to understand how visitors use the website, which pages are viewed, how users navigate, and how content performs. For this website, that includes Google Analytics 4.</li>
-                <li><strong>Performance and diagnostics technologies:</strong> used to measure availability, investigate technical errors, analyze browser-side performance, and maintain service reliability. For this website, that includes New Relic browser monitoring. Server-side APM may also process request and performance data without storing cookies on your device.</li>
+                <li><strong>Strictly necessary technologies:</strong> used for core website operation, security, traffic management, and storage of your consent preferences.</li>
+                <li><strong>Analytics technologies:</strong> used to understand how visitors use the website, which pages are viewed, how users navigate, and how content performs. For this website, that category is reserved for Google Analytics 4 where it is enabled in production after consent.</li>
+                <li><strong>Performance and diagnostics technologies:</strong> used to measure availability, investigate technical errors, analyze browser-side performance, and maintain service reliability. For this website, that category is reserved for New Relic browser monitoring where it is enabled in production after consent.</li>
               </ul>
             </section>
 
             <section class="legal-page__section">
               <h2>4. Consent model</h2>
               <p>
-                This website is intended to use a consent-first model for
-                non-essential technologies. Analytics and browser monitoring
-                technologies should not be activated until the relevant consent
-                choice has been made through the website's consent mechanism.
+                This website uses a consent-first model for non-essential
+                technologies. Analytics and browser monitoring technologies
+                should not be activated until the relevant consent choice has
+                been made through the website's consent mechanism.
               </p>
               <p>
                 Strictly necessary technologies may still be used without prior
                 consent where permitted by applicable law because they support
                 core website operation, security, or storage of your consent
                 choice.
+              </p>
+              <p>
+                On first load, the website presents a short consent message
+                with an <strong>OK</strong> button. Selecting
+                <strong>OK</strong> records consent for analytics and browser
+                monitoring. After the initial choice, the
+                <strong>Cookie Settings</strong> control in the footer lets you
+                reopen the preferences dialog and update the saved categories.
               </p>
             </section>
 
@@ -243,8 +281,8 @@
               <ul class="legal-page__list">
                 <li>remember your consent choices;</li>
                 <li>maintain secure and stable website operation;</li>
-                <li>measure website traffic and engagement trends;</li>
-                <li>identify broken pages, performance issues, and browser errors;</li>
+                <li>measure website traffic and engagement trends after consent;</li>
+                <li>identify broken pages, performance issues, and browser errors after consent;</li>
                 <li>improve content, navigation, and technical reliability.</li>
               </ul>
             </section>
@@ -252,45 +290,101 @@
             <section class="legal-page__section">
               <h2>6. Managing your preferences</h2>
               <p>
-                You can manage your preferences through the website's consent
-                banner or equivalent consent control made available on the
-                website. You may also restrict or delete cookies through your
-                browser settings, although doing so may affect certain website
+                The website's first-load consent message records your initial
+                choice through the <strong>OK</strong> button. After that, you
+                can manage your saved categories through the
+                <strong>Cookie Settings</strong> control shown in the footer.
+                You may also restrict or delete cookies through your browser
+                settings, although doing so may affect certain website
                 functions.
               </p>
               <p>
                 If you withdraw consent, non-essential analytics and browser
                 monitoring should stop loading for future interactions once your
-                updated choice has been applied.
+                updated choice has been applied. If a previously loaded browser
+                monitoring script needs to be stopped, the change may be applied
+                on page reload.
               </p>
             </section>
 
             <section class="legal-page__section">
               <h2>7. Third-party processing and international access</h2>
               <p>
-                Analytics and monitoring technologies may involve third-party
-                service providers that process device, usage, diagnostics, or
-                performance information. Some of these providers or their
-                sub-processors may operate outside the European Economic Area.
-                Where required, appropriate safeguards are intended to be used
-                under applicable law.
+                Where the relevant tools are enabled for the production
+                deployment, Google Analytics 4 and New Relic browser monitoring
+                involve third-party service providers that process device,
+                usage, diagnostics, or performance information. Some of these
+                providers or their sub-processors may operate outside the
+                European Economic Area.
+              </p>
+              <p>
+                The website's remote front-end asset delivery may also involve
+                Google font delivery services and Cloudflare's cdnjs service.
+                Those providers are disclosed in the
+                <a href="../privacy/">Privacy Policy</a> because they may
+                receive technical request data even when no non-essential
+                tracking category is enabled.
               </p>
             </section>
 
             <section class="legal-page__section">
-              <h2>8. Technical details</h2>
+              <h2>8. Technical details and provider overview</h2>
               <p>
-                The exact technical names, storage periods, and implementation
-                details of cookies or similar identifiers may change over time
-                as the website, analytics setup, consent settings, and
-                monitoring tools are updated.
+                The website currently uses a first-party consent record and is
+                prepared to load production analytics and monitoring tools only
+                after consent. The table below describes the intended provider
+                setup and retention defaults.
               </p>
+              <div class="legal-page__table-wrap">
+                <table class="legal-page__table">
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th>Tool / provider</th>
+                      <th>Purpose</th>
+                      <th>Storage or identifier type</th>
+                      <th>Consent required</th>
+                      <th>Retention</th>
+                      <th>How to withdraw</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Strictly necessary</td>
+                      <td>Alex TSI first-party consent storage</td>
+                      <td>Stores the selected consent categories and consent version</td>
+                      <td>Local storage entry <code>alexTsiConsent.v1</code></td>
+                      <td>No</td>
+                      <td>Not publicly specified in this policy.</td>
+                      <td>Update the choice through <strong>Cookie Settings</strong> in the footer</td>
+                    </tr>
+                    <tr>
+                      <td>Analytics</td>
+                      <td>Google Analytics 4</td>
+                      <td>Measures traffic, page engagement, and content performance</td>
+                      <td>Google Analytics script, cookies, and browser identifiers where enabled in production</td>
+                      <td>Yes</td>
+                      <td>14 months in the intended production configuration</td>
+                      <td>Disable the analytics category through <strong>Cookie Settings</strong></td>
+                    </tr>
+                    <tr>
+                      <td>Monitoring</td>
+                      <td>New Relic Browser</td>
+                      <td>Measures front-end errors, performance timing, and browser-side reliability</td>
+                      <td>Browser monitoring script and telemetry identifiers where enabled in production</td>
+                      <td>Yes</td>
+                      <td>30 days in the intended production configuration</td>
+                      <td>Disable the monitoring category through <strong>Cookie Settings</strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               <div class="legal-page__notice">
                 <p>
-                  This notice describes the categories and purposes of
-                  technologies used on the website. It does not promise that a
-                  specific cookie name, lifespan, or provider configuration will
-                  remain unchanged.
+                  Replace any production placeholder identifiers for Google
+                  Analytics 4 or New Relic before launch. The public retention
+                  values published here should stay aligned with the actual
+                  production configuration.
                 </p>
               </div>
             </section>
@@ -299,8 +393,9 @@
               <h2>9. More information</h2>
               <p>
                 For more information about how personal data is processed, see
-                the <a href="../privacy/">Privacy Policy</a>. Questions about
-                this notice may be sent to
+                the <a href="../privacy/">Privacy Policy</a> and
+                <a href="../legal/">Legal Notice</a>. Questions about this
+                notice may be sent to
                 <a href="mailto:alex.tsi.dev@gmail.com">alex.tsi.dev@gmail.com</a>.
               </p>
             </section>
@@ -320,23 +415,18 @@
               <span class="footer__social-label">Connect</span>
               <ul class="footer__social-list">
                 <li class="footer__social-item">
-                  <a href="#" class="footer__social-link">
+                  <a href="https://github.com/devalex-tsi" target="_blank" rel="noreferrer noopener" class="footer__social-link">
                     <i class="fa-brands fa-github"></i>
                   </a>
                 </li>
                 <li class="footer__social-item">
-                  <a href="#" class="footer__social-link">
+                  <a href="https://www.linkedin.com/in/alex-tsi/" target="_blank" rel="noreferrer noopener" class="footer__social-link">
                     <i class="fa-brands fa-linkedin"></i>
                   </a>
                 </li>
                 <li class="footer__social-item">
-                  <a href="#" class="footer__social-link">
+                  <a href="https://www.youtube.com/@DevStoriesAndTutorials" target="_blank" rel="noreferrer noopener" class="footer__social-link">
                     <i class="fa-brands fa-youtube"></i>
-                  </a>
-                </li>
-                <li class="footer__social-item">
-                  <a href="#" class="footer__social-link">
-                    <i class="fa-brands fa-telegram"></i>
                   </a>
                 </li>
               </ul>
@@ -349,6 +439,8 @@
                 <li><a class="line-anim" href="../privacy/">Privacy Policy</a></li>
                 <li><a class="line-anim" href="../cookies/">Cookies</a></li>
                 <li><a class="line-anim" href="../support/">Support</a></li>
+                <li><a class="line-anim" href="../legal/">Legal Notice</a></li>
+                <li><button class="footer__settings-button line-anim" type="button" aria-haspopup="dialog">Cookie Settings</button></li>
               </ul>
             </div>
             <span class="footer__border moving_effect" data-direction="y" data-reverse="yes"></span>

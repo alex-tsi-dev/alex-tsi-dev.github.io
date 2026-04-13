@@ -1,5 +1,4 @@
-# Replace with your production domain before deployment.
 User-agent: *
 Allow: /
 
-Sitemap: https://replace-with-your-domain.example/sitemap.xml
+Sitemap: https://alex-tsi.dev/sitemap.xml

@@ -1,43 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Replace https://replace-with-your-domain.example with your real production domain before deployment. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://replace-with-your-domain.example/</loc>
+    <loc>https://alex-tsi.dev/</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/background/</loc>
+    <loc>https://alex-tsi.dev/background/</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/blog/</loc>
+    <loc>https://alex-tsi.dev/blog/</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/blog/configure-await/2024-configure-await.html</loc>
+    <loc>https://alex-tsi.dev/blog/configure-await/2024-configure-await.html</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/blog/programmers-lifehacks/programmers-lifehacks.html</loc>
+    <loc>https://alex-tsi.dev/blog/programmers-lifehacks/programmers-lifehacks.html</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/blog/rabbit-mq/rabbit-mq.html</loc>
+    <loc>https://alex-tsi.dev/blog/rabbit-mq/rabbit-mq.html</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/portfolio/</loc>
+    <loc>https://alex-tsi.dev/portfolio/</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/portfolio/engineering.html</loc>
+    <loc>https://alex-tsi.dev/portfolio/engineering.html</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/portfolio/exigo.html</loc>
+    <loc>https://alex-tsi.dev/portfolio/exigo.html</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/portfolio/ghost-garage.html</loc>
+    <loc>https://alex-tsi.dev/portfolio/ghost-garage.html</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/portfolio/keep-calm.html</loc>
+    <loc>https://alex-tsi.dev/portfolio/keep-calm.html</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/portfolio/meta.html</loc>
+    <loc>https://alex-tsi.dev/portfolio/meta.html</loc>
   </url>
   <url>
-    <loc>https://replace-with-your-domain.example/portfolio/toyota.html</loc>
+    <loc>https://alex-tsi.dev/portfolio/toyota.html</loc>
+  </url>
+  <url>
+    <loc>https://alex-tsi.dev/privacy/</loc>
+  </url>
+  <url>
+    <loc>https://alex-tsi.dev/cookies/</loc>
+  </url>
+  <url>
+    <loc>https://alex-tsi.dev/terms/</loc>
+  </url>
+  <url>
+    <loc>https://alex-tsi.dev/support/</loc>
+  </url>
+  <url>
+    <loc>https://alex-tsi.dev/legal/</loc>
   </url>
 </urlset>
