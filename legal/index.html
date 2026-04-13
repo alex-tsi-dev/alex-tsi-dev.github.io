@@ -17,7 +17,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="../css/style.6db5abee7f.css" />
+    <link rel="stylesheet" href="../css/style.9414cfc446.css" />
     <link rel="shortcut icon" type="image/png" href="../img/favicon.png" />
 
     <title>Legal Notice | Alex TSI</title>
@@ -284,12 +284,15 @@
     <footer class="footer">
       <div class="footer__container">
         <div class="footer__inner">
-          <div class="footer__top">
-            <div class="footer__logo">
-              <img src="../img/logo/logo-light.svg" alt="Alex TSI" />
+          <div class="footer__main">
+            <div class="footer__brand">
+              <div class="footer__logo">
+                <img src="../img/logo/logo-light.svg" alt="Alex TSI" />
+              </div>
+              <p class="footer__brand-copy">Software Engineer / DevOps</p>
             </div>
-            <div class="footer__social">
-              <span class="footer__social-label">Connect</span>
+            <div class="footer__connect">
+              <p class="footer__eyebrow">Connect</p>
               <ul class="footer__social-list">
                 <li class="footer__social-item">
                   <a
@@ -297,8 +300,12 @@
                     target="_blank"
                     rel="noreferrer noopener"
                     class="footer__social-link"
+                    aria-label="GitHub (opens in a new tab)"
                   >
-                    <i class="fa-brands fa-github"></i>
+                    <span class="footer__social-icon">
+                      <i class="fa-brands fa-github" aria-hidden="true"></i>
+                    </span>
+                    <span class="footer__social-text">GitHub</span>
                   </a>
                 </li>
                 <li class="footer__social-item">
@@ -307,8 +314,12 @@
                     target="_blank"
                     rel="noreferrer noopener"
                     class="footer__social-link"
+                    aria-label="LinkedIn (opens in a new tab)"
                   >
-                    <i class="fa-brands fa-linkedin"></i>
+                    <span class="footer__social-icon">
+                      <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+                    </span>
+                    <span class="footer__social-text">LinkedIn</span>
                   </a>
                 </li>
                 <li class="footer__social-item">
@@ -317,35 +328,50 @@
                     target="_blank"
                     rel="noreferrer noopener"
                     class="footer__social-link"
+                    aria-label="YouTube (opens in a new tab)"
                   >
-                    <i class="fa-brands fa-youtube"></i>
+                    <span class="footer__social-icon">
+                      <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+                    </span>
+                    <span class="footer__social-text">YouTube</span>
                   </a>
                 </li>
               </ul>
             </div>
           </div>
-          <div class="footer__bottom">
-            <div class="footer__links">
-              <ul class="footer__links-list">
-                <li><a class="line-anim" href="../terms/">Terms of Use</a></li>
-                <li><a class="line-anim" href="../privacy/">Privacy Policy</a></li>
-                <li><a class="line-anim" href="../cookies/">Cookies</a></li>
-                <li><a class="line-anim" href="../support/">Support</a></li>
-                <li><a class="line-anim" href="../legal/">Legal Notice</a></li>
-                <li><button class="footer__settings-button line-anim" type="button" aria-haspopup="dialog">Cookie Settings</button></li>
-              </ul>
-            </div>
-            <span class="footer__border moving_effect" data-direction="y" data-reverse="yes"></span>
+          <div class="footer__legal">
+            <p class="footer__eyebrow">Legal &amp; Support</p>
+            <ul class="footer__links-list">
+              <li class="footer__links-item">
+                <a class="footer__legal-link" href="../terms/">Terms of Use</a>
+              </li>
+              <li class="footer__links-item">
+                <a class="footer__legal-link" href="../privacy/">Privacy Policy</a>
+              </li>
+              <li class="footer__links-item">
+                <a class="footer__legal-link" href="../cookies/">Cookies</a>
+              </li>
+              <li class="footer__links-item">
+                <a class="footer__legal-link" href="../support/">Support</a>
+              </li>
+              <li class="footer__links-item">
+                <a class="footer__legal-link" href="../legal/">Legal Notice</a>
+              </li>
+              <li class="footer__links-item footer__links-item--accent">
+                <button class="footer__settings-button" type="button" aria-haspopup="dialog">Cookie Settings</button>
+              </li>
+            </ul>
           </div>
           <div class="footer__divider"></div>
-          <div class="footer__copyright">
-            <p>&copy; 2015-2026 Alex TSI. All rights reserved</p>
-          </div>
-          <span class="footer__totop moving_effect" data-direction="x">
-            <a class="footer__totop-link" href="#">
-              <i class="fa-solid fa-chevron-up"></i>
+          <div class="footer__meta">
+            <div class="footer__copyright">
+              <p>&copy; 2015-2026 Alex TSI. All rights reserved</p>
+            </div>
+            <a class="footer__totop-link" href="#" aria-label="Back to top">
+              <span>Back to top</span>
+              <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
             </a>
-          </span>
+          </div>
         </div>
       </div>
     </footer>
