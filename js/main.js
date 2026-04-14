@@ -117,44 +117,55 @@ function injectConsentUi() {
         '<button class="cmp-modal__close" id="cmp-close-button" type="button" aria-label="Close cookie settings">' +
           '<span aria-hidden="true">&times;</span>' +
         '</button>' +
-        '<p class="cmp-modal__eyebrow">Cookie Settings</p>' +
-        '<h2 class="cmp-modal__title" id="cmp-modal-title">Manage your preferences</h2>' +
-        '<p class="cmp-modal__description" id="cmp-modal-description">Necessary storage remains active so the site can remember your consent choice. Analytics and browser monitoring stay off until you enable them.</p>' +
+        '<div class="cmp-modal__header">' +
+          '<p class="cmp-modal__eyebrow">Cookie Settings</p>' +
+          '<h2 class="cmp-modal__title" id="cmp-modal-title">Manage your preferences</h2>' +
+          '<p class="cmp-modal__description" id="cmp-modal-description">Necessary storage remains active so the site can remember your consent choice. Enable Google Analytics 4 and New Relic browser diagnostics if you want richer usage insight and performance visibility.</p>' +
+        '</div>' +
         '<div class="cmp-modal__categories">' +
           '<div class="cmp-category cmp-category--locked">' +
-            '<div class="cmp-category__content">' +
-              '<p class="cmp-category__title">Strictly necessary</p>' +
-              '<p class="cmp-category__text">Stores the first-party consent record and keeps core website functions reliable.</p>' +
+            '<div class="cmp-category__body">' +
+              '<div class="cmp-category__copy">' +
+                '<div class="cmp-category__head">' +
+                  '<p class="cmp-category__title">Strictly necessary</p>' +
+                  '<span class="cmp-category__status">Always active</span>' +
+                '</div>' +
+                '<p class="cmp-category__text">Stores the first-party consent record and keeps core website functions reliable.</p>' +
+              '</div>' +
+              '<span class="cmp-category__toggle cmp-category__toggle--static" aria-hidden="true">' +
+                '<span class="cmp-category__switch cmp-category__switch--active"></span>' +
+              '</span>' +
             '</div>' +
-            '<span class="cmp-category__status">Always active</span>' +
           '</div>' +
-          '<label class="cmp-category" for="cmp-analytics-input">' +
-            '<div class="cmp-category__content">' +
-              '<span class="cmp-category__toggle">' +
-                '<input id="cmp-analytics-input" class="cmp-category__checkbox" type="checkbox" />' +
-              '</span>' +
-              '<span>' +
+          '<label class="cmp-category cmp-category--optional" for="cmp-analytics-input">' +
+            '<input id="cmp-analytics-input" class="cmp-category__checkbox" type="checkbox" />' +
+            '<span class="cmp-category__body">' +
+              '<span class="cmp-category__copy">' +
                 '<span class="cmp-category__title">Analytics</span>' +
-                '<span class="cmp-category__text">Allow Google Analytics 4 when the production measurement ID is configured.</span>' +
+                '<span class="cmp-category__text">Allow Google Analytics 4 to measure traffic, page engagement, and content performance.</span>' +
               '</span>' +
-            '</div>' +
+              '<span class="cmp-category__toggle" aria-hidden="true">' +
+                '<span class="cmp-category__switch"></span>' +
+              '</span>' +
+            '</span>' +
           '</label>' +
-          '<label class="cmp-category" for="cmp-monitoring-input">' +
-            '<div class="cmp-category__content">' +
-              '<span class="cmp-category__toggle">' +
-                '<input id="cmp-monitoring-input" class="cmp-category__checkbox" type="checkbox" />' +
-              '</span>' +
-              '<span>' +
+          '<label class="cmp-category cmp-category--optional" for="cmp-monitoring-input">' +
+            '<input id="cmp-monitoring-input" class="cmp-category__checkbox" type="checkbox" />' +
+            '<span class="cmp-category__body">' +
+              '<span class="cmp-category__copy">' +
                 '<span class="cmp-category__title">Monitoring</span>' +
-                '<span class="cmp-category__text">Allow New Relic browser diagnostics when the production browser agent settings are configured.</span>' +
+                '<span class="cmp-category__text">Allow New Relic browser diagnostics to monitor front-end performance, availability, and browser-side errors.</span>' +
               '</span>' +
-            '</div>' +
+              '<span class="cmp-category__toggle" aria-hidden="true">' +
+                '<span class="cmp-category__switch"></span>' +
+              '</span>' +
+            '</span>' +
           '</label>' +
         '</div>' +
         '<div class="cmp-modal__actions">' +
-          '<button class="cmp-button cmp-button--ghost" id="cmp-modal-reject-button" type="button">Reject non-essential</button>' +
-          '<button class="cmp-button cmp-button--secondary" id="cmp-modal-save-button" type="button">Save preferences</button>' +
-          '<button class="cmp-button cmp-button--primary" id="cmp-modal-accept-button" type="button">Accept all</button>' +
+          '<button class="cmp-button cmp-button--ghost cmp-button--modal-ghost" id="cmp-modal-reject-button" type="button">Reject non-essential</button>' +
+          '<button class="cmp-button cmp-button--secondary cmp-button--modal-secondary" id="cmp-modal-accept-button" type="button">Accept all</button>' +
+          '<button class="cmp-button cmp-button--primary cmp-button--modal-primary" id="cmp-modal-save-button" type="button">Save preferences</button>' +
         '</div>' +
       '</div>' +
     '</div>'
