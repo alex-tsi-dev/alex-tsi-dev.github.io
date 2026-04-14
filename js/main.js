@@ -1437,7 +1437,7 @@ function initContactForm() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-  submitButton.addEventListener('click', function (e) {
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
     hideMessages();
 
@@ -1456,6 +1456,7 @@ function initContactForm() {
     }
 
     submitButton.classList.add('contact__submit--disabled');
+    submitButton.disabled = true;
 
     fetch(CONTACT_API_URL, {
       method: 'POST',
@@ -1481,6 +1482,7 @@ function initContactForm() {
       })
       .finally(function () {
         submitButton.classList.remove('contact__submit--disabled');
+        submitButton.disabled = false;
       });
   });
 }
