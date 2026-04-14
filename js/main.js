@@ -104,7 +104,7 @@ function injectConsentUi() {
     '<div class="cmp-banner" id="cmp-banner" hidden>' +
       '<div class="cmp-banner__inner">' +
         '<div class="cmp-banner__copy">' +
-          '<p class="cmp-banner__text">We use cookies and collect analytics to improve your experience on our website. By continuing to browse this site, you agree to our use of cookies. Learn more in our <a href="/cookies/">Cookie Policy</a> and <a href="/privacy/">Privacy Policy</a>.</p>' +
+          '<p class="cmp-banner__text">We use cookies and collect analytics to improve your experience on our website. By clicking OK, you consent to the use of non-essential cookies and analytics as described in our <a href="/cookies/">Cookie Policy</a> and <a href="/privacy/">Privacy Policy</a>.</p>' +
         '</div>' +
         '<div class="cmp-banner__actions">' +
           '<button class="cmp-button cmp-button--primary" id="cmp-accept-button" type="button">OK</button>' +
