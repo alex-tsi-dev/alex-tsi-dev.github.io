@@ -43,36 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initTocScrollspy();
   initContactForm();
   initScrollToTop();
-
-  // Check for URL params to scroll to sections
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('action') === 'contact') {
-    // Wait a bit for page to render
-    setTimeout(function () {
-      smoothScrollToSection('#contact');
-    }, 300);
-  }
-
-  if (urlParams.get('action') === 'background') {
-    // Wait a bit for page to render
-    setTimeout(function () {
-      smoothScrollToSection('#background');
-    }, 300);
-  }
-
-  if (urlParams.get('action') === 'portfolio') {
-    // Wait a bit for page to render
-    setTimeout(function () {
-      smoothScrollToSection('#portfolio');
-    }, 300);
-  }
-
-  if (urlParams.get('action') === 'blog') {
-    // Wait a bit for page to render
-    setTimeout(function () {
-      smoothScrollToSection('#blog');
-    }, 300);
-  }
+  initActionScrollFromUrl();
 });
 
 function initConsentManager() {
@@ -696,14 +667,49 @@ function initSmoothScroll() {
   }
 }
 
-function smoothScrollToSection(href) {
+function initActionScrollFromUrl() {
+  const actionTargets = {
+    contact: '#contact',
+    background: '#background',
+    portfolio: '#portfolio',
+    blog: '#blog',
+  };
+  const urlParams = new URLSearchParams(window.location.search);
+  const action = urlParams.get('action');
+  const targetHref = actionTargets[action];
+
+  if (!targetHref) {
+    return;
+  }
+
+  // Wait a bit for page to render
+  setTimeout(function () {
+    smoothScrollToSection(targetHref, {
+      onComplete: function () {
+        replaceLandingUrlWithCleanRoot();
+      },
+    });
+  }, 300);
+}
+
+function smoothScrollToSection(href, options) {
   const targetId = href.substring(1);
   const targetSection = document.getElementById(targetId);
+  const scrollOptions = options || {};
+  const onComplete = scrollOptions.onComplete;
 
   if (targetSection) {
     const header = document.getElementById('header');
     const headerHeight = header ? header.offsetHeight : 0;
     const targetPosition = targetSection.offsetTop - headerHeight;
+
+    if (Math.abs(window.scrollY - targetPosition) <= 2) {
+      if (typeof onComplete === 'function') {
+        onComplete();
+      }
+
+      return;
+    }
 
     // Use smooth scroll with better browser support
     if ('scrollBehavior' in document.documentElement.style) {
@@ -711,14 +717,87 @@ function smoothScrollToSection(href) {
         top: targetPosition,
         behavior: 'smooth',
       });
+
+      waitForScrollCompletion(targetPosition, onComplete);
     } else {
       // Fallback for browsers that don't support smooth scroll
-      smoothScrollFallback(targetPosition);
+      smoothScrollFallback(targetPosition, onComplete);
     }
   }
 }
 
-function smoothScrollFallback(targetPosition) {
+function waitForScrollCompletion(targetPosition, onComplete) {
+  if (typeof onComplete !== 'function') {
+    return;
+  }
+
+  let isCompleted = false;
+
+  function complete() {
+    if (isCompleted) {
+      return;
+    }
+
+    isCompleted = true;
+    onComplete();
+  }
+
+  if ('onscrollend' in window || 'onscrollend' in document) {
+    const maxWaitTime = 1600;
+
+    function handleScrollEnd() {
+      document.removeEventListener('scrollend', handleScrollEnd);
+      window.clearTimeout(timeoutId);
+      complete();
+    }
+
+    const timeoutId = window.setTimeout(function () {
+      document.removeEventListener('scrollend', handleScrollEnd);
+      complete();
+    }, maxWaitTime);
+
+    document.addEventListener('scrollend', handleScrollEnd, { once: true });
+    return;
+  }
+
+  const maxWaitTime = 1600;
+  const tolerance = 2;
+  const stableThreshold = 1;
+  const stableFramesRequired = 4;
+  const startTime = performance.now();
+  let lastPosition = window.scrollY;
+  let stableFrames = 0;
+  let hasMoved = false;
+
+  function checkScrollPosition() {
+    const currentPosition = window.scrollY;
+    const movedBy = Math.abs(currentPosition - lastPosition);
+
+    if (movedBy > stableThreshold) {
+      hasMoved = true;
+      stableFrames = 0;
+    } else if (hasMoved) {
+      stableFrames += 1;
+    }
+
+    const reachedTarget =
+      Math.abs(currentPosition - targetPosition) <= tolerance;
+    const isStable = hasMoved && stableFrames >= stableFramesRequired;
+    const hasTimedOut = performance.now() - startTime >= maxWaitTime;
+
+    if ((hasMoved && (reachedTarget || isStable)) || hasTimedOut) {
+      complete();
+      return;
+    }
+
+    lastPosition = currentPosition;
+    window.requestAnimationFrame(checkScrollPosition);
+  }
+
+  window.requestAnimationFrame(checkScrollPosition);
+}
+
+function smoothScrollFallback(targetPosition, onComplete) {
   const startPosition = window.pageYOffset;
   const distance = targetPosition - startPosition;
   const duration = 800; // milliseconds
@@ -739,10 +818,35 @@ function smoothScrollFallback(targetPosition) {
 
     if (progress < duration) {
       window.requestAnimationFrame(step);
+    } else if (typeof onComplete === 'function') {
+      onComplete();
     }
   }
 
   window.requestAnimationFrame(step);
+}
+
+function getCleanLandingUrl() {
+  const cleanUrl = new URL(window.location.href);
+
+  cleanUrl.search = '';
+  cleanUrl.hash = '';
+
+  if (cleanUrl.pathname.endsWith('/index.html')) {
+    cleanUrl.pathname = cleanUrl.pathname.slice(0, -'index.html'.length);
+  }
+
+  return cleanUrl.pathname || '/';
+}
+
+function replaceLandingUrlWithCleanRoot() {
+  const currentUrl =
+    window.location.pathname + window.location.search + window.location.hash;
+  const cleanUrl = getCleanLandingUrl();
+
+  if (currentUrl !== cleanUrl) {
+    window.history.replaceState(window.history.state, document.title, cleanUrl);
+  }
 }
 
 function initActiveMenuItems() {
