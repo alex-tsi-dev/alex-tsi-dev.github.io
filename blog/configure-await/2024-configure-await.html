@@ -17,7 +17,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="../../css/style.39a846f929.css" />
+    <link rel="stylesheet" href="../../css/style.76e410d369.css" />
     <link rel="shortcut icon" type="image/png" href="../../img/favicon.png" />
 
     <title>ConfigureAwait(false) in .NET: Does It Really Boost Performance? | Alex TSI Blog</title>
@@ -218,7 +218,7 @@
                   <h2 id="simple-scenario">Simple Scenario</h2>
 
                   <p>
-                    The first test compares a basic HTTP GET request with and without <code>ConfigureAwait(false)</code>. This is the simplest possible async operation â€” a single network call.
+                    The first test compares a basic HTTP GET request with and without <code>ConfigureAwait(false)</code>. This is the simplest possible async operation &mdash; a single network call.
                   </p>
 
                   <p>
@@ -241,7 +241,7 @@
 }</code></pre>
 
                   <p>
-                    Both methods do exactly the same thing â€” download a page from example.com. The only difference is the <code>.ConfigureAwait(false)</code> call. You can find both methods in
+                    Both methods do exactly the same thing &mdash; download a page from example.com. The only difference is the <code>.ConfigureAwait(false)</code> call. You can find both methods in
                     <a href="https://github.com/devalex-tsi/ConfigureAwait/blob/master/ConfigureAwait/Program.cs" target="_blank" rel="noreferrer noopener">Program.cs</a> on GitHub.
                   </p>
 
@@ -291,7 +291,7 @@
 }</code></pre>
 
                   <p>
-                    The URLs used in this experiment were <code>https://www.wikipedia.org</code> and <code>https://www.github.com</code> â€” real-world pages with substantial HTML content.
+                    The URLs used in this experiment were <code>https://www.wikipedia.org</code> and <code>https://www.github.com</code> &mdash; real-world pages with substantial HTML content.
                   </p>
 
                   <h2 id="performance-measurement">Performance Measurement</h2>
@@ -372,7 +372,7 @@
                   </p>
 
                   <p>
-                    My recommendation: use <code>ConfigureAwait(false)</code> in library code and shared utilities â€” it's a good habit. But don't expect it to be a silver bullet for performance optimization. Profile your application, measure actual throughput, and focus on the real bottlenecks.
+                    My recommendation: use <code>ConfigureAwait(false)</code> in library code and shared utilities &mdash; it's a good habit. But don't expect it to be a silver bullet for performance optimization. Profile your application, measure actual throughput, and focus on the real bottlenecks.
                   </p>
 
                   <p>
@@ -456,22 +456,22 @@
             <p class="footer__eyebrow">Legal &amp; Support</p>
             <ul class="footer__links-list">
               <li class="footer__links-item">
-                <a class="footer__legal-link" href="../../terms/">Terms of Use</a>
+                <a class="footer__legal-link line-anim" href="../../terms/">Terms of Use</a>
               </li>
               <li class="footer__links-item">
-                <a class="footer__legal-link" href="../../privacy/">Privacy Policy</a>
+                <a class="footer__legal-link line-anim" href="../../privacy/">Privacy Policy</a>
               </li>
               <li class="footer__links-item">
-                <a class="footer__legal-link" href="../../cookies/">Cookies</a>
+                <a class="footer__legal-link line-anim" href="../../cookies/">Cookies</a>
               </li>
               <li class="footer__links-item">
-                <a class="footer__legal-link" href="../../support/">Support</a>
+                <a class="footer__legal-link line-anim" href="../../support/">Support</a>
               </li>
               <li class="footer__links-item">
-                <a class="footer__legal-link" href="../../legal/">Legal Notice</a>
+                <a class="footer__legal-link line-anim" href="../../legal/">Legal Notice</a>
               </li>
               <li class="footer__links-item footer__links-item--accent">
-                <button class="footer__settings-button" type="button" aria-haspopup="dialog">Cookie Settings</button>
+                <button class="footer__settings-button line-anim" type="button" aria-haspopup="dialog">Cookie Settings</button>
               </li>
             </ul>
           </div>
@@ -480,7 +480,7 @@
             <div class="footer__copyright">
               <p>&copy; 2015-2026 Alex TSI. All rights reserved</p>
             </div>
-            <a class="footer__totop-link" href="#" aria-label="Back to top">
+            <a class="footer__totop-link line-anim" href="#" aria-label="Back to top">
               <span>Back to top</span>
               <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
             </a>
