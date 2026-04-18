@@ -40,7 +40,12 @@ export function initSmoothScroll() {
 
       if (href.startsWith('#')) {
         e.preventDefault();
-        smoothScrollToSection(href);
+        applyContactPrefill(button);
+        smoothScrollToSection(href, {
+          onComplete: function () {
+            focusContactMessage(button);
+          },
+        });
       }
     });
   });
@@ -79,7 +84,12 @@ export function initSmoothScroll() {
 
       if (href.startsWith('#')) {
         e.preventDefault();
-        smoothScrollToSection(href);
+        applyContactPrefill(aboutButton);
+        smoothScrollToSection(href, {
+          onComplete: function () {
+            focusContactMessage(aboutButton);
+          },
+        });
       }
     });
   }
@@ -88,9 +98,11 @@ export function initSmoothScroll() {
 export function initActionScrollFromUrl() {
   const actionTargets = {
     contact: '#contact',
+    services: '#services',
     background: '#background',
     portfolio: '#portfolio',
     blog: '#blog',
+    faq: '#faq',
   };
   const urlParams = new URLSearchParams(window.location.search);
   const action = urlParams.get('action');
@@ -311,4 +323,42 @@ function replaceLandingUrlWithCleanRoot() {
   if (currentUrl !== cleanUrl) {
     window.history.replaceState(window.history.state, document.title, cleanUrl);
   }
+}
+
+function applyContactPrefill(element) {
+  const prefillText = element.getAttribute('data-contact-prefill');
+  const targetFieldId =
+    element.getAttribute('data-contact-target') || 'contact-message';
+
+  if (!prefillText) {
+    return;
+  }
+
+  const targetField = document.getElementById(targetFieldId);
+
+  if (!targetField) {
+    return;
+  }
+
+  targetField.value = prefillText;
+}
+
+function focusContactMessage(element) {
+  if (!element.hasAttribute('data-contact-prefill')) {
+    return;
+  }
+
+  const targetFieldId =
+    element.getAttribute('data-contact-target') || 'contact-message';
+  const targetField = document.getElementById(targetFieldId);
+
+  if (!targetField) {
+    return;
+  }
+
+  targetField.focus();
+  targetField.setSelectionRange(
+    targetField.value.length,
+    targetField.value.length
+  );
 }
