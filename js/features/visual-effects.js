@@ -158,7 +158,11 @@ export function initTiltEffect() {
     return;
   }
 
-  if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
+  const isTabPortOrBelow = window.matchMedia
+    ? window.matchMedia('(max-width: 56.25em)').matches
+    : window.innerWidth <= 900;
+
+  if (isTabPortOrBelow) {
     return;
   }
 

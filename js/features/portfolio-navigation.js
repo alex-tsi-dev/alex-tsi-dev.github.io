@@ -5,7 +5,11 @@ export function initPortfolioNav() {
     return;
   }
 
-  if (window.innerWidth < 1201) {
+  const isTabLandOrBelow = window.matchMedia
+    ? window.matchMedia('(max-width: 75em)').matches
+    : window.innerWidth <= 1200;
+
+  if (isTabLandOrBelow) {
     return;
   }
 
