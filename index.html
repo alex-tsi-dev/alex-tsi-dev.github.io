@@ -43,7 +43,7 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="css/vendor/animate.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-  <link rel="stylesheet" href="css/style.f108e3686d.css" />
+  <link rel="stylesheet" href="css/style.7258fc5052.css" />
   <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
 
   <title>Senior .NET &amp; DevOps Engineer for Backend-Heavy Products | Alex TSI</title>
@@ -170,7 +170,23 @@
           <img src="img/logo/logo-dark.svg" alt="Alex TSI" class="header__logo-dark" />
         </a>
       </div>
-      <nav class="header__nav">
+      <input
+        type="checkbox"
+        class="header__menu-checkbox"
+        id="header-menu-toggle"
+      />
+      <label
+        for="header-menu-toggle"
+        class="header__menu-button"
+        role="button"
+        aria-label="Toggle navigation"
+        aria-controls="header-navigation"
+        aria-expanded="false"
+      >
+        <span class="header__menu-icon" aria-hidden="true"></span>
+      </label>
+      <div class="header__menu-background"></div>
+      <nav class="header__nav" id="header-navigation" aria-label="Primary navigation">
         <ul class="header__menu">
           <li class="header__menu-item">
             <a href="#home" class="header__menu-link header__menu-link--active">Home</a>

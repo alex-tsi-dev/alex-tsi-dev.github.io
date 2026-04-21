@@ -3,6 +3,7 @@ import {
   initActionScrollFromUrl,
   initActiveMenuItems,
   initHeaderScroll,
+  initMobileMenuSupport,
   initScrollToTop,
   initSmoothScroll,
 } from './features/page-navigation.js';
@@ -21,6 +22,7 @@ import { initContactForm } from './features/contact-form.js';
 document.addEventListener('DOMContentLoaded', function () {
   initConsentManager();
   initHeaderScroll();
+  initMobileMenuSupport();
   initSmoothScroll();
   initActiveMenuItems();
   initParallax();

@@ -95,6 +95,48 @@ export function initSmoothScroll() {
   }
 }
 
+export function initMobileMenuSupport() {
+  const menuCheckbox = document.querySelector('.header__menu-checkbox');
+  const menuButton = document.querySelector('.header__menu-button');
+  const menuLinks = document.querySelectorAll('.header__menu-link');
+  const desktopBreakpoint = 900;
+
+  if (!menuCheckbox || !menuButton) {
+    return;
+  }
+
+  function syncMenuButtonState() {
+    menuButton.setAttribute(
+      'aria-expanded',
+      menuCheckbox.checked ? 'true' : 'false'
+    );
+  }
+
+  function closeMenu() {
+    if (!menuCheckbox.checked) {
+      syncMenuButtonState();
+      return;
+    }
+
+    menuCheckbox.checked = false;
+    syncMenuButtonState();
+  }
+
+  syncMenuButtonState();
+
+  menuCheckbox.addEventListener('change', syncMenuButtonState);
+
+  menuLinks.forEach(function (link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > desktopBreakpoint) {
+      closeMenu();
+    }
+  });
+}
+
 export function initActionScrollFromUrl() {
   const actionTargets = {
     contact: '#contact',
