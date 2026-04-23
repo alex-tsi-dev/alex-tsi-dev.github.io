@@ -1,7 +1,7 @@
 const HERO_MOBILE_QUERY = '(max-width: 37.5em)';
 const HERO_REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
-const HERO_MOBILE_MIN_SPEED = 10;
-const HERO_MOBILE_MAX_SPEED = 18;
+const HERO_MOBILE_MIN_SPEED = 5;
+const HERO_MOBILE_MAX_SPEED = 9;
 const HERO_MOBILE_MIN_DRIFT_DELAY = 4000;
 const HERO_MOBILE_MAX_DRIFT_DELAY = 7000;
 const HERO_MOBILE_MIN_DRIFT_ANGLE = 10;
@@ -9,12 +9,17 @@ const HERO_MOBILE_MAX_DRIFT_ANGLE = 18;
 const HERO_MOBILE_BOUNCE_VARIATION = 4.5;
 const HERO_MOBILE_MAX_FRAME_DELTA = 0.05;
 const HERO_MOBILE_ICON_SELECTORS = [
+  '.hero__icon--csharp',
   '.hero__icon--dotnet',
   '.hero__icon--azure',
   '.hero__icon--docker',
   '.hero__icon--kubernetes',
+  '.hero__icon--aws',
+  '.hero__icon--azuredevops',
+  '.hero__icon--devops',
   '.hero__icon--javascript',
   '.hero__icon--sql',
+  '.hero__icon--react',
 ];
 
 let heroParallaxInstance = null;
