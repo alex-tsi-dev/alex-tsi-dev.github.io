@@ -12,6 +12,7 @@ import {
   initMovingAnimation,
   initParallax,
   initProgressBars,
+  initRoleAutoReveal,
   initTiltEffect,
   initWowAnimations,
 } from './features/visual-effects.js';
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initMovingAnimation();
   initWowAnimations();
   initTiltEffect();
+  initRoleAutoReveal();
   initProgressBars();
   initPortfolioNav();
   initTocScrollspy();

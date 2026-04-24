@@ -1,5 +1,13 @@
 const HERO_MOBILE_QUERY = '(max-width: 37.5em)';
 const HERO_REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+const TILT_COMPACT_QUERY = '(max-width: 75em)';
+const ROLE_AUTO_REVEAL_QUERY = '(max-width: 75em)';
+const ROLE_AUTO_REVEAL_REDUCED_MOTION_QUERY =
+  '(prefers-reduced-motion: reduce)';
+const ROLE_AUTO_REVEAL_ACTIVE_DURATION = 2400;
+const ROLE_AUTO_REVEAL_GAP_DURATION = 1800;
+const ROLE_AUTO_REVEAL_IDLE_DURATION = 400;
+const ROLE_AUTO_REVEAL_VISIBILITY_THRESHOLD = 0.35;
 const HERO_MOBILE_MIN_SPEED = 5;
 const HERO_MOBILE_MAX_SPEED = 9;
 const HERO_MOBILE_MIN_DRIFT_DELAY = 4000;
@@ -28,6 +36,16 @@ let heroMotionMediaQuery = null;
 let heroReducedMotionMediaQuery = null;
 let heroMotionMediaQueryListener = null;
 let heroReducedMotionMediaQueryListener = null;
+let tiltCompactMediaQuery = null;
+let tiltCompactMediaQueryListener = null;
+let tiltControllerInitialized = false;
+let tiltEffectActive = false;
+let roleAutoRevealMediaQuery = null;
+let roleAutoRevealReducedMotionMediaQuery = null;
+let roleAutoRevealMediaQueryListener = null;
+let roleAutoRevealReducedMotionMediaQueryListener = null;
+let roleAutoRevealVisibilityListener = null;
+let roleAutoRevealInitialized = false;
 
 const heroMobileMotionState = {
   active: false,
@@ -40,6 +58,16 @@ const heroMobileMotionState = {
   isVisible: true,
   lastFrameTime: null,
   resizeHandler: null,
+};
+
+const roleAutoRevealState = {
+  active: false,
+  activeCard: null,
+  cards: [],
+  observer: null,
+  timerId: null,
+  visibleCards: new Set(),
+  nextCardIndex: 0,
 };
 
 export function initParallax() {
@@ -730,6 +758,57 @@ export function initWowAnimations() {
   }).init();
 }
 
+export function initRoleAutoReveal() {
+  const roleCards = document.querySelectorAll('.roles .role');
+
+  if (roleCards.length === 0) {
+    return;
+  }
+
+  roleAutoRevealState.cards = Array.from(roleCards);
+
+  if (!roleAutoRevealInitialized) {
+    roleAutoRevealInitialized = true;
+    roleAutoRevealMediaQuery = window.matchMedia
+      ? window.matchMedia(ROLE_AUTO_REVEAL_QUERY)
+      : null;
+    roleAutoRevealReducedMotionMediaQuery = window.matchMedia
+      ? window.matchMedia(ROLE_AUTO_REVEAL_REDUCED_MOTION_QUERY)
+      : null;
+
+    roleAutoRevealMediaQueryListener = function () {
+      syncRoleAutoRevealMode();
+    };
+    roleAutoRevealReducedMotionMediaQueryListener = function () {
+      syncRoleAutoRevealMode();
+    };
+    roleAutoRevealVisibilityListener = function () {
+      handleRoleAutoRevealVisibilityChange();
+    };
+
+    if (roleAutoRevealMediaQuery) {
+      addMediaQueryListener(
+        roleAutoRevealMediaQuery,
+        roleAutoRevealMediaQueryListener
+      );
+    }
+
+    if (roleAutoRevealReducedMotionMediaQuery) {
+      addMediaQueryListener(
+        roleAutoRevealReducedMotionMediaQuery,
+        roleAutoRevealReducedMotionMediaQueryListener
+      );
+    }
+
+    document.addEventListener(
+      'visibilitychange',
+      roleAutoRevealVisibilityListener
+    );
+  }
+
+  syncRoleAutoRevealMode();
+}
+
 export function initTiltEffect() {
   const tiltCards = document.querySelectorAll('.tilt-effect');
 
@@ -737,11 +816,265 @@ export function initTiltEffect() {
     return;
   }
 
-  const isTabPortOrBelow = window.matchMedia
-    ? window.matchMedia('(max-width: 56.25em)').matches
-    : window.innerWidth <= 900;
+  if (!tiltControllerInitialized) {
+    tiltControllerInitialized = true;
+    tiltCompactMediaQuery = window.matchMedia
+      ? window.matchMedia(TILT_COMPACT_QUERY)
+      : null;
 
-  if (isTabPortOrBelow) {
+    tiltCompactMediaQueryListener = function () {
+      syncTiltEffectMode();
+    };
+
+    if (tiltCompactMediaQuery) {
+      addMediaQueryListener(tiltCompactMediaQuery, tiltCompactMediaQueryListener);
+    }
+  }
+
+  syncTiltEffectMode();
+}
+
+function syncRoleAutoRevealMode() {
+  const state = roleAutoRevealState;
+
+  state.cards = Array.from(document.querySelectorAll('.roles .role'));
+
+  if (state.cards.length === 0) {
+    stopRoleAutoReveal();
+    return;
+  }
+
+  if (
+    !isRoleAutoRevealViewport()
+    || prefersRoleAutoRevealReducedMotion()
+  ) {
+    stopRoleAutoReveal();
+    return;
+  }
+
+  startRoleAutoReveal();
+}
+
+function startRoleAutoReveal() {
+  const state = roleAutoRevealState;
+
+  if (!state.active) {
+    state.active = true;
+    state.nextCardIndex = 0;
+  }
+
+  refreshRoleAutoRevealObserver();
+  restartRoleAutoRevealCycle();
+}
+
+function stopRoleAutoReveal() {
+  const state = roleAutoRevealState;
+
+  state.active = false;
+  clearRoleAutoRevealTimer();
+  deactivateRoleAutoRevealCard();
+
+  if (state.observer) {
+    state.observer.disconnect();
+    state.observer = null;
+  }
+
+  state.visibleCards.clear();
+}
+
+function refreshRoleAutoRevealObserver() {
+  const state = roleAutoRevealState;
+
+  if (!state.active) {
+    return;
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    state.visibleCards = new Set(state.cards);
+    return;
+  }
+
+  if (!state.observer) {
+    state.observer = new IntersectionObserver(handleRoleAutoRevealIntersection, {
+      threshold: [ROLE_AUTO_REVEAL_VISIBILITY_THRESHOLD],
+    });
+  } else {
+    state.observer.disconnect();
+  }
+
+  state.visibleCards.clear();
+
+  state.cards.forEach(function (card) {
+    state.observer.observe(card);
+  });
+}
+
+function handleRoleAutoRevealIntersection(entries) {
+  const state = roleAutoRevealState;
+  let shouldRestart = false;
+
+  entries.forEach(function (entry) {
+    const isVisible =
+      entry.isIntersecting
+      && entry.intersectionRatio >= ROLE_AUTO_REVEAL_VISIBILITY_THRESHOLD;
+
+    if (isVisible) {
+      state.visibleCards.add(entry.target);
+      return;
+    }
+
+    state.visibleCards.delete(entry.target);
+
+    if (state.activeCard === entry.target) {
+      shouldRestart = true;
+    }
+  });
+
+  if (shouldRestart) {
+    restartRoleAutoRevealCycle();
+    return;
+  }
+
+  if (state.active && state.timerId === null && !document.hidden) {
+    scheduleRoleAutoRevealCycle(0);
+  }
+}
+
+function handleRoleAutoRevealVisibilityChange() {
+  if (document.hidden) {
+    clearRoleAutoRevealTimer();
+    deactivateRoleAutoRevealCard();
+    return;
+  }
+
+  if (roleAutoRevealState.active) {
+    restartRoleAutoRevealCycle();
+  }
+}
+
+function restartRoleAutoRevealCycle() {
+  clearRoleAutoRevealTimer();
+  deactivateRoleAutoRevealCard();
+
+  if (!roleAutoRevealState.active || document.hidden) {
+    return;
+  }
+
+  scheduleRoleAutoRevealCycle(0);
+}
+
+function scheduleRoleAutoRevealCycle(delay) {
+  clearRoleAutoRevealTimer();
+
+  if (!roleAutoRevealState.active || document.hidden) {
+    return;
+  }
+
+  roleAutoRevealState.timerId = window.setTimeout(function () {
+    roleAutoRevealState.timerId = null;
+    runRoleAutoRevealCycle();
+  }, delay);
+}
+
+function runRoleAutoRevealCycle() {
+  const nextCard = getNextRoleAutoRevealCard();
+
+  if (!nextCard) {
+    scheduleRoleAutoRevealCycle(ROLE_AUTO_REVEAL_IDLE_DURATION);
+    return;
+  }
+
+  activateRoleAutoRevealCard(nextCard);
+
+  roleAutoRevealState.timerId = window.setTimeout(function () {
+    roleAutoRevealState.timerId = null;
+    deactivateRoleAutoRevealCard();
+    scheduleRoleAutoRevealCycle(ROLE_AUTO_REVEAL_GAP_DURATION);
+  }, ROLE_AUTO_REVEAL_ACTIVE_DURATION);
+}
+
+function getNextRoleAutoRevealCard() {
+  const state = roleAutoRevealState;
+  const totalCards = state.cards.length;
+
+  if (totalCards === 0 || state.visibleCards.size === 0) {
+    return null;
+  }
+
+  for (let offset = 0; offset < totalCards; offset += 1) {
+    const cardIndex = (state.nextCardIndex + offset) % totalCards;
+    const card = state.cards[cardIndex];
+
+    if (state.visibleCards.has(card)) {
+      state.nextCardIndex = (cardIndex + 1) % totalCards;
+      return card;
+    }
+  }
+
+  return null;
+}
+
+function activateRoleAutoRevealCard(card) {
+  deactivateRoleAutoRevealCard();
+  roleAutoRevealState.activeCard = card;
+  card.classList.add('role--auto-reveal');
+}
+
+function deactivateRoleAutoRevealCard() {
+  const activeCard = roleAutoRevealState.activeCard;
+
+  if (!activeCard) {
+    return;
+  }
+
+  activeCard.classList.remove('role--auto-reveal');
+  roleAutoRevealState.activeCard = null;
+}
+
+function clearRoleAutoRevealTimer() {
+  if (roleAutoRevealState.timerId === null) {
+    return;
+  }
+
+  window.clearTimeout(roleAutoRevealState.timerId);
+  roleAutoRevealState.timerId = null;
+}
+
+function isRoleAutoRevealViewport() {
+  if (roleAutoRevealMediaQuery) {
+    return roleAutoRevealMediaQuery.matches;
+  }
+
+  return window.innerWidth <= 1200;
+}
+
+function prefersRoleAutoRevealReducedMotion() {
+  if (roleAutoRevealReducedMotionMediaQuery) {
+    return roleAutoRevealReducedMotionMediaQuery.matches;
+  }
+
+  return window.matchMedia
+    ? window.matchMedia(ROLE_AUTO_REVEAL_REDUCED_MOTION_QUERY).matches
+    : false;
+}
+
+function syncTiltEffectMode() {
+  const tiltCards = document.querySelectorAll('.tilt-effect');
+
+  if (tiltCards.length === 0) {
+    return;
+  }
+
+  if (isTiltCompactViewport()) {
+    destroyTiltEffect(tiltCards);
+    return;
+  }
+
+  startTiltEffect(tiltCards);
+}
+
+function startTiltEffect(tiltCards) {
+  if (tiltEffectActive) {
     return;
   }
 
@@ -758,6 +1091,47 @@ export function initTiltEffect() {
     speed: 500,
     transition: true,
     glare: false,
+  });
+
+  setInitialTiltMousePositions(tiltCards);
+  tiltEffectActive = true;
+}
+
+function destroyTiltEffect(tiltCards) {
+  if (!tiltEffectActive) {
+    return;
+  }
+
+  if (
+    typeof jQuery === 'undefined'
+    || !jQuery.fn
+    || !jQuery.fn.tilt
+    || typeof jQuery.fn.tilt.destroy !== 'function'
+  ) {
+    tiltEffectActive = false;
+    return;
+  }
+
+  jQuery.fn.tilt.destroy.call(jQuery(tiltCards));
+  tiltEffectActive = false;
+}
+
+function isTiltCompactViewport() {
+  if (tiltCompactMediaQuery) {
+    return tiltCompactMediaQuery.matches;
+  }
+
+  return window.innerWidth <= 1200;
+}
+
+function setInitialTiltMousePositions(tiltCards) {
+  tiltCards.forEach(function (card) {
+    const rect = card.getBoundingClientRect();
+
+    card.mousePositions = {
+      x: rect.left + window.scrollX + rect.width / 2,
+      y: rect.top + window.scrollY + rect.height / 2,
+    };
   });
 }
 
