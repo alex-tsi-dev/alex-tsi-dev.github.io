@@ -744,6 +744,10 @@ export function initMovingAnimation() {
 }
 
 export function initWowAnimations() {
+  if (document.querySelector('.wow') === null) {
+    return;
+  }
+
   if (typeof WOW === 'undefined') {
     console.warn('WOW: Library not loaded. Skipping scroll animations.');
     return;
