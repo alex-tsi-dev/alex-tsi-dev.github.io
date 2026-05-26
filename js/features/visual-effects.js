@@ -1,5 +1,6 @@
 const HERO_MOBILE_QUERY = '(max-width: 37.5em)';
-const HERO_REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+const PROCESS_COMPACT_QUERY = '(max-width: 56.25em)';
+const PARALLAX_REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 const TILT_COMPACT_QUERY = '(max-width: 75em)';
 const ROLE_AUTO_REVEAL_QUERY = '(max-width: 75em)';
 const ROLE_AUTO_REVEAL_REDUCED_MOTION_QUERY =
@@ -29,13 +30,30 @@ const HERO_MOBILE_ICON_SELECTORS = [
   '.hero__icon--sql',
   '.hero__icon--react',
 ];
+const PARALLAX_SCENE_CONFIGS = [
+  {
+    key: 'hero',
+    sceneSelector: '#home .hero__avatar.parallax',
+    sectionSelector: '#home',
+    boundsSelector: '#home .hero__inner',
+    compactQuery: HERO_MOBILE_QUERY,
+    compactFallbackWidth: 600,
+    compactIconSelectors: HERO_MOBILE_ICON_SELECTORS,
+  },
+  {
+    key: 'process',
+    sceneSelector: '#process .hero__avatar--process.parallax',
+    sectionSelector: '#process',
+    boundsSelector: '#process .process__visual',
+    compactQuery: PROCESS_COMPACT_QUERY,
+    compactFallbackWidth: 900,
+    compactIconSelectors: HERO_MOBILE_ICON_SELECTORS,
+  },
+];
 
-let heroParallaxInstance = null;
-let heroMotionControllerInitialized = false;
-let heroMotionMediaQuery = null;
-let heroReducedMotionMediaQuery = null;
-let heroMotionMediaQueryListener = null;
-let heroReducedMotionMediaQueryListener = null;
+let parallaxSceneControllerInitialized = false;
+let parallaxReducedMotionMediaQuery = null;
+let parallaxReducedMotionMediaQueryListener = null;
 let tiltCompactMediaQuery = null;
 let tiltCompactMediaQueryListener = null;
 let tiltControllerInitialized = false;
@@ -47,18 +65,13 @@ let roleAutoRevealReducedMotionMediaQueryListener = null;
 let roleAutoRevealVisibilityListener = null;
 let roleAutoRevealInitialized = false;
 
-const heroMobileMotionState = {
-  active: false,
-  animationFrameId: null,
-  resizeFrameId: null,
-  intersectionObserver: null,
-  heroSection: null,
-  heroInner: null,
-  icons: [],
-  isVisible: true,
-  lastFrameTime: null,
-  resizeHandler: null,
-};
+const parallaxSceneStates = PARALLAX_SCENE_CONFIGS.reduce(function (
+  states,
+  config
+) {
+  states[config.key] = createParallaxSceneState();
+  return states;
+}, {});
 
 const roleAutoRevealState = {
   active: false,
@@ -71,44 +84,74 @@ const roleAutoRevealState = {
 };
 
 export function initParallax() {
-  const parallaxElement = getHeroParallaxScene();
+  const hasParallaxScene = PARALLAX_SCENE_CONFIGS.some(function (config) {
+    return getParallaxSceneElement(config) !== null;
+  });
 
-  if (!parallaxElement) {
+  if (!hasParallaxScene) {
     return;
   }
 
-  if (!heroMotionControllerInitialized) {
-    heroMotionControllerInitialized = true;
-    heroMotionMediaQuery = window.matchMedia
-      ? window.matchMedia(HERO_MOBILE_QUERY)
+  if (!parallaxSceneControllerInitialized) {
+    parallaxSceneControllerInitialized = true;
+    parallaxReducedMotionMediaQuery = window.matchMedia
+      ? window.matchMedia(PARALLAX_REDUCED_MOTION_QUERY)
       : null;
-    heroReducedMotionMediaQuery = window.matchMedia
-      ? window.matchMedia(HERO_REDUCED_MOTION_QUERY)
-      : null;
-
-    heroMotionMediaQueryListener = function () {
-      syncHeroMotionMode();
-    };
-    heroReducedMotionMediaQueryListener = function () {
-      syncHeroMotionMode();
+    parallaxReducedMotionMediaQueryListener = function () {
+      syncAllParallaxSceneModes();
     };
 
-    if (heroMotionMediaQuery) {
+    if (parallaxReducedMotionMediaQuery) {
       addMediaQueryListener(
-        heroMotionMediaQuery,
-        heroMotionMediaQueryListener
+        parallaxReducedMotionMediaQuery,
+        parallaxReducedMotionMediaQueryListener
       );
     }
 
-    if (heroReducedMotionMediaQuery) {
-      addMediaQueryListener(
-        heroReducedMotionMediaQuery,
-        heroReducedMotionMediaQueryListener
-      );
-    }
+    PARALLAX_SCENE_CONFIGS.forEach(function (config) {
+      const state = getParallaxSceneState(config);
+
+      state.compactMediaQuery = window.matchMedia
+        ? window.matchMedia(config.compactQuery)
+        : null;
+      state.compactMediaQueryListener = function () {
+        syncParallaxSceneMode(config);
+      };
+
+      if (state.compactMediaQuery) {
+        addMediaQueryListener(
+          state.compactMediaQuery,
+          state.compactMediaQueryListener
+        );
+      }
+    });
   }
 
-  syncHeroMotionMode();
+  syncAllParallaxSceneModes();
+}
+
+function createParallaxSceneState() {
+  return {
+    compactMediaQuery: null,
+    compactMediaQueryListener: null,
+    parallaxInstance: null,
+    motionState: createSceneMotionState(),
+  };
+}
+
+function createSceneMotionState() {
+  return {
+    active: false,
+    animationFrameId: null,
+    resizeFrameId: null,
+    intersectionObserver: null,
+    sectionElement: null,
+    boundsElement: null,
+    icons: [],
+    isVisible: true,
+    lastFrameTime: null,
+    resizeHandler: null,
+  };
 }
 
 function addMediaQueryListener(mediaQuery, listener) {
@@ -122,29 +165,45 @@ function addMediaQueryListener(mediaQuery, listener) {
   }
 }
 
-function syncHeroMotionMode() {
-  if (isHeroMobileViewport()) {
-    stopHeroParallax();
+function syncAllParallaxSceneModes() {
+  PARALLAX_SCENE_CONFIGS.forEach(function (config) {
+    syncParallaxSceneMode(config);
+  });
+}
 
-    if (prefersReducedMotion()) {
-      stopHeroMobileFloatingIcons();
-      clearHeroMobileTransforms();
-      return;
-    }
+function syncParallaxSceneMode(config) {
+  const parallaxElement = getParallaxSceneElement(config);
 
-    startHeroMobileFloatingIcons();
+  if (!parallaxElement) {
+    stopSceneParallax(config);
+    stopSceneFloatingIcons(config);
+    clearSceneTransforms(config);
     return;
   }
 
-  stopHeroMobileFloatingIcons();
-  clearHeroMobileTransforms();
-  startHeroParallax();
+  if (isSceneCompactViewport(config)) {
+    stopSceneParallax(config);
+
+    if (prefersReducedMotion()) {
+      stopSceneFloatingIcons(config);
+      clearSceneTransforms(config);
+      return;
+    }
+
+    startSceneFloatingIcons(config);
+    return;
+  }
+
+  stopSceneFloatingIcons(config);
+  clearSceneTransforms(config);
+  startSceneParallax(config);
 }
 
-function startHeroParallax() {
-  const parallaxElement = getHeroParallaxScene();
+function startSceneParallax(config) {
+  const parallaxElement = getParallaxSceneElement(config);
+  const state = getParallaxSceneState(config);
 
-  if (!parallaxElement || heroParallaxInstance) {
+  if (!parallaxElement || state.parallaxInstance) {
     return;
   }
 
@@ -156,9 +215,9 @@ function startHeroParallax() {
   }
 
   const layers = parallaxElement.getElementsByClassName('layer');
-  console.log('Parallax: Found layers', layers.length);
+  console.log('Parallax: Found layers for', config.key, layers.length);
 
-  heroParallaxInstance = new Parallax(parallaxElement, {
+  state.parallaxInstance = new Parallax(parallaxElement, {
     relativeInput: true,
     hoverOnly: false,
     calibrateX: true,
@@ -175,35 +234,43 @@ function startHeroParallax() {
     originY: 0.5,
   });
 
-  console.log('Parallax: Initialized successfully');
+  console.log('Parallax: Initialized successfully for', config.key);
 }
 
-function stopHeroParallax() {
-  if (!heroParallaxInstance) {
+function stopSceneParallax(config) {
+  const state = getParallaxSceneState(config);
+
+  if (!state.parallaxInstance) {
     return;
   }
 
-  heroParallaxInstance.destroy();
-  heroParallaxInstance = null;
+  state.parallaxInstance.destroy();
+  state.parallaxInstance = null;
 }
 
-function startHeroMobileFloatingIcons() {
-  const state = heroMobileMotionState;
-  const heroSection = getHeroSection();
-  const heroInner = getHeroInner();
-  const iconElements = getHeroMobileIconElements(heroInner);
+function startSceneFloatingIcons(config) {
+  const sceneState = getParallaxSceneState(config);
+  const motionState = sceneState.motionState;
+  const sectionElement = getSceneSection(config);
+  const boundsElement = getSceneBoundsElement(config);
+  const iconElements = getSceneCompactIconElements(config, boundsElement);
 
-  if (state.active || !heroSection || !heroInner || iconElements.length === 0) {
+  if (
+    motionState.active
+    || !sectionElement
+    || !boundsElement
+    || iconElements.length === 0
+  ) {
     return;
   }
 
-  state.active = true;
-  state.heroSection = heroSection;
-  state.heroInner = heroInner;
-  state.isVisible = true;
-  state.lastFrameTime = null;
-  state.icons = iconElements.map(function (element) {
-    const velocity = createHeroMobileVelocity();
+  motionState.active = true;
+  motionState.sectionElement = sectionElement;
+  motionState.boundsElement = boundsElement;
+  motionState.isVisible = true;
+  motionState.lastFrameTime = null;
+  motionState.icons = iconElements.map(function (element) {
+    const velocity = createSceneVelocity();
 
     return {
       element,
@@ -223,101 +290,103 @@ function startHeroMobileFloatingIcons() {
     };
   });
 
-  clearHeroMobileTransforms();
+  clearSceneTransforms(config);
 
-  state.animationFrameId = window.requestAnimationFrame(function (timestamp) {
-    state.animationFrameId = null;
+  motionState.animationFrameId = window.requestAnimationFrame(function (
+    timestamp
+  ) {
+    motionState.animationFrameId = null;
 
-    if (!state.active) {
+    if (!motionState.active) {
       return;
     }
 
-    recalculateHeroMobileIconLayout(false, timestamp);
-    setupHeroMobileResizeHandler();
-    setupHeroMobileIntersectionObserver();
+    recalculateSceneIconLayout(config, false, timestamp);
+    setupSceneResizeHandler(config);
+    setupSceneIntersectionObserver(config);
 
-    if (state.isVisible) {
-      startHeroMobileAnimationLoop();
+    if (motionState.isVisible) {
+      startSceneAnimationLoop(config);
     }
   });
 }
 
-function stopHeroMobileFloatingIcons() {
-  const state = heroMobileMotionState;
+function stopSceneFloatingIcons(config) {
+  const motionState = getParallaxSceneState(config).motionState;
 
-  state.active = false;
-  state.isVisible = true;
-  state.lastFrameTime = null;
+  motionState.active = false;
+  motionState.isVisible = true;
+  motionState.lastFrameTime = null;
 
-  if (state.animationFrameId !== null) {
-    window.cancelAnimationFrame(state.animationFrameId);
-    state.animationFrameId = null;
+  if (motionState.animationFrameId !== null) {
+    window.cancelAnimationFrame(motionState.animationFrameId);
+    motionState.animationFrameId = null;
   }
 
-  if (state.resizeFrameId !== null) {
-    window.cancelAnimationFrame(state.resizeFrameId);
-    state.resizeFrameId = null;
+  if (motionState.resizeFrameId !== null) {
+    window.cancelAnimationFrame(motionState.resizeFrameId);
+    motionState.resizeFrameId = null;
   }
 
-  if (state.intersectionObserver) {
-    state.intersectionObserver.disconnect();
-    state.intersectionObserver = null;
+  if (motionState.intersectionObserver) {
+    motionState.intersectionObserver.disconnect();
+    motionState.intersectionObserver = null;
   }
 
-  if (state.resizeHandler) {
-    window.removeEventListener('resize', state.resizeHandler);
-    window.removeEventListener('orientationchange', state.resizeHandler);
-    state.resizeHandler = null;
+  if (motionState.resizeHandler) {
+    window.removeEventListener('resize', motionState.resizeHandler);
+    window.removeEventListener('orientationchange', motionState.resizeHandler);
+    motionState.resizeHandler = null;
   }
 
-  state.icons.forEach(function (iconState) {
+  motionState.icons.forEach(function (iconState) {
     iconState.element.style.removeProperty('transform');
   });
 
-  state.heroSection = null;
-  state.heroInner = null;
-  state.icons = [];
+  motionState.sectionElement = null;
+  motionState.boundsElement = null;
+  motionState.icons = [];
 }
 
-function setupHeroMobileResizeHandler() {
-  const state = heroMobileMotionState;
+function setupSceneResizeHandler(config) {
+  const motionState = getParallaxSceneState(config).motionState;
 
-  if (state.resizeHandler) {
+  if (motionState.resizeHandler) {
     return;
   }
 
-  state.resizeHandler = function () {
-    if (!state.active || state.resizeFrameId !== null) {
+  motionState.resizeHandler = function () {
+    if (!motionState.active || motionState.resizeFrameId !== null) {
       return;
     }
 
-    state.resizeFrameId = window.requestAnimationFrame(function () {
-      state.resizeFrameId = null;
+    motionState.resizeFrameId = window.requestAnimationFrame(function () {
+      motionState.resizeFrameId = null;
 
-      if (!state.active) {
+      if (!motionState.active) {
         return;
       }
 
-      recalculateHeroMobileIconLayout(true, window.performance.now());
+      recalculateSceneIconLayout(config, true, window.performance.now());
     });
   };
 
-  window.addEventListener('resize', state.resizeHandler);
-  window.addEventListener('orientationchange', state.resizeHandler);
+  window.addEventListener('resize', motionState.resizeHandler);
+  window.addEventListener('orientationchange', motionState.resizeHandler);
 }
 
-function setupHeroMobileIntersectionObserver() {
-  const state = heroMobileMotionState;
+function setupSceneIntersectionObserver(config) {
+  const motionState = getParallaxSceneState(config).motionState;
 
   if (
-    !state.heroSection ||
-    state.intersectionObserver ||
-    !('IntersectionObserver' in window)
+    !motionState.sectionElement
+    || motionState.intersectionObserver
+    || !('IntersectionObserver' in window)
   ) {
     return;
   }
 
-  state.intersectionObserver = new IntersectionObserver(
+  motionState.intersectionObserver = new IntersectionObserver(
     function (entries) {
       const entry = entries[0];
 
@@ -325,12 +394,12 @@ function setupHeroMobileIntersectionObserver() {
         return;
       }
 
-      state.isVisible = entry.isIntersecting;
+      motionState.isVisible = entry.isIntersecting;
 
-      if (state.isVisible) {
-        startHeroMobileAnimationLoop();
+      if (motionState.isVisible) {
+        startSceneAnimationLoop(config);
       } else {
-        stopHeroMobileAnimationLoop();
+        stopSceneAnimationLoop(config);
       }
     },
     {
@@ -338,56 +407,62 @@ function setupHeroMobileIntersectionObserver() {
     }
   );
 
-  state.intersectionObserver.observe(state.heroSection);
+  motionState.intersectionObserver.observe(motionState.sectionElement);
 }
 
-function startHeroMobileAnimationLoop() {
-  const state = heroMobileMotionState;
+function startSceneAnimationLoop(config) {
+  const motionState = getParallaxSceneState(config).motionState;
 
-  if (!state.active || !state.isVisible || state.animationFrameId !== null) {
+  if (
+    !motionState.active
+    || !motionState.isVisible
+    || motionState.animationFrameId !== null
+  ) {
     return;
   }
 
-  state.animationFrameId = window.requestAnimationFrame(
-    stepHeroMobileFloatingIcons
-  );
+  motionState.animationFrameId = window.requestAnimationFrame(function (
+    timestamp
+  ) {
+    stepSceneFloatingIcons(config, timestamp);
+  });
 }
 
-function stopHeroMobileAnimationLoop() {
-  const state = heroMobileMotionState;
+function stopSceneAnimationLoop(config) {
+  const motionState = getParallaxSceneState(config).motionState;
 
-  if (state.animationFrameId !== null) {
-    window.cancelAnimationFrame(state.animationFrameId);
-    state.animationFrameId = null;
+  if (motionState.animationFrameId !== null) {
+    window.cancelAnimationFrame(motionState.animationFrameId);
+    motionState.animationFrameId = null;
   }
 
-  state.lastFrameTime = null;
+  motionState.lastFrameTime = null;
 }
 
-function stepHeroMobileFloatingIcons(timestamp) {
-  const state = heroMobileMotionState;
+function stepSceneFloatingIcons(config, timestamp) {
+  const motionState = getParallaxSceneState(config).motionState;
 
-  state.animationFrameId = null;
+  motionState.animationFrameId = null;
 
-  if (!state.active || !state.isVisible) {
+  if (!motionState.active || !motionState.isVisible) {
     return;
   }
 
-  if (state.lastFrameTime === null) {
-    state.lastFrameTime = timestamp;
+  if (motionState.lastFrameTime === null) {
+    motionState.lastFrameTime = timestamp;
   }
 
   const deltaSeconds = Math.min(
-    (timestamp - state.lastFrameTime) / 1000,
+    (timestamp - motionState.lastFrameTime) / 1000,
     HERO_MOBILE_MAX_FRAME_DELTA
   );
 
-  state.lastFrameTime = timestamp;
+  motionState.lastFrameTime = timestamp;
 
-  state.icons.forEach(function (iconState) {
+  motionState.icons.forEach(function (iconState) {
     if (timestamp >= iconState.nextDriftAt) {
-      applyHeroMobileRandomDrift(iconState);
-      iconState.nextDriftAt = getNextHeroMobileDriftTime(timestamp);
+      applySceneRandomDrift(iconState);
+      iconState.nextDriftAt = getNextSceneDriftTime(timestamp);
     }
 
     let nextX = iconState.x + iconState.vx * deltaSeconds;
@@ -408,64 +483,70 @@ function stepHeroMobileFloatingIcons(timestamp) {
     }
 
     if (hitX || hitY) {
-      applyHeroMobileBounceVariation(iconState, hitX, hitY);
+      applySceneBounceVariation(iconState, hitX, hitY);
     }
 
     iconState.x = clamp(nextX, iconState.minX, iconState.maxX);
     iconState.y = clamp(nextY, iconState.minY, iconState.maxY);
 
-    setHeroMobileIconTransform(iconState);
+    setSceneIconTransform(iconState);
   });
 
-  state.animationFrameId = window.requestAnimationFrame(
-    stepHeroMobileFloatingIcons
-  );
+  motionState.animationFrameId = window.requestAnimationFrame(function (
+    nextTimestamp
+  ) {
+    stepSceneFloatingIcons(config, nextTimestamp);
+  });
 }
 
-function recalculateHeroMobileIconLayout(preservePosition, timestamp) {
-  const state = heroMobileMotionState;
+function recalculateSceneIconLayout(config, preservePosition, timestamp) {
+  const motionState = getParallaxSceneState(config).motionState;
 
-  if (!state.active || !state.heroInner || state.icons.length === 0) {
+  if (
+    !motionState.active
+    || !motionState.boundsElement
+    || motionState.icons.length === 0
+  ) {
     return;
   }
 
-  const heroRect = state.heroInner.getBoundingClientRect();
+  const boundsRect = motionState.boundsElement.getBoundingClientRect();
 
-  if (heroRect.width === 0 || heroRect.height === 0) {
+  if (boundsRect.width === 0 || boundsRect.height === 0) {
     return;
   }
 
   const visualPositions = preservePosition
-    ? state.icons.map(function (iconState) {
+    ? motionState.icons.map(function (iconState) {
         const iconRect = iconState.element.getBoundingClientRect();
 
         return {
-          x: iconRect.left - heroRect.left,
-          y: iconRect.top - heroRect.top,
+          x: iconRect.left - boundsRect.left,
+          y: iconRect.top - boundsRect.top,
         };
       })
     : null;
 
-  state.icons.forEach(function (iconState) {
+  motionState.icons.forEach(function (iconState) {
     iconState.element.style.removeProperty('transform');
   });
 
-  state.icons.forEach(function (iconState, index) {
+  motionState.icons.forEach(function (iconState, index) {
     const baseRect = iconState.element.getBoundingClientRect();
 
-    iconState.baseX = baseRect.left - heroRect.left;
-    iconState.baseY = baseRect.top - heroRect.top;
+    iconState.baseX = baseRect.left - boundsRect.left;
+    iconState.baseY = baseRect.top - boundsRect.top;
     iconState.width = baseRect.width;
     iconState.height = baseRect.height;
     iconState.minX = -iconState.baseX;
     iconState.maxX = Math.max(
       iconState.minX,
-      heroRect.width - iconState.width - iconState.baseX
+      boundsRect.width - iconState.width - iconState.baseX
     );
     iconState.minY = -iconState.baseY;
     iconState.maxY = Math.max(
       iconState.minY,
-      heroRect.height - iconState.height - iconState.baseY
+      boundsRect.height - iconState.height - iconState.baseY
     );
 
     if (visualPositions) {
@@ -485,14 +566,14 @@ function recalculateHeroMobileIconLayout(preservePosition, timestamp) {
     }
 
     if (!iconState.nextDriftAt) {
-      iconState.nextDriftAt = getNextHeroMobileDriftTime(timestamp);
+      iconState.nextDriftAt = getNextSceneDriftTime(timestamp);
     }
 
-    setHeroMobileIconTransform(iconState);
+    setSceneIconTransform(iconState);
   });
 }
 
-function applyHeroMobileRandomDrift(iconState) {
+function applySceneRandomDrift(iconState) {
   const currentSpeed = getVectorMagnitude(iconState.vx, iconState.vy);
 
   if (currentSpeed === 0) {
@@ -512,7 +593,7 @@ function applyHeroMobileRandomDrift(iconState) {
   iconState.vy = Math.sin(nextAngle) * currentSpeed;
 }
 
-function applyHeroMobileBounceVariation(iconState, hitX, hitY) {
+function applySceneBounceVariation(iconState, hitX, hitY) {
   const currentSpeed = getVectorMagnitude(iconState.vx, iconState.vy);
 
   if (currentSpeed === 0) {
@@ -527,14 +608,14 @@ function applyHeroMobileBounceVariation(iconState, hitX, hitY) {
     iconState.vx += getRandomSignedBetween(1.5, HERO_MOBILE_BOUNCE_VARIATION);
   }
 
-  normalizeHeroMobileVelocity(iconState, currentSpeed);
+  normalizeSceneVelocity(iconState, currentSpeed);
 }
 
-function normalizeHeroMobileVelocity(iconState, targetSpeed) {
+function normalizeSceneVelocity(iconState, targetSpeed) {
   const currentSpeed = getVectorMagnitude(iconState.vx, iconState.vy);
 
   if (currentSpeed === 0) {
-    const velocity = createHeroMobileVelocity();
+    const velocity = createSceneVelocity();
     iconState.vx = velocity.vx;
     iconState.vy = velocity.vy;
     return;
@@ -545,7 +626,7 @@ function normalizeHeroMobileVelocity(iconState, targetSpeed) {
   iconState.vy *= scale;
 }
 
-function createHeroMobileVelocity() {
+function createSceneVelocity() {
   const speed = getRandomBetween(
     HERO_MOBILE_MIN_SPEED,
     HERO_MOBILE_MAX_SPEED
@@ -558,13 +639,15 @@ function createHeroMobileVelocity() {
   };
 }
 
-function clearHeroMobileTransforms() {
-  getHeroMobileIconElements(getHeroInner()).forEach(function (element) {
+function clearSceneTransforms(config) {
+  const boundsElement = getSceneBoundsElement(config);
+
+  getSceneCompactIconElements(config, boundsElement).forEach(function (element) {
     element.style.removeProperty('transform');
   });
 }
 
-function setHeroMobileIconTransform(iconState) {
+function setSceneIconTransform(iconState) {
   iconState.element.style.transform =
     'translate3d(' +
     iconState.x.toFixed(2) +
@@ -573,47 +656,57 @@ function setHeroMobileIconTransform(iconState) {
     'px, 0)';
 }
 
-function getHeroParallaxScene() {
-  return document.querySelector('#home .hero__avatar.parallax');
+function getParallaxSceneState(config) {
+  return parallaxSceneStates[config.key];
 }
 
-function getHeroSection() {
-  return document.querySelector('#home');
+function getParallaxSceneElement(config) {
+  return document.querySelector(config.sceneSelector);
 }
 
-function getHeroInner() {
-  return document.querySelector('#home .hero__inner');
+function getSceneSection(config) {
+  return document.querySelector(config.sectionSelector);
 }
 
-function getHeroMobileIconElements(heroInner) {
-  if (!heroInner) {
+function getSceneBoundsElement(config) {
+  return document.querySelector(config.boundsSelector);
+}
+
+function getSceneCompactIconElements(config, boundsElement) {
+  if (!boundsElement) {
     return [];
   }
 
-  return HERO_MOBILE_ICON_SELECTORS.map(function (selector) {
-    return heroInner.querySelector(selector);
-  }).filter(function (element) {
-    return element !== null;
-  });
+  return config.compactIconSelectors
+    .map(function (selector) {
+      return boundsElement.querySelector(selector);
+    })
+    .filter(function (element) {
+      return element !== null;
+    });
 }
 
-function isHeroMobileViewport() {
-  if (heroMotionMediaQuery) {
-    return heroMotionMediaQuery.matches;
+function isSceneCompactViewport(config) {
+  const state = getParallaxSceneState(config);
+
+  if (state.compactMediaQuery) {
+    return state.compactMediaQuery.matches;
   }
 
-  return window.innerWidth <= 600;
+  return window.innerWidth <= config.compactFallbackWidth;
 }
 
 function prefersReducedMotion() {
-  if (heroReducedMotionMediaQuery) {
-    return heroReducedMotionMediaQuery.matches;
+  if (parallaxReducedMotionMediaQuery) {
+    return parallaxReducedMotionMediaQuery.matches;
   }
 
-  return false;
+  return window.matchMedia
+    ? window.matchMedia(PARALLAX_REDUCED_MOTION_QUERY).matches
+    : false;
 }
 
-function getNextHeroMobileDriftTime(timestamp) {
+function getNextSceneDriftTime(timestamp) {
   return (
     timestamp +
     getRandomBetween(HERO_MOBILE_MIN_DRIFT_DELAY, HERO_MOBILE_MAX_DRIFT_DELAY)
