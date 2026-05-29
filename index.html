@@ -31,6 +31,15 @@
     content="Senior .NET and DevOps engineer for product teams, founders, startups, and businesses that need backend delivery, CI/CD, cloud infrastructure, and technical audits. Based in Poland and available for remote collaboration."
   />
   <meta name="twitter:image" content="https://alex-tsi.dev/img/hero/alex-left.png" />
+  <link
+    rel="preload"
+    as="image"
+    href="img/hero/alex-left-768.avif"
+    type="image/avif"
+    imagesrcset="img/hero/alex-left-432.avif 432w, img/hero/alex-left-768.avif 768w, img/hero/alex-left-1208.avif 1208w"
+    imagesizes="(max-width: 37.5em) 72vw, (max-width: 75em) 31vw, 370px"
+    fetchpriority="high"
+  />
 
   <link
     href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
@@ -43,7 +52,7 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="css/vendor/animate.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-  <link rel="stylesheet" href="css/style.439a2aa720.css" />
+  <link rel="stylesheet" href="css/style.cba2e0be4a.css" />
   <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
 
   <title>Senior .NET &amp; DevOps Engineer for Backend-Heavy Products | Alex TSI</title>
@@ -264,7 +273,27 @@
                   </div>
                   <div class="hero__avatar parallax" data-relative-input="true">
                       <div class="hero__avatar-main layer" data-depth="0.05">
-                          <img src="img/hero/alex-left.png" alt="Alex TSI" class="hero__avatar-image" />
+                          <picture class="hero__avatar-picture">
+                              <source
+                                  type="image/avif"
+                                  srcset="img/hero/alex-left-432.avif 432w, img/hero/alex-left-768.avif 768w, img/hero/alex-left-1208.avif 1208w"
+                                  sizes="(max-width: 37.5em) 72vw, (max-width: 75em) 31vw, 370px"
+                              />
+                              <source
+                                  type="image/webp"
+                                  srcset="img/hero/alex-left-432.webp 432w, img/hero/alex-left-768.webp 768w, img/hero/alex-left-1208.webp 1208w"
+                                  sizes="(max-width: 37.5em) 72vw, (max-width: 75em) 31vw, 370px"
+                              />
+                              <img
+                                  src="img/hero/alex-left.png"
+                                  alt="Alex TSI"
+                                  class="hero__avatar-image"
+                                  width="1208"
+                                  height="2216"
+                                  decoding="async"
+                                  fetchpriority="high"
+                              />
+                          </picture>
                       </div>
                       <!-- Technology Icons with Parallax -->
                       <span class="hero__icon hero__icon--csharp layer" data-depth="0.21">
@@ -1123,7 +1152,27 @@
               <div class="process__visual">
                   <div class="hero__avatar hero__avatar--process parallax" data-relative-input="true">
                       <div class="hero__avatar-main layer" data-depth="0.05">
-                          <img src="img/hero/alex-left.png" alt="Alex TSI" class="hero__avatar-image" />
+                          <picture class="hero__avatar-picture">
+                              <source
+                                  type="image/avif"
+                                  srcset="img/hero/alex-left-432.avif 432w, img/hero/alex-left-768.avif 768w, img/hero/alex-left-1208.avif 1208w"
+                                  sizes="(max-width: 37.5em) 42vw, (max-width: 56.25em) 40vw, 440px"
+                              />
+                              <source
+                                  type="image/webp"
+                                  srcset="img/hero/alex-left-432.webp 432w, img/hero/alex-left-768.webp 768w, img/hero/alex-left-1208.webp 1208w"
+                                  sizes="(max-width: 37.5em) 42vw, (max-width: 56.25em) 40vw, 440px"
+                              />
+                              <img
+                                  src="img/hero/alex-left.png"
+                                  alt="Alex TSI"
+                                  class="hero__avatar-image"
+                                  width="1208"
+                                  height="2216"
+                                  loading="lazy"
+                                  decoding="async"
+                              />
+                          </picture>
                       </div>
                       <span class="hero__icon hero__icon--csharp layer" data-depth="0.21">
                           <span class="hero__icon-inner">
