@@ -5,17 +5,33 @@ export function initHeaderScroll() {
     return;
   }
 
-  function handleScroll() {
-    if (window.scrollY > 100) {
-      header.classList.add('header--scrolled');
-    } else {
-      header.classList.remove('header--scrolled');
+  let scrollFrameId = null;
+  let isHeaderScrolled = null;
+
+  function updateHeaderState() {
+    scrollFrameId = null;
+
+    const shouldBeScrolled = window.scrollY > 100;
+
+    if (shouldBeScrolled === isHeaderScrolled) {
+      return;
     }
+
+    header.classList.toggle('header--scrolled', shouldBeScrolled);
+    isHeaderScrolled = shouldBeScrolled;
   }
 
-  handleScroll();
+  function requestHeaderUpdate() {
+    if (scrollFrameId !== null) {
+      return;
+    }
 
-  window.addEventListener('scroll', handleScroll);
+    scrollFrameId = window.requestAnimationFrame(updateHeaderState);
+  }
+
+  updateHeaderState();
+
+  window.addEventListener('scroll', requestHeaderUpdate, { passive: true });
 }
 
 export function initSmoothScroll() {
@@ -40,9 +56,9 @@ export function initSmoothScroll() {
 
       if (href.startsWith('#')) {
         e.preventDefault();
-        applyContactPrefill(button);
         smoothScrollToSection(href, {
           onComplete: function () {
+            applyContactPrefill(button);
             focusContactMessage(button);
           },
         });
@@ -84,9 +100,9 @@ export function initSmoothScroll() {
 
       if (href.startsWith('#')) {
         e.preventDefault();
-        applyContactPrefill(aboutButton);
         smoothScrollToSection(href, {
           onComplete: function () {
+            applyContactPrefill(aboutButton);
             focusContactMessage(aboutButton);
           },
         });
@@ -100,6 +116,7 @@ export function initMobileMenuSupport() {
   const menuButton = document.querySelector('.header__menu-button');
   const menuLinks = document.querySelectorAll('.header__menu-link');
   const desktopBreakpoint = 900;
+  let resizeFrameId = null;
 
   if (!menuCheckbox || !menuButton) {
     return;
@@ -131,9 +148,17 @@ export function initMobileMenuSupport() {
   });
 
   window.addEventListener('resize', function () {
-    if (window.innerWidth > desktopBreakpoint) {
-      closeMenu();
+    if (resizeFrameId !== null) {
+      return;
     }
+
+    resizeFrameId = window.requestAnimationFrame(function () {
+      resizeFrameId = null;
+
+      if (window.innerWidth > desktopBreakpoint) {
+        closeMenu();
+      }
+    });
   });
 }
 
@@ -164,34 +189,96 @@ export function initActionScrollFromUrl() {
 }
 
 export function initActiveMenuItems() {
-  const sections = document.querySelectorAll('section[id]');
-  const menuLinks = document.querySelectorAll('.header__menu-link');
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  const menuLinks = Array.from(document.querySelectorAll('.header__menu-link'));
 
-  window.addEventListener('scroll', function () {
-    let current = '';
+  if (sections.length === 0 || menuLinks.length === 0) {
+    return;
+  }
+
+  let sectionMetrics = [];
+  let activeSectionId = null;
+  let scrollFrameId = null;
+  let resizeFrameId = null;
+
+  function measureSections() {
     const header = document.getElementById('header');
     const headerHeight = header ? header.offsetHeight : 0;
 
-    sections.forEach(function (section) {
+    sectionMetrics = sections.map(function (section) {
       const sectionTop = section.offsetTop - headerHeight - 100;
-      const sectionHeight = section.offsetHeight;
 
-      if (
-        window.scrollY >= sectionTop &&
-        window.scrollY < sectionTop + sectionHeight
-      ) {
-        current = section.getAttribute('id');
-      }
+      return {
+        id: section.getAttribute('id'),
+        top: sectionTop,
+        bottom: sectionTop + section.offsetHeight,
+      };
     });
+  }
+
+  function setActiveMenuItem(nextSectionId) {
+    if (nextSectionId === activeSectionId) {
+      return;
+    }
+
+    activeSectionId = nextSectionId;
 
     menuLinks.forEach(function (link) {
-      link.classList.remove('header__menu-link--active');
       const href = link.getAttribute('href');
 
-      if (href === '#' + current) {
-        link.classList.add('header__menu-link--active');
+      link.classList.toggle(
+        'header__menu-link--active',
+        href === '#' + nextSectionId
+      );
+    });
+  }
+
+  function updateActiveMenuItem() {
+    scrollFrameId = null;
+
+    const scrollPosition = window.scrollY;
+    let current = '';
+
+    sectionMetrics.forEach(function (section) {
+      if (
+        scrollPosition >= section.top
+        && scrollPosition < section.bottom
+      ) {
+        current = section.id;
       }
     });
+
+    setActiveMenuItem(current);
+  }
+
+  function requestActiveMenuUpdate() {
+    if (scrollFrameId !== null) {
+      return;
+    }
+
+    scrollFrameId = window.requestAnimationFrame(updateActiveMenuItem);
+  }
+
+  function requestSectionMeasure() {
+    if (resizeFrameId !== null) {
+      return;
+    }
+
+    resizeFrameId = window.requestAnimationFrame(function () {
+      resizeFrameId = null;
+      measureSections();
+      requestActiveMenuUpdate();
+    });
+  }
+
+  measureSections();
+  updateActiveMenuItem();
+
+  window.addEventListener('load', requestSectionMeasure, { once: true });
+  window.addEventListener('resize', requestSectionMeasure);
+  window.addEventListener('orientationchange', requestSectionMeasure);
+  window.addEventListener('scroll', requestActiveMenuUpdate, {
+    passive: true,
   });
 }
 

@@ -168,7 +168,7 @@ export function initPortfolioNav() {
       });
       isScrolling = true;
     }
-  });
+  }, { passive: true });
 
   navLinks.forEach(function (link) {
     link.addEventListener('click', function (e) {

@@ -68,7 +68,7 @@ export function initTocScrollspy() {
       });
       isScrolling = true;
     }
-  });
+  }, { passive: true });
 
   tocLinks.forEach(function (link) {
     link.addEventListener('click', function (e) {

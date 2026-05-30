@@ -1,7 +1,9 @@
 const HERO_MOBILE_QUERY = '(max-width: 37.5em)';
 const PROCESS_COMPACT_QUERY = '(max-width: 56.25em)';
+const PARALLAX_SCRIPT_SRC = 'js/vendor/parallax.min.js';
 const PARALLAX_REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 const TILT_COMPACT_QUERY = '(max-width: 75em)';
+const TILT_REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 const ROLE_AUTO_REVEAL_QUERY = '(max-width: 75em)';
 const ROLE_AUTO_REVEAL_REDUCED_MOTION_QUERY =
   '(prefers-reduced-motion: reduce)';
@@ -17,6 +19,14 @@ const HERO_MOBILE_MIN_DRIFT_ANGLE = 10;
 const HERO_MOBILE_MAX_DRIFT_ANGLE = 18;
 const HERO_MOBILE_BOUNCE_VARIATION = 4.5;
 const HERO_MOBILE_MAX_FRAME_DELTA = 0.05;
+const TILT_MAX_ROTATION = 10;
+const TILT_PERSPECTIVE = 900;
+const TILT_SCALE = 1.02;
+const TILT_TRANSITION = 'transform 500ms cubic-bezier(.03,.98,.52,.99)';
+const WOW_PENDING_CLASS = 'wow--pending';
+const WOW_VISIBLE_CLASS = 'wow--visible';
+const WOW_ANIMATE_CLASS = 'animate__animated';
+const WOW_REVEAL_ROOT_MARGIN = '0px 0px -80px 0px';
 const HERO_MOBILE_ICON_SELECTORS = [
   '.hero__icon--csharp',
   '.hero__icon--dotnet',
@@ -54,10 +64,15 @@ const PARALLAX_SCENE_CONFIGS = [
 let parallaxSceneControllerInitialized = false;
 let parallaxReducedMotionMediaQuery = null;
 let parallaxReducedMotionMediaQueryListener = null;
+let parallaxScriptPromise = null;
 let tiltCompactMediaQuery = null;
+let tiltReducedMotionMediaQuery = null;
 let tiltCompactMediaQueryListener = null;
+let tiltReducedMotionMediaQueryListener = null;
 let tiltControllerInitialized = false;
-let tiltEffectActive = false;
+let tiltObserver = null;
+let tiltResizeHandler = null;
+let tiltResizeFrameId = null;
 let roleAutoRevealMediaQuery = null;
 let roleAutoRevealReducedMotionMediaQuery = null;
 let roleAutoRevealMediaQueryListener = null;
@@ -135,6 +150,10 @@ function createParallaxSceneState() {
     compactMediaQuery: null,
     compactMediaQueryListener: null,
     parallaxInstance: null,
+    parallaxLoadPending: false,
+    sectionElement: null,
+    sectionObserver: null,
+    isSectionVisible: false,
     motionState: createSceneMotionState(),
   };
 }
@@ -176,6 +195,7 @@ function syncParallaxSceneMode(config) {
 
   if (!parallaxElement) {
     stopSceneParallax(config);
+    stopSceneVisibilityObserver(config);
     stopSceneFloatingIcons(config);
     clearSceneTransforms(config);
     return;
@@ -183,6 +203,7 @@ function syncParallaxSceneMode(config) {
 
   if (isSceneCompactViewport(config)) {
     stopSceneParallax(config);
+    stopSceneVisibilityObserver(config);
 
     if (prefersReducedMotion()) {
       stopSceneFloatingIcons(config);
@@ -196,26 +217,63 @@ function syncParallaxSceneMode(config) {
 
   stopSceneFloatingIcons(config);
   clearSceneTransforms(config);
-  startSceneParallax(config);
+
+  if (prefersReducedMotion()) {
+    stopSceneParallax(config);
+    stopSceneVisibilityObserver(config);
+    return;
+  }
+
+  setupSceneVisibilityObserver(config);
+
+  if (isSceneVisible(config)) {
+    startSceneParallax(config);
+  } else {
+    stopSceneParallax(config);
+  }
 }
 
 function startSceneParallax(config) {
   const parallaxElement = getParallaxSceneElement(config);
   const state = getParallaxSceneState(config);
 
-  if (!parallaxElement || state.parallaxInstance) {
+  if (
+    !parallaxElement
+    || state.parallaxInstance
+    || state.parallaxLoadPending
+  ) {
     return;
   }
 
   if (typeof Parallax === 'undefined') {
-    console.error(
-      'Parallax: Library not loaded. Check if parallax-js is properly included.'
-    );
+    state.parallaxLoadPending = true;
+
+    loadParallaxLibrary()
+      .then(function () {
+        state.parallaxLoadPending = false;
+
+        if (shouldStartSceneParallax(config)) {
+          createSceneParallaxInstance(config);
+        }
+      })
+      .catch(function () {
+        state.parallaxLoadPending = false;
+        console.warn('Parallax: Library failed to load.');
+      });
+
     return;
   }
 
-  const layers = parallaxElement.getElementsByClassName('layer');
-  console.log('Parallax: Found layers for', config.key, layers.length);
+  createSceneParallaxInstance(config);
+}
+
+function createSceneParallaxInstance(config) {
+  const parallaxElement = getParallaxSceneElement(config);
+  const state = getParallaxSceneState(config);
+
+  if (!parallaxElement || state.parallaxInstance) {
+    return;
+  }
 
   state.parallaxInstance = new Parallax(parallaxElement, {
     relativeInput: true,
@@ -233,8 +291,6 @@ function startSceneParallax(config) {
     originX: 0.5,
     originY: 0.5,
   });
-
-  console.log('Parallax: Initialized successfully for', config.key);
 }
 
 function stopSceneParallax(config) {
@@ -246,6 +302,97 @@ function stopSceneParallax(config) {
 
   state.parallaxInstance.destroy();
   state.parallaxInstance = null;
+}
+
+function setupSceneVisibilityObserver(config) {
+  const state = getParallaxSceneState(config);
+  const sectionElement = getSceneSection(config);
+
+  if (!sectionElement) {
+    state.isSectionVisible = true;
+    return;
+  }
+
+  state.sectionElement = sectionElement;
+
+  if (!('IntersectionObserver' in window)) {
+    state.isSectionVisible = true;
+    return;
+  }
+
+  if (state.sectionObserver) {
+    return;
+  }
+
+  state.sectionObserver = new IntersectionObserver(
+    function (entries) {
+      const entry = entries[0];
+
+      if (!entry) {
+        return;
+      }
+
+      state.isSectionVisible = entry.isIntersecting;
+      syncParallaxSceneMode(config);
+    },
+    {
+      threshold: 0.05,
+    }
+  );
+
+  state.sectionObserver.observe(sectionElement);
+}
+
+function stopSceneVisibilityObserver(config) {
+  const state = getParallaxSceneState(config);
+
+  if (state.sectionObserver) {
+    state.sectionObserver.disconnect();
+    state.sectionObserver = null;
+  }
+
+  state.sectionElement = null;
+  state.isSectionVisible = false;
+}
+
+function isSceneVisible(config) {
+  const state = getParallaxSceneState(config);
+
+  if (!('IntersectionObserver' in window)) {
+    return true;
+  }
+
+  return state.isSectionVisible;
+}
+
+function shouldStartSceneParallax(config) {
+  return (
+    getParallaxSceneElement(config) !== null
+    && !isSceneCompactViewport(config)
+    && !prefersReducedMotion()
+    && isSceneVisible(config)
+  );
+}
+
+function loadParallaxLibrary() {
+  if (typeof Parallax !== 'undefined') {
+    return Promise.resolve();
+  }
+
+  if (!parallaxScriptPromise) {
+    parallaxScriptPromise = new Promise(function (resolve, reject) {
+      const script = document.createElement('script');
+
+      script.src = PARALLAX_SCRIPT_SRC;
+      script.async = true;
+      script.onload = resolve;
+      script.onerror = reject;
+
+      document.head.appendChild(script);
+    });
+  }
+
+  return parallaxScriptPromise;
 }
 
 function startSceneFloatingIcons(config) {
@@ -301,7 +448,7 @@ function startSceneFloatingIcons(config) {
       return;
     }
 
-    recalculateSceneIconLayout(config, false, timestamp);
+    recalculateSceneIconLayout(config, timestamp);
     setupSceneResizeHandler(config);
     setupSceneIntersectionObserver(config);
 
@@ -367,7 +514,7 @@ function setupSceneResizeHandler(config) {
         return;
       }
 
-      recalculateSceneIconLayout(config, true, window.performance.now());
+      recalculateSceneIconLayout(config, window.performance.now());
     });
   };
 
@@ -499,7 +646,7 @@ function stepSceneFloatingIcons(config, timestamp) {
   });
 }
 
-function recalculateSceneIconLayout(config, preservePosition, timestamp) {
+function recalculateSceneIconLayout(config, timestamp) {
   const motionState = getParallaxSceneState(config).motionState;
 
   if (
@@ -510,60 +657,36 @@ function recalculateSceneIconLayout(config, preservePosition, timestamp) {
     return;
   }
 
-  const boundsRect = motionState.boundsElement.getBoundingClientRect();
+  const boundsWidth = motionState.boundsElement.clientWidth;
+  const boundsHeight = motionState.boundsElement.clientHeight;
 
-  if (boundsRect.width === 0 || boundsRect.height === 0) {
+  if (boundsWidth === 0 || boundsHeight === 0) {
     return;
   }
 
-  const visualPositions = preservePosition
-    ? motionState.icons.map(function (iconState) {
-        const iconRect = iconState.element.getBoundingClientRect();
-
-        return {
-          x: iconRect.left - boundsRect.left,
-          y: iconRect.top - boundsRect.top,
-        };
-      })
-    : null;
-
   motionState.icons.forEach(function (iconState) {
-    iconState.element.style.removeProperty('transform');
-  });
+    const layout = getElementLayoutWithinBounds(
+      iconState.element,
+      motionState.boundsElement
+    );
 
-  motionState.icons.forEach(function (iconState, index) {
-    const baseRect = iconState.element.getBoundingClientRect();
-
-    iconState.baseX = baseRect.left - boundsRect.left;
-    iconState.baseY = baseRect.top - boundsRect.top;
-    iconState.width = baseRect.width;
-    iconState.height = baseRect.height;
+    iconState.baseX = layout.x;
+    iconState.baseY = layout.y;
+    iconState.width = layout.width;
+    iconState.height = layout.height;
     iconState.minX = -iconState.baseX;
     iconState.maxX = Math.max(
       iconState.minX,
-      boundsRect.width - iconState.width - iconState.baseX
+      boundsWidth - iconState.width - iconState.baseX
     );
     iconState.minY = -iconState.baseY;
     iconState.maxY = Math.max(
       iconState.minY,
-      boundsRect.height - iconState.height - iconState.baseY
+      boundsHeight - iconState.height - iconState.baseY
     );
 
-    if (visualPositions) {
-      iconState.x = clamp(
-        visualPositions[index].x - iconState.baseX,
-        iconState.minX,
-        iconState.maxX
-      );
-      iconState.y = clamp(
-        visualPositions[index].y - iconState.baseY,
-        iconState.minY,
-        iconState.maxY
-      );
-    } else {
-      iconState.x = clamp(iconState.x, iconState.minX, iconState.maxX);
-      iconState.y = clamp(iconState.y, iconState.minY, iconState.maxY);
-    }
+    iconState.x = clamp(iconState.x, iconState.minX, iconState.maxX);
+    iconState.y = clamp(iconState.y, iconState.minY, iconState.maxY);
 
     if (!iconState.nextDriftAt) {
       iconState.nextDriftAt = getNextSceneDriftTime(timestamp);
@@ -571,6 +694,37 @@ function recalculateSceneIconLayout(config, preservePosition, timestamp) {
 
     setSceneIconTransform(iconState);
   });
+}
+
+function getElementLayoutWithinBounds(element, boundsElement) {
+  let x = 0;
+  let y = 0;
+  let currentElement = element;
+
+  while (currentElement && currentElement !== boundsElement) {
+    x += currentElement.offsetLeft;
+    y += currentElement.offsetTop;
+    currentElement = currentElement.offsetParent;
+  }
+
+  if (currentElement !== boundsElement) {
+    const elementRect = element.getBoundingClientRect();
+    const boundsRect = boundsElement.getBoundingClientRect();
+
+    return {
+      x: elementRect.left - boundsRect.left,
+      y: elementRect.top - boundsRect.top,
+      width: elementRect.width,
+      height: elementRect.height,
+    };
+  }
+
+  return {
+    x,
+    y,
+    width: element.offsetWidth,
+    height: element.offsetHeight,
+  };
 }
 
 function applySceneRandomDrift(iconState) {
@@ -792,67 +946,140 @@ export function initAnimatedText() {
 }
 
 export function initMovingAnimation() {
-  const elements = document.querySelectorAll('.moving_effect');
+  const elements = Array.from(document.querySelectorAll('.moving_effect'));
 
   if (elements.length === 0) {
     return;
   }
 
-  function updateElementPosition(element) {
-    const direction = element.getAttribute('data-direction');
-    const reverse = element.getAttribute('data-reverse') === 'yes';
-    const offset = window.pageYOffset || window.scrollY;
-    const h = window.innerHeight;
-    const rect = element.getBoundingClientRect();
-    const elementTop = rect.top + offset;
-    let i = elementTop - offset - h;
+  const elementStates = elements.map(function (element) {
+    return {
+      element,
+      direction: element.getAttribute('data-direction'),
+      reverse: element.getAttribute('data-reverse') === 'yes',
+      top: 0,
+    };
+  });
+  let viewportHeight = window.innerHeight;
+  let scrollFrameId = null;
+  let resizeFrameId = null;
 
-    if (reverse) {
-      i *= -1;
-    }
-
-    let x = direction === 'x' ? (i * 70) / h : 0;
-    let y = direction === 'x' ? 0 : (i * 70) / h;
-
-    if (reverse) {
-      i *= -1;
-    }
-
-    if (i * -1 < h + 300 && i < 300) {
-      element.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0px)';
-    }
+  function measureElementPositions() {
+    elementStates.forEach(function (state) {
+      state.top = getElementDocumentTop(state.element);
+    });
   }
 
-  window.addEventListener('scroll', function () {
-    elements.forEach(function (element) {
-      updateElementPosition(element);
+  function updateElementPositions() {
+    scrollFrameId = null;
+
+    const offset = window.pageYOffset || window.scrollY;
+
+    elementStates.forEach(function (state) {
+      let i = state.top - offset - viewportHeight;
+
+      if (state.reverse) {
+        i *= -1;
+      }
+
+      const x = state.direction === 'x' ? (i * 70) / viewportHeight : 0;
+      const y = state.direction === 'x' ? 0 : (i * 70) / viewportHeight;
+
+      if (state.reverse) {
+        i *= -1;
+      }
+
+      if (i * -1 < viewportHeight + 300 && i < 300) {
+        state.element.style.transform =
+          'translate3d(' + x + 'px, ' + y + 'px, 0px)';
+      }
     });
-  });
+  }
 
-  elements.forEach(function (element) {
-    updateElementPosition(element);
-  });
+  function requestPositionUpdate() {
+    if (scrollFrameId !== null) {
+      return;
+    }
 
-  console.log('Moving animation: Initialized successfully');
+    scrollFrameId = window.requestAnimationFrame(updateElementPositions);
+  }
+
+  function requestPositionMeasure() {
+    if (resizeFrameId !== null) {
+      return;
+    }
+
+    resizeFrameId = window.requestAnimationFrame(function () {
+      resizeFrameId = null;
+      viewportHeight = window.innerHeight;
+      measureElementPositions();
+      requestPositionUpdate();
+    });
+  }
+
+  measureElementPositions();
+  updateElementPositions();
+
+  window.addEventListener('scroll', requestPositionUpdate, {
+    passive: true,
+  });
+  window.addEventListener('resize', requestPositionMeasure);
+  window.addEventListener('orientationchange', requestPositionMeasure);
 }
 
 export function initWowAnimations() {
-  if (document.querySelector('.wow') === null) {
+  const elements = Array.from(document.querySelectorAll('.wow'));
+
+  if (elements.length === 0) {
     return;
   }
 
-  if (typeof WOW === 'undefined') {
-    console.warn('WOW: Library not loaded. Skipping scroll animations.');
+  elements.forEach(function (element) {
+    element.classList.add(WOW_PENDING_CLASS);
+  });
+
+  if (!('IntersectionObserver' in window)) {
+    elements.forEach(revealWowElement);
     return;
   }
 
-  new WOW({
-    boxClass: 'wow',
-    animateClass: 'animate__animated',
-    offset: 80,
-    mobile: true,
-    live: true,
-  }).init();
+  const observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        revealWowElement(entry.target);
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      rootMargin: WOW_REVEAL_ROOT_MARGIN,
+      threshold: 0,
+    }
+  );
+
+  elements.forEach(function (element) {
+    observer.observe(element);
+  });
+}
+
+function getElementDocumentTop(element) {
+  let top = 0;
+  let currentElement = element;
+
+  while (currentElement) {
+    top += currentElement.offsetTop;
+    currentElement = currentElement.offsetParent;
+  }
+
+  return top;
+}
+
+function revealWowElement(element) {
+  element.classList.remove(WOW_PENDING_CLASS);
+  element.classList.add(WOW_VISIBLE_CLASS, WOW_ANIMATE_CLASS);
 }
 
 export function initRoleAutoReveal() {
@@ -918,13 +1145,26 @@ export function initTiltEffect() {
     tiltCompactMediaQuery = window.matchMedia
       ? window.matchMedia(TILT_COMPACT_QUERY)
       : null;
+    tiltReducedMotionMediaQuery = window.matchMedia
+      ? window.matchMedia(TILT_REDUCED_MOTION_QUERY)
+      : null;
 
     tiltCompactMediaQueryListener = function () {
+      syncTiltEffectMode();
+    };
+    tiltReducedMotionMediaQueryListener = function () {
       syncTiltEffectMode();
     };
 
     if (tiltCompactMediaQuery) {
       addMediaQueryListener(tiltCompactMediaQuery, tiltCompactMediaQueryListener);
+    }
+
+    if (tiltReducedMotionMediaQuery) {
+      addMediaQueryListener(
+        tiltReducedMotionMediaQuery,
+        tiltReducedMotionMediaQueryListener
+      );
     }
   }
 
@@ -1156,13 +1396,14 @@ function prefersRoleAutoRevealReducedMotion() {
 }
 
 function syncTiltEffectMode() {
-  const tiltCards = document.querySelectorAll('.tilt-effect');
+  const tiltCards = Array.from(document.querySelectorAll('.tilt-effect'));
 
   if (tiltCards.length === 0) {
+    destroyTiltEffect([]);
     return;
   }
 
-  if (isTiltCompactViewport()) {
+  if (isTiltCompactViewport() || prefersTiltReducedMotion()) {
     destroyTiltEffect(tiltCards);
     return;
   }
@@ -1171,46 +1412,231 @@ function syncTiltEffectMode() {
 }
 
 function startTiltEffect(tiltCards) {
-  if (tiltEffectActive) {
+  setupTiltResizeHandler();
+
+  if (!('IntersectionObserver' in window)) {
+    tiltCards.forEach(startTiltCard);
     return;
   }
 
-  if (typeof jQuery === 'undefined' || !jQuery.fn || !jQuery.fn.tilt) {
-    console.warn('Tilt: Library not loaded. Skipping tilt effects.');
-    return;
+  if (tiltObserver) {
+    tiltObserver.disconnect();
   }
 
-  jQuery(tiltCards).tilt({
-    maxTilt: 10,
-    perspective: 900,
-    scale: 1.02,
-    easing: 'cubic-bezier(.03,.98,.52,.99)',
-    speed: 500,
-    transition: true,
-    glare: false,
+  tiltObserver = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          startTiltCard(entry.target);
+          return;
+        }
+
+        stopTiltCard(entry.target);
+      });
+    },
+    {
+      threshold: 0.1,
+    }
+  );
+
+  tiltCards.forEach(function (card) {
+    tiltObserver.observe(card);
   });
-
-  setInitialTiltMousePositions(tiltCards);
-  tiltEffectActive = true;
 }
 
 function destroyTiltEffect(tiltCards) {
-  if (!tiltEffectActive) {
+  if (tiltObserver) {
+    tiltObserver.disconnect();
+    tiltObserver = null;
+  }
+
+  teardownTiltResizeHandler();
+
+  tiltCards.forEach(function (card) {
+    stopTiltCard(card);
+  });
+}
+
+function startTiltCard(card) {
+  if (card.tiltEffectState) {
     return;
   }
 
-  if (
-    typeof jQuery === 'undefined'
-    || !jQuery.fn
-    || !jQuery.fn.tilt
-    || typeof jQuery.fn.tilt.destroy !== 'function'
-  ) {
-    tiltEffectActive = false;
+  const state = createTiltCardState(card);
+
+  card.tiltEffectState = state;
+  card.addEventListener('pointerenter', state.handlePointerEnter, {
+    passive: true,
+  });
+  card.addEventListener('pointermove', state.handlePointerMove, {
+    passive: true,
+  });
+  card.addEventListener('pointerleave', state.handlePointerLeave, {
+    passive: true,
+  });
+}
+
+function stopTiltCard(card) {
+  const state = card.tiltEffectState;
+
+  if (!state) {
     return;
   }
 
-  jQuery.fn.tilt.destroy.call(jQuery(tiltCards));
-  tiltEffectActive = false;
+  card.removeEventListener('pointerenter', state.handlePointerEnter);
+  card.removeEventListener('pointermove', state.handlePointerMove);
+  card.removeEventListener('pointerleave', state.handlePointerLeave);
+
+  if (state.frameId !== null) {
+    window.cancelAnimationFrame(state.frameId);
+  }
+
+  if (state.resetTimerId !== null) {
+    window.clearTimeout(state.resetTimerId);
+  }
+
+  card.style.removeProperty('transform');
+  card.style.removeProperty('transition');
+  card.style.removeProperty('will-change');
+  card.tiltEffectState = null;
+}
+
+function createTiltCardState(card) {
+  const state = {
+    frameId: null,
+    rect: null,
+    pointerX: 0,
+    pointerY: 0,
+    resetTimerId: null,
+    handlePointerEnter: null,
+    handlePointerMove: null,
+    handlePointerLeave: null,
+  };
+
+  state.handlePointerEnter = function (event) {
+    state.rect = card.getBoundingClientRect();
+    card.style.willChange = 'transform';
+    card.style.transition = TILT_TRANSITION;
+    updateTiltCardFromPointer(card, state, event);
+  };
+
+  state.handlePointerMove = function (event) {
+    updateTiltCardFromPointer(card, state, event);
+  };
+
+  state.handlePointerLeave = function () {
+    resetTiltCard(card, state);
+  };
+
+  return state;
+}
+
+function updateTiltCardFromPointer(card, state, event) {
+  state.pointerX = event.clientX;
+  state.pointerY = event.clientY;
+
+  if (state.frameId !== null) {
+    return;
+  }
+
+  state.frameId = window.requestAnimationFrame(function () {
+    state.frameId = null;
+    applyTiltCardTransform(card, state);
+  });
+}
+
+function applyTiltCardTransform(card, state) {
+  if (!state.rect) {
+    state.rect = card.getBoundingClientRect();
+  }
+
+  const percentageX = (state.pointerX - state.rect.left) / state.rect.width;
+  const percentageY = (state.pointerY - state.rect.top) / state.rect.height;
+  const rotateX = (0.5 - percentageY) * TILT_MAX_ROTATION;
+  const rotateY = (percentageX - 0.5) * TILT_MAX_ROTATION;
+
+  card.style.transform =
+    'perspective(' +
+    TILT_PERSPECTIVE +
+    'px) rotateX(' +
+    rotateX.toFixed(2) +
+    'deg) rotateY(' +
+    rotateY.toFixed(2) +
+    'deg) scale3d(' +
+    TILT_SCALE +
+    ', ' +
+    TILT_SCALE +
+    ', ' +
+    TILT_SCALE +
+    ')';
+}
+
+function resetTiltCard(card, state) {
+  if (state.frameId !== null) {
+    window.cancelAnimationFrame(state.frameId);
+    state.frameId = null;
+  }
+
+  if (state.resetTimerId !== null) {
+    window.clearTimeout(state.resetTimerId);
+  }
+
+  state.rect = null;
+  card.style.transition = TILT_TRANSITION;
+  card.style.transform =
+    'perspective(' +
+    TILT_PERSPECTIVE +
+    'px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+  state.resetTimerId = window.setTimeout(function () {
+    card.style.removeProperty('will-change');
+    card.style.removeProperty('transition');
+    state.resetTimerId = null;
+  }, 500);
+}
+
+function setupTiltResizeHandler() {
+  if (tiltResizeHandler) {
+    return;
+  }
+
+  tiltResizeHandler = function () {
+    if (tiltResizeFrameId !== null) {
+      return;
+    }
+
+    tiltResizeFrameId = window.requestAnimationFrame(function () {
+      tiltResizeFrameId = null;
+      resetTiltMeasurements();
+    });
+  };
+
+  window.addEventListener('resize', tiltResizeHandler);
+  window.addEventListener('orientationchange', tiltResizeHandler);
+}
+
+function teardownTiltResizeHandler() {
+  if (!tiltResizeHandler) {
+    return;
+  }
+
+  window.removeEventListener('resize', tiltResizeHandler);
+  window.removeEventListener('orientationchange', tiltResizeHandler);
+  tiltResizeHandler = null;
+
+  if (tiltResizeFrameId !== null) {
+    window.cancelAnimationFrame(tiltResizeFrameId);
+    tiltResizeFrameId = null;
+  }
+}
+
+function resetTiltMeasurements() {
+  const activeCards = document.querySelectorAll('.tilt-effect');
+
+  activeCards.forEach(function (card) {
+    if (card.tiltEffectState) {
+      card.tiltEffectState.rect = null;
+    }
+  });
 }
 
 function isTiltCompactViewport() {
@@ -1221,15 +1647,14 @@ function isTiltCompactViewport() {
   return window.innerWidth <= 1200;
 }
 
-function setInitialTiltMousePositions(tiltCards) {
-  tiltCards.forEach(function (card) {
-    const rect = card.getBoundingClientRect();
+function prefersTiltReducedMotion() {
+  if (tiltReducedMotionMediaQuery) {
+    return tiltReducedMotionMediaQuery.matches;
+  }
 
-    card.mousePositions = {
-      x: rect.left + window.scrollX + rect.width / 2,
-      y: rect.top + window.scrollY + rect.height / 2,
-    };
-  });
+  return window.matchMedia
+    ? window.matchMedia(TILT_REDUCED_MOTION_QUERY).matches
+    : false;
 }
 
 export function initProgressBars() {
@@ -1279,29 +1704,46 @@ export function initProgressBars() {
 
     observer.observe(skillsSection);
   } else {
+    let scrollFrameId = null;
+
+    function openProgressBars() {
+      progressItems.forEach(function (item) {
+        const value = parseInt(item.getAttribute('data-value'), 10);
+        const barWrap = item.querySelector('.skills__progress-bar');
+        const barInner = item.querySelector('.skills__progress-bar-inner');
+
+        if (barWrap && barInner && !barWrap.classList.contains('open')) {
+          barInner.style.width = value + '%';
+          setTimeout(function () {
+            barWrap.classList.add('open');
+          }, 100);
+        }
+      });
+    }
+
     function checkViewport() {
+      scrollFrameId = null;
+
       const rect = skillsSection.getBoundingClientRect();
       const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
       if (isVisible) {
-        progressItems.forEach(function (item) {
-          const value = parseInt(item.getAttribute('data-value'), 10);
-          const barWrap = item.querySelector('.skills__progress-bar');
-          const barInner = item.querySelector('.skills__progress-bar-inner');
-
-          if (barWrap && barInner && !barWrap.classList.contains('open')) {
-            barInner.style.width = value + '%';
-            setTimeout(function () {
-              barWrap.classList.add('open');
-            }, 100);
-          }
-        });
-
-        window.removeEventListener('scroll', checkViewport);
+        openProgressBars();
+        window.removeEventListener('scroll', requestViewportCheck);
       }
     }
 
-    window.addEventListener('scroll', checkViewport);
+    function requestViewportCheck() {
+      if (scrollFrameId !== null) {
+        return;
+      }
+
+      scrollFrameId = window.requestAnimationFrame(checkViewport);
+    }
+
+    window.addEventListener('scroll', requestViewportCheck, {
+      passive: true,
+    });
     checkViewport();
   }
 
