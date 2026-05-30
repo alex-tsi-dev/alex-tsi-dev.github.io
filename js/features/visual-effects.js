@@ -448,7 +448,7 @@ function startSceneFloatingIcons(config) {
       return;
     }
 
-    recalculateSceneIconLayout(config, timestamp);
+    recalculateSceneIconLayout(config, true, timestamp);
     setupSceneResizeHandler(config);
     setupSceneIntersectionObserver(config);
 
@@ -514,7 +514,7 @@ function setupSceneResizeHandler(config) {
         return;
       }
 
-      recalculateSceneIconLayout(config, window.performance.now());
+      recalculateSceneIconLayout(config, true, window.performance.now());
     });
   };
 
@@ -646,7 +646,7 @@ function stepSceneFloatingIcons(config, timestamp) {
   });
 }
 
-function recalculateSceneIconLayout(config, timestamp) {
+function recalculateSceneIconLayout(config, preservePosition, timestamp) {
   const motionState = getParallaxSceneState(config).motionState;
 
   if (
@@ -664,7 +664,19 @@ function recalculateSceneIconLayout(config, timestamp) {
     return;
   }
 
-  motionState.icons.forEach(function (iconState) {
+  const boundsRect = motionState.boundsElement.getBoundingClientRect();
+  const visualPositions = preservePosition
+    ? motionState.icons.map(function (iconState) {
+        const iconRect = iconState.element.getBoundingClientRect();
+
+        return {
+          x: iconRect.left - boundsRect.left,
+          y: iconRect.top - boundsRect.top,
+        };
+      })
+    : null;
+
+  motionState.icons.forEach(function (iconState, index) {
     const layout = getElementLayoutWithinBounds(
       iconState.element,
       motionState.boundsElement
@@ -674,19 +686,32 @@ function recalculateSceneIconLayout(config, timestamp) {
     iconState.baseY = layout.y;
     iconState.width = layout.width;
     iconState.height = layout.height;
-    iconState.minX = -iconState.baseX;
+    iconState.minX = Math.min(0, -iconState.baseX);
     iconState.maxX = Math.max(
-      iconState.minX,
+      0,
       boundsWidth - iconState.width - iconState.baseX
     );
-    iconState.minY = -iconState.baseY;
+    iconState.minY = Math.min(0, -iconState.baseY);
     iconState.maxY = Math.max(
-      iconState.minY,
+      0,
       boundsHeight - iconState.height - iconState.baseY
     );
 
-    iconState.x = clamp(iconState.x, iconState.minX, iconState.maxX);
-    iconState.y = clamp(iconState.y, iconState.minY, iconState.maxY);
+    if (visualPositions) {
+      iconState.x = clamp(
+        visualPositions[index].x - iconState.baseX,
+        iconState.minX,
+        iconState.maxX
+      );
+      iconState.y = clamp(
+        visualPositions[index].y - iconState.baseY,
+        iconState.minY,
+        iconState.maxY
+      );
+    } else {
+      iconState.x = clamp(iconState.x, iconState.minX, iconState.maxX);
+      iconState.y = clamp(iconState.y, iconState.minY, iconState.maxY);
+    }
 
     if (!iconState.nextDriftAt) {
       iconState.nextDriftAt = getNextSceneDriftTime(timestamp);
