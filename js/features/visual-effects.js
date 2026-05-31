@@ -151,6 +151,7 @@ function createParallaxSceneState() {
     compactMediaQueryListener: null,
     parallaxInstance: null,
     parallaxLoadPending: false,
+    floatingIconsLoadPending: false,
     sectionElement: null,
     sectionObserver: null,
     isSectionVisible: false,
@@ -211,6 +212,11 @@ function syncParallaxSceneMode(config) {
       return;
     }
 
+    if (document.readyState !== 'complete') {
+      queueSceneFloatingIconsAfterLoad(config);
+      return;
+    }
+
     startSceneFloatingIcons(config);
     return;
   }
@@ -231,6 +237,25 @@ function syncParallaxSceneMode(config) {
   } else {
     stopSceneParallax(config);
   }
+}
+
+function queueSceneFloatingIconsAfterLoad(config) {
+  const state = getParallaxSceneState(config);
+
+  if (state.floatingIconsLoadPending) {
+    return;
+  }
+
+  state.floatingIconsLoadPending = true;
+
+  window.addEventListener(
+    'load',
+    function () {
+      state.floatingIconsLoadPending = false;
+      syncParallaxSceneMode(config);
+    },
+    { once: true }
+  );
 }
 
 function startSceneParallax(config) {
@@ -933,16 +958,6 @@ export function initAnimatedText() {
     if (words.length === 0) {
       return;
     }
-
-    let maxWidth = 0;
-
-    words.forEach(function (word) {
-      const wordWidth = word.offsetWidth;
-      if (wordWidth > maxWidth) {
-        maxWidth = wordWidth;
-      }
-    });
-    wordsWrapper.style.width = maxWidth + 'px';
 
     let currentIndex = 0;
 

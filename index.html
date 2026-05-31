@@ -46,18 +46,18 @@
   <link
     rel="preload"
     as="style"
-    href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;500;600;700&display=optional"
   />
   <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;500;600;700&display=optional"
     media="print"
     onload="this.media='all'"
   />
   <noscript>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;500;600;700&display=optional"
     />
   </noscript>
   <style>
@@ -188,6 +188,12 @@
       margin-bottom: 4rem;
     }
 
+    .hero__headline-block {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
     .hero__hello,
     .hero__name,
     .hero__headline-label,
@@ -248,7 +254,12 @@
     }
 
     .hero__job-words {
+      --hero-job-words-width: clamp(20rem, 15em, 44rem);
+
+      width: var(--hero-job-words-width);
+      min-width: var(--hero-job-words-width);
       margin-left: 0.5rem;
+      text-align: left;
     }
 
     .hero__job-words b:not(.is-visible) {
@@ -332,6 +343,7 @@
     .hero__icon {
       position: absolute;
       display: block;
+      contain: layout paint;
       z-index: 0;
     }
 
@@ -633,7 +645,12 @@
         flex: 1 1 auto;
         width: 100%;
         max-width: none;
-        padding: clamp(1.2rem, 3.6dvh, 3.4rem) 0 clamp(2rem, 32vw, 4rem);
+        --hero-top-offset: clamp(1.2rem, 3.6dvh, 3.4rem);
+        --hero-block-gap: clamp(1rem, 2.4dvh, 2.2rem);
+        --hero-cta-gap: clamp(1.8rem, 5.4dvh, 4.8rem);
+
+        padding: var(--hero-top-offset) 0 clamp(2rem, 32vw, 4rem);
+        row-gap: var(--hero-block-gap);
       }
 
       .hero__avatar {
@@ -694,7 +711,6 @@
       .hero__icon--react {
         display: block !important;
         transform: none;
-        will-change: transform;
       }
 
       .hero__icon--csharp {
@@ -774,8 +790,28 @@
         z-index: 1;
       }
 
+      .personal-brand {
+        min-height: 14rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .hero__hello {
+        margin-bottom: 0.6rem;
+        font-size: clamp(1.8rem, 4.6vw, 2rem);
+      }
+
       .hero__name {
         font-size: clamp(4rem, 12vw, 4.8rem);
+        margin-bottom: 0.6rem;
+      }
+
+      .hero__headline-block {
+        min-height: 18rem;
+      }
+
+      .hero__headline-label {
+        margin-bottom: 0.6rem;
+        font-size: clamp(1.5rem, 4vw, 1.8rem);
       }
 
       .hero__headline {
@@ -785,6 +821,15 @@
 
       .hero__job-text {
         font-size: clamp(1.6rem, 4.7vw, 1.9rem);
+        line-height: 1.3;
+      }
+
+      .hero__job-words {
+        margin-left: 0.4rem;
+      }
+
+      .hero__job-words b {
+        font-size: 1.45em;
       }
 
       .hero__subheadline {
@@ -792,8 +837,21 @@
         font-size: clamp(1.4rem, 4vw, 1.55rem);
       }
 
+      .hero__job {
+        margin-bottom: 1.2rem;
+      }
+
+      .hero__buttons {
+        gap: 1rem;
+        min-height: calc(12.8rem + var(--hero-cta-gap));
+        margin-top: auto;
+        padding-top: var(--hero-cta-gap);
+      }
+
       .hero__button {
         width: 100%;
+        padding: 1.3rem 2rem;
+        font-size: 1.5rem;
         text-align: center;
       }
 
@@ -803,9 +861,9 @@
       }
     }
   </style>
-  <link rel="preload" as="style" href="css/style.67eed82dbe.css" onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" as="style" href="css/style.fc6c34e4c1.css" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript>
-    <link rel="stylesheet" href="css/style.67eed82dbe.css" />
+    <link rel="stylesheet" href="css/style.fc6c34e4c1.css" />
   </noscript>
   <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
 
@@ -1050,79 +1108,79 @@
                           </picture>
                       </div>
                       <!-- Technology Icons with Parallax -->
-                      <span class="hero__icon hero__icon--csharp layer" data-depth="0.21">
+                      <span class="hero__icon hero__icon--csharp layer" data-depth="0.21" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/csharp.svg" alt="C#" class="hero__icon-svg" width="790" height="790" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--dotnet layer" data-depth="0.25">
+                      <span class="hero__icon hero__icon--dotnet layer" data-depth="0.25" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/dotnet.svg" alt=".NET" class="hero__icon-svg" width="64" height="64" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--kubernetes layer" data-depth="0.20">
+                      <span class="hero__icon hero__icon--kubernetes layer" data-depth="0.20" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/kubernetes.svg" alt="Kubernetes" class="hero__icon-svg" width="500" height="500" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--docker layer" data-depth="0.17">
+                      <span class="hero__icon hero__icon--docker layer" data-depth="0.17" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/docker.svg" alt="Docker" class="hero__icon-svg" width="1024" height="1024" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--azure layer" data-depth="0.19">
+                      <span class="hero__icon hero__icon--azure layer" data-depth="0.19" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/azure.svg" alt="Azure" class="hero__icon-svg" width="53" height="15" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--aws layer" data-depth="0.16">
+                      <span class="hero__icon hero__icon--aws layer" data-depth="0.16" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/aws.svg" alt="AWS" class="hero__icon-svg" width="120" height="72" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--redis layer" data-depth="0.19">
+                      <span class="hero__icon hero__icon--redis layer" data-depth="0.19" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/redis.svg" alt="Redis" class="hero__icon-svg" width="256" height="256" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--kafka layer" data-depth="0.12">
+                      <span class="hero__icon hero__icon--kafka layer" data-depth="0.12" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/kafka.svg" alt="Kafka" class="hero__icon-svg" width="120" height="60" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--sql layer" data-depth="0.13">
+                      <span class="hero__icon hero__icon--sql layer" data-depth="0.13" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/sql.svg" alt="SQL" class="hero__icon-svg" width="70" height="70" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--rabbitmq layer" data-depth="0.12">
+                      <span class="hero__icon hero__icon--rabbitmq layer" data-depth="0.12" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/rabbitmq.svg" alt="RabbitMQ" class="hero__icon-svg" width="172" height="27" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--react layer" data-depth="0.17">
+                      <span class="hero__icon hero__icon--react layer" data-depth="0.17" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/react.svg" alt="React" class="hero__icon-svg" width="32" height="32" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--javascript layer" data-depth="0.10">
+                      <span class="hero__icon hero__icon--javascript layer" data-depth="0.10" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/javascript.svg" alt="JavaScript" class="hero__icon-svg" width="120" height="60" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--azuredevops layer" data-depth="0.23">
+                      <span class="hero__icon hero__icon--azuredevops layer" data-depth="0.23" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/azuredevops.svg" alt="Azure DevOps" class="hero__icon-svg" width="623" height="500" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--devops layer" data-depth="0.2">
+                      <span class="hero__icon hero__icon--devops layer" data-depth="0.2" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/Devops.svg" alt="DevOps" class="hero__icon-svg" width="600" height="340" />
                           </span>
                       </span>
-                      <h3 class="hero__stroke-text">
+                      <span class="hero__stroke-text" aria-hidden="true">
                           <span>TSI</span>
-                      </h3>
+                      </span>
                   </div>
                   <div class="hero__socials">
                       <ul class="hero__socials-list">
@@ -2000,72 +2058,72 @@
                               />
                           </picture>
                       </div>
-                      <span class="hero__icon hero__icon--csharp layer" data-depth="0.21">
+                      <span class="hero__icon hero__icon--csharp layer" data-depth="0.21" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/csharp.svg" alt="C#" class="hero__icon-svg" width="790" height="790" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--dotnet layer" data-depth="0.25">
+                      <span class="hero__icon hero__icon--dotnet layer" data-depth="0.25" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/dotnet.svg" alt=".NET" class="hero__icon-svg" width="64" height="64" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--kubernetes layer" data-depth="0.20">
+                      <span class="hero__icon hero__icon--kubernetes layer" data-depth="0.20" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/kubernetes.svg" alt="Kubernetes" class="hero__icon-svg" width="500" height="500" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--docker layer" data-depth="0.17">
+                      <span class="hero__icon hero__icon--docker layer" data-depth="0.17" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/docker.svg" alt="Docker" class="hero__icon-svg" width="1024" height="1024" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--azure layer" data-depth="0.19">
+                      <span class="hero__icon hero__icon--azure layer" data-depth="0.19" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/azure.svg" alt="Azure" class="hero__icon-svg" width="53" height="15" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--aws layer" data-depth="0.16">
+                      <span class="hero__icon hero__icon--aws layer" data-depth="0.16" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/aws.svg" alt="AWS" class="hero__icon-svg" width="120" height="72" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--redis layer" data-depth="0.19">
+                      <span class="hero__icon hero__icon--redis layer" data-depth="0.19" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/redis.svg" alt="Redis" class="hero__icon-svg" width="256" height="256" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--kafka layer" data-depth="0.12">
+                      <span class="hero__icon hero__icon--kafka layer" data-depth="0.12" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/kafka.svg" alt="Kafka" class="hero__icon-svg" width="120" height="60" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--sql layer" data-depth="0.13">
+                      <span class="hero__icon hero__icon--sql layer" data-depth="0.13" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/sql.svg" alt="SQL" class="hero__icon-svg" width="70" height="70" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--rabbitmq layer" data-depth="0.12">
+                      <span class="hero__icon hero__icon--rabbitmq layer" data-depth="0.12" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/rabbitmq.svg" alt="RabbitMQ" class="hero__icon-svg" width="172" height="27" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--react layer" data-depth="0.17">
+                      <span class="hero__icon hero__icon--react layer" data-depth="0.17" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/react.svg" alt="React" class="hero__icon-svg" width="32" height="32" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--javascript layer" data-depth="0.10">
+                      <span class="hero__icon hero__icon--javascript layer" data-depth="0.10" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/javascript.svg" alt="JavaScript" class="hero__icon-svg" width="120" height="60" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--azuredevops layer" data-depth="0.23">
+                      <span class="hero__icon hero__icon--azuredevops layer" data-depth="0.23" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/azuredevops.svg" alt="Azure DevOps" class="hero__icon-svg" width="623" height="500" />
                           </span>
                       </span>
-                      <span class="hero__icon hero__icon--devops layer" data-depth="0.2">
+                      <span class="hero__icon hero__icon--devops layer" data-depth="0.2" aria-hidden="true">
                           <span class="hero__icon-inner">
                               <img src="img/icons/Devops.svg" alt="DevOps" class="hero__icon-svg" width="600" height="340" />
                           </span>
