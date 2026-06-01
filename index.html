@@ -129,6 +129,7 @@
       font-size: 1.45rem;
       font-weight: 600;
       text-decoration: none;
+      transition: color 0.3s ease;
     }
 
     .header__menu-link--active {
@@ -277,30 +278,80 @@
     }
 
     .hero__button {
+      position: relative;
+      isolation: isolate;
       padding: 1.5rem 3rem;
       border-radius: 0.5rem;
+      background-color: transparent;
       font-family: 'Open Sans', sans-serif;
       font-size: 1.6rem;
       font-weight: 600;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition:
+        color 0.3s ease,
+        transform 0.3s ease;
+    }
+
+    .hero__button::before,
+    .hero__button::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .hero__button::after {
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     .hero__button--primary {
-      background-color: #c74808;
       color: #fff;
     }
 
+    .hero__button--primary::before {
+      background-color: #c74808;
+    }
+
+    .hero__button--primary::after {
+      background-color: #f50;
+      box-shadow: 0 0 0 0.35rem rgb(255 122 61 / 34%), 0 1.2rem 2.6rem rgb(199 72 8 / 35%);
+    }
+
       .hero__button--primary:hover {
-          background-color: #ff5500;
-          box-shadow: 0 0 0 0.35rem rgb(255 122 61 / 34%), 0 1.2rem 2.6rem rgb(199 72 8 / 35%);
           transform: translateY(-0.2rem);
+      }
+
+      .hero__button--primary:hover::after {
+          opacity: 1;
       }
 
     .hero__button--secondary {
       border: 2px solid #fff;
-      background-color: transparent;
       color: #fff;
+    }
+
+    .hero__button--secondary::before,
+    .hero__button--secondary::after {
+      inset: -2px;
+    }
+
+    .hero__button--secondary::before {
+      background-color: transparent;
+    }
+
+    .hero__button--secondary::after {
+      background-color: #fff;
+    }
+
+    .hero__button--secondary:hover {
+      color: #3c3c3c;
+    }
+
+    .hero__button--secondary:hover::after {
+      opacity: 1;
     }
 
     .hero__avatar {
@@ -509,6 +560,10 @@
     .hero__mail-link {
       color: #fff;
       text-decoration: none;
+    }
+
+    .hero__socials-link {
+      transition: color 0.3s ease;
     }
 
     .hero__socials-icon {
@@ -885,9 +940,9 @@
       }
     }
   </style>
-  <link rel="preload" as="style" href="css/style.1c8eddb97d.css" onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" as="style" href="css/style.f37c125983.css" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript>
-    <link rel="stylesheet" href="css/style.1c8eddb97d.css" />
+    <link rel="stylesheet" href="css/style.f37c125983.css" />
   </noscript>
   <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
 

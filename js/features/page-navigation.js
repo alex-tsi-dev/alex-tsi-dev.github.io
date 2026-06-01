@@ -8,17 +8,22 @@ export function initHeaderScroll() {
   let scrollFrameId = null;
   let isHeaderScrolled = null;
 
-  function updateHeaderState() {
-    scrollFrameId = null;
+  function readHeaderScrollState() {
+    return window.scrollY > 100;
+  }
 
-    const shouldBeScrolled = window.scrollY > 100;
-
+  function writeHeaderScrollState(shouldBeScrolled) {
     if (shouldBeScrolled === isHeaderScrolled) {
       return;
     }
 
     header.classList.toggle('header--scrolled', shouldBeScrolled);
     isHeaderScrolled = shouldBeScrolled;
+  }
+
+  function updateHeaderState() {
+    scrollFrameId = null;
+    writeHeaderScrollState(readHeaderScrollState());
   }
 
   function requestHeaderUpdate() {
@@ -206,52 +211,42 @@ export function initActionScrollFromUrl() {
 export function initActiveMenuItems() {
   const sections = Array.from(document.querySelectorAll('section[id]'));
   const menuLinks = Array.from(document.querySelectorAll('.header__menu-link'));
+  const header = document.getElementById('header');
 
   if (sections.length === 0 || menuLinks.length === 0) {
     return;
   }
 
+  const menuLinkTargets = menuLinks.map(function (link) {
+    const href = link.getAttribute('href') || '';
+
+    return {
+      link,
+      sectionId: href.startsWith('#') ? href.substring(1) : '',
+    };
+  });
+
   let sectionMetrics = [];
   let activeSectionId = null;
   let scrollFrameId = null;
-  let resizeFrameId = null;
+  let measureFrameId = null;
 
-  function measureSections() {
-    const header = document.getElementById('header');
+  function readSectionMetrics(scrollPosition) {
     const headerHeight = header ? header.offsetHeight : 0;
 
-    sectionMetrics = sections.map(function (section) {
-      const sectionTop = section.offsetTop - headerHeight - 100;
+    return sections.map(function (section) {
+      const sectionRect = section.getBoundingClientRect();
+      const sectionTop = sectionRect.top + scrollPosition - headerHeight - 100;
 
       return {
         id: section.getAttribute('id'),
         top: sectionTop,
-        bottom: sectionTop + section.offsetHeight,
+        bottom: sectionTop + sectionRect.height,
       };
     });
   }
 
-  function setActiveMenuItem(nextSectionId) {
-    if (nextSectionId === activeSectionId) {
-      return;
-    }
-
-    activeSectionId = nextSectionId;
-
-    menuLinks.forEach(function (link) {
-      const href = link.getAttribute('href');
-
-      link.classList.toggle(
-        'header__menu-link--active',
-        href === '#' + nextSectionId
-      );
-    });
-  }
-
-  function updateActiveMenuItem() {
-    scrollFrameId = null;
-
-    const scrollPosition = window.scrollY;
+  function findActiveSectionId(scrollPosition) {
     let current = '';
 
     sectionMetrics.forEach(function (section) {
@@ -263,7 +258,29 @@ export function initActiveMenuItems() {
       }
     });
 
-    setActiveMenuItem(current);
+    return current;
+  }
+
+  function writeActiveMenuItem(nextSectionId) {
+    if (nextSectionId === activeSectionId) {
+      return;
+    }
+
+    activeSectionId = nextSectionId;
+
+    menuLinkTargets.forEach(function (target) {
+      target.link.classList.toggle(
+        'header__menu-link--active',
+        target.sectionId !== '' && target.sectionId === nextSectionId
+      );
+    });
+  }
+
+  function updateActiveMenuItem() {
+    scrollFrameId = null;
+
+    const scrollPosition = window.scrollY;
+    writeActiveMenuItem(findActiveSectionId(scrollPosition));
   }
 
   function requestActiveMenuUpdate() {
@@ -275,19 +292,24 @@ export function initActiveMenuItems() {
   }
 
   function requestSectionMeasure() {
-    if (resizeFrameId !== null) {
+    if (measureFrameId !== null) {
       return;
     }
 
-    resizeFrameId = window.requestAnimationFrame(function () {
-      resizeFrameId = null;
-      measureSections();
-      requestActiveMenuUpdate();
+    measureFrameId = window.requestAnimationFrame(function () {
+      measureFrameId = null;
+      measureSectionsAndUpdateActiveItem();
     });
   }
 
-  measureSections();
-  updateActiveMenuItem();
+  function measureSectionsAndUpdateActiveItem() {
+    const scrollPosition = window.scrollY;
+
+    sectionMetrics = readSectionMetrics(scrollPosition);
+    writeActiveMenuItem(findActiveSectionId(scrollPosition));
+  }
+
+  measureSectionsAndUpdateActiveItem();
 
   window.addEventListener('load', requestSectionMeasure, { once: true });
   window.addEventListener('resize', requestSectionMeasure);
