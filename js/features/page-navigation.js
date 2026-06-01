@@ -112,36 +112,51 @@ export function initSmoothScroll() {
 }
 
 export function initMobileMenuSupport() {
-  const menuCheckbox = document.querySelector('.header__menu-checkbox');
+  const header = document.querySelector('.header');
   const menuButton = document.querySelector('.header__menu-button');
   const menuLinks = document.querySelectorAll('.header__menu-link');
   const desktopBreakpoint = 900;
   let resizeFrameId = null;
 
-  if (!menuCheckbox || !menuButton) {
+  if (!header || !menuButton) {
     return;
   }
 
-  function syncMenuButtonState() {
-    menuButton.setAttribute(
-      'aria-expanded',
-      menuCheckbox.checked ? 'true' : 'false'
-    );
+  function setMenuOpen(isOpen) {
+    header.classList.toggle('header--menu-open', isOpen);
+    menuButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
+  function isMenuOpen() {
+    return header.classList.contains('header--menu-open');
   }
 
   function closeMenu() {
-    if (!menuCheckbox.checked) {
-      syncMenuButtonState();
+    if (!isMenuOpen()) {
+      setMenuOpen(false);
       return;
     }
 
-    menuCheckbox.checked = false;
-    syncMenuButtonState();
+    setMenuOpen(false);
   }
 
-  syncMenuButtonState();
+  function toggleMenu() {
+    setMenuOpen(!isMenuOpen());
+  }
 
-  menuCheckbox.addEventListener('change', syncMenuButtonState);
+  function handleMenuButtonKeydown(e) {
+    if (e.key !== 'Enter' && e.key !== ' ') {
+      return;
+    }
+
+    e.preventDefault();
+    toggleMenu();
+  }
+
+  setMenuOpen(false);
+
+  menuButton.addEventListener('click', toggleMenu);
+  menuButton.addEventListener('keydown', handleMenuButtonKeydown);
 
   menuLinks.forEach(function (link) {
     link.addEventListener('click', closeMenu);
