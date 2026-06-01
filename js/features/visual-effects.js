@@ -473,7 +473,7 @@ function startSceneFloatingIcons(config) {
       return;
     }
 
-    recalculateSceneIconLayout(config, false, timestamp);
+    recalculateSceneIconLayout(config, true, timestamp);
     setupSceneResizeHandler(config);
     setupSceneIntersectionObserver(config);
 
@@ -682,34 +682,30 @@ function recalculateSceneIconLayout(config, preservePosition, timestamp) {
     return;
   }
 
-  const boundsRect = motionState.boundsElement.getBoundingClientRect();
-  const boundsWidth = boundsRect.width;
-  const boundsHeight = boundsRect.height;
+  const boundsWidth = motionState.boundsElement.clientWidth;
+  const boundsHeight = motionState.boundsElement.clientHeight;
 
   if (boundsWidth === 0 || boundsHeight === 0) {
     return;
   }
 
-  const iconLayouts = motionState.icons.map(function (iconState) {
-    const visualPosition = preservePosition
-      ? getSceneIconVisualPosition(iconState.element, boundsRect)
-      : null;
+  const boundsRect = motionState.boundsElement.getBoundingClientRect();
+  const visualPositions = preservePosition
+    ? motionState.icons.map(function (iconState) {
+        const iconRect = iconState.element.getBoundingClientRect();
+
+        return {
+          x: iconRect.left - boundsRect.left,
+          y: iconRect.top - boundsRect.top,
+        };
+      })
+    : null;
+
+  motionState.icons.forEach(function (iconState, index) {
     const layout = getElementLayoutWithinBounds(
       iconState.element,
-      motionState.boundsElement,
-      boundsRect
+      motionState.boundsElement
     );
-
-    return {
-      iconState,
-      layout,
-      visualPosition,
-    };
-  });
-
-  iconLayouts.forEach(function (iconLayout) {
-    const iconState = iconLayout.iconState;
-    const layout = iconLayout.layout;
 
     iconState.baseX = layout.x;
     iconState.baseY = layout.y;
@@ -726,14 +722,14 @@ function recalculateSceneIconLayout(config, preservePosition, timestamp) {
       boundsHeight - iconState.height - iconState.baseY
     );
 
-    if (iconLayout.visualPosition) {
+    if (visualPositions) {
       iconState.x = clamp(
-        iconLayout.visualPosition.x - iconState.baseX,
+        visualPositions[index].x - iconState.baseX,
         iconState.minX,
         iconState.maxX
       );
       iconState.y = clamp(
-        iconLayout.visualPosition.y - iconState.baseY,
+        visualPositions[index].y - iconState.baseY,
         iconState.minY,
         iconState.maxY
       );
@@ -745,24 +741,12 @@ function recalculateSceneIconLayout(config, preservePosition, timestamp) {
     if (!iconState.nextDriftAt) {
       iconState.nextDriftAt = getNextSceneDriftTime(timestamp);
     }
-  });
 
-  iconLayouts.forEach(function (iconLayout) {
-    const iconState = iconLayout.iconState;
     setSceneIconTransform(iconState);
   });
 }
 
-function getSceneIconVisualPosition(element, boundsRect) {
-  const iconRect = element.getBoundingClientRect();
-
-  return {
-    x: iconRect.left - boundsRect.left,
-    y: iconRect.top - boundsRect.top,
-  };
-}
-
-function getElementLayoutWithinBounds(element, boundsElement, boundsRect) {
+function getElementLayoutWithinBounds(element, boundsElement) {
   let x = 0;
   let y = 0;
   let currentElement = element;
@@ -775,6 +759,7 @@ function getElementLayoutWithinBounds(element, boundsElement, boundsRect) {
 
   if (currentElement !== boundsElement) {
     const elementRect = element.getBoundingClientRect();
+    const boundsRect = boundsElement.getBoundingClientRect();
 
     return {
       x: elementRect.left - boundsRect.left,
